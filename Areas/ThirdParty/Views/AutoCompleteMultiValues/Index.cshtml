@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "ThirdParty/AutoCompleteMultiValues";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <link rel="stylesheet" href="~/res/third-party/jqueryuiautocomplete/jquery-ui.css" />
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelWidth(60).Width(600).BodyPadding(10).Title("简单表单")
+        .Items(
+            F.TextBox().ID("TextBox1").Label("标题").EmptyText("输入字母 a 试试，可以输入多个值")
+        )
+    )
+    <br>
+    参考：http://jqueryui.com/autocomplete/#multiple
+
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/third-party/jqueryuiautocomplete/jquery-ui.js" type="text/javascript"></script>
+    <script>
+
+        F.ready(function () {
+
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"
+            ];
+
+            // 将字符串 val 以逗号空格作为分隔符，分隔成数组
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+
+            // 取得以逗号空格为分隔符的最后一个单词
+            // 比如，输入为 "C++, C#, JavaScript" 则输入出 "JavaScript"
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $('#TextBox1 input').bind("keydown", function (event) {
+                // 通过 Tab 选择一项时，不会使当前文本框失去焦点
+                if (event.keyCode === $.ui.keyCode.TAB &&
+                        $(this).data("autocomplete").menu.active) {
+                    event.preventDefault();
+                }
+            }).autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    // 将最后一个单词作为输入值，从列表中过滤出备选项
+                    response($.ui.autocomplete.filter(
+                        availableTags, extractLast(request.term)));
+                },
+                focus: function () {
+                    // 阻止某一项获得焦点时，更新文本框的值
+                    return false;
+                },
+                select: function (event, ui) {
+                    var terms = split(this.value);
+                    // 移除用户正在输入项
+                    terms.pop();
+                    // 添加用户选择的项
+                    terms.push(ui.item.value);
+                    // 添加占位符，确保字符串的最后以逗号空格结束
+                    terms.push("");
+                    this.value = terms.join(", ");
+                    return false;
+                }
+            });
+
+        });
+
+    </script>
+
+}

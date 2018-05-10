@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "GridLockColumn/EditorCellNew";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（双击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(2).EnableCheckBoxSelect(true).AllowColumnLocking(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名").EnableLock(true).Locked(true)
+                .Editor(
+                    F.TextBox().ID("tbxName").Required(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别").EnableLock(true)
+                .Editor(
+                    F.DropDownList().ID("ddlGender").Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("1"),
+                            F.ListItem().Text("女").Value("0")
+                        )
+                ),
+            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份").EnableLock(true)
+                .Editor(
+                    F.NumberBox().ID("nbxEntranceYear").NoDecimal(true).NoNegative(true).MinValue(2000).MaxValue(2025)
+                ),
+            F.RenderField().Width(120).ColumnID("EntranceDate").DataField("EntranceDate").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("入学日期").EnableLock(true)
+                .Editor(
+                    F.DatePicker().ID("dpEntranceDate").Required(true)
+                ),
+            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").HeaderText("是否在校").EnableLock(true),
+            F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业").EnableLock(true)
+                .Editor(
+                    F.TextBox().ID("tbxMajor").Required(true)
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("btnNew").Text("新增数据").Icon(Icon.Add).Listener("click", "onNewClick"),
+                    F.ToolbarFill(),
+                    F.Button().ID("btnReset").Text("重置表格数据").Listener("click", "onResetClick")
+                )
+        ).DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+
+    <br>
+    @(F.Label().ID("labResult"))
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onNewClick(event) {
+            F.ui.Grid1.addNewRecord({
+                'Name': '新用户',
+                'Gender': '1',
+                'EntranceYear': '2015',
+                'EntranceDate': '2016-11-15',
+                'AtSchool': false,
+                'Major': '化学系'
+            }, true);
+        }
+
+        function onResetClick(event) {
+            F.confirm({
+                message: '确定要重置表格数据？',
+                ok: function () {
+                    F.ui.Grid1.rejectChanges();
+                }
+            });
+        }
+
+    </script>
+}

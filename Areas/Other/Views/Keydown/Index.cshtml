@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Other/Keydown";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.TextBox().ID("TextBox1").ShowLabel(false).EmptyText("输入一些文字，下面的文本框会随之改变").Listener("change", "onTextBoxChange"),
+            F.TextBox().ID("TextBox2").ShowLabel(false)
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onTextBoxChange() {
+            F.ui.TextBox2.setValue(this.getValue());
+        }
+
+    </script>
+
+}

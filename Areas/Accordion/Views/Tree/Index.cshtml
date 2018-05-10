@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Accordion/Views/Tree/DefaultPage.cshtml";
+    ViewBag.Title = "Accordion/Tree";
+    var F = Html.F();
+}
+
+
+@functions {
+
+    /// <summary>
+    /// 改变节点的 Target 属性
+    /// </summary>
+    /// <param name="nodes"></param>
+    private void ResolveTreeNode(TreeNodeCollection nodes)
+    {
+        foreach (TreeNode node in nodes)
+        {
+            if (node.Nodes.Count == 0)
+            {
+                if (!String.IsNullOrEmpty(node.NavigateUrl))
+                {
+                    node.Target = "accordionmainframe";
+                }
+            }
+            else
+            {
+                ResolveTreeNode(node.Nodes);
+            }
+        }
+    }
+
+}
+
+
+@section body {
+
+    @(F.RegionPanel().ID("RegionPanel1").ShowBorder(false).Margin(5).IsViewPort(true)
+        .Regions(
+            F.Region().ID("Region2").RegionSplit(true).RegionSplitHeaderClass(false).RegionPosition(Position.Left).Width(200).ShowHeader(false).Title("目录").Layout(LayoutType.Fit)
+                .Items(
+                    F.Accordion().ShowBorder(false).ShowHeader(false).ShowCollapseTool(true)
+                        .Panes(
+                            F.AccordionPane().Title("面板一").IconUrl(Url.Content("~/res/images/16/1.png")).BodyPadding("2px 5px").Layout(LayoutType.Fit)
+                                .Items(
+                                    F.Tree().ShowBorder(false).ShowHeader(false).ID("treeMenu").DataSource(ViewBag.Tree1DataSource)
+                                ),
+                            F.AccordionPane().Title("面板二").IconUrl(Url.Content("~/res/images/16/4.png")).BodyPadding("2px 5px")
+                                .Items(
+                                    F.Label().Text("面板二中的文本")
+                                )
+                        )
+                ),
+            F.Region().ID("Region3").ShowHeader(false).EnableIFrame(true).IFrameUrl(Url.Content("~/Accordion/Tree/DefaultPage")).IFrameName("accordionmainframe").RegionPosition(Position.Center)
+        )
+    )
+
+
+    @{
+        Tree tree = F.GetControl<Tree>("treeMenu");
+
+        ResolveTreeNode(tree.Nodes);
+    }
+
+}
+

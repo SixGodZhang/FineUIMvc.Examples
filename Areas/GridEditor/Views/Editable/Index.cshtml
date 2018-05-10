@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "GridEditor/Editable";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        /* 除了序号列和可编辑列，其他列变灰 */
+        .f-grid-cell-inner {
+            opacity: .5;
+            filter: alpha(opacity=50);
+        }
+
+        .f-grid-cell-editable .f-grid-cell-inner {
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+
+        .f-grid-rownumberfield .f-grid-cell-inner {
+            opacity: 1;
+            filter: alpha(opacity=100);
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名")
+                .Editor(
+                    F.TextBox().ID("tbxName").Required(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别")
+                .Editor(
+                    F.DropDownList().ID("ddlGender").Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("1"),
+                            F.ListItem().Text("女").Value("0")
+                        )
+                ),
+            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份")
+                .Editor(
+                    F.NumberBox().ID("nbxEntranceYear").NoDecimal(true).NoNegative(true).MinValue(2000).MaxValue(2025)
+                ),
+            F.RenderField().Width(120).ColumnID("EntranceDate").DataField("EntranceDate").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("入学日期")
+                .Editor(
+                    F.DatePicker().ID("dpEntranceDate").Required(true)
+                ),
+            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业").EnableColumnEdit(false)
+                .Editor(
+                    F.TextBox().ID("tbxMajor").Required(true)
+                )
+        ).DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+
+    @(F.Button().ID("btnChangeEntranceDateEditable").CssClass("marginr").Text("切换[入学日期]列的可编辑状态").Listener("click", "onChangeEntranceDateEditableClick"))
+
+    @(F.Button().ID("btnChangeAtSchoolEditable").CssClass("marginr").Text("切换[是否在校]列的可编辑状态").Listener("click", "onChangeAtSchoolEditableClick"))
+
+    @(F.Button().ID("btnChangeMajorEditable").Text("切换[所学专业]列的可编辑状态").Listener("click", "onChangeMajorEditableClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+
+    <br>
+    @(F.Label().ID("labResult"))
+
+    <br>
+    注：初始[所学专业]列不可编辑，可以通过上述按钮切换列的编辑状态。
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onChangeEntranceDateEditableClick(event) {
+            var column = F.ui.Grid1.getColumn('EntranceDate');
+            column.toggleEditable();
+        }
+
+        function onChangeAtSchoolEditableClick(event) {
+            var column = F.ui.Grid1.getColumn('AtSchool');
+            column.toggleEditable();
+        }
+
+        function onChangeMajorEditableClick(event) {
+            var column = F.ui.Grid1.getColumn('Major');
+            column.toggleEditable();
+        }
+
+    </script>
+}

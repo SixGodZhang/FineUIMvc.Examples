@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/DataModel/Models/UICompareModel.cs";
+    ViewBag.Title = "DataModel/UICompare";
+    var F = Html.F();
+}
+
+@model FineUIMvc.Examples.Areas.DataModel.Models.UICompareModel
+
+
+@section body {
+
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelWidth(200).ShowBorder(true).ShowHeader(true).Title("简单表单")
+        .Items(
+            F.DatePickerFor(m => m.StartDate),
+            F.DatePickerFor(m => m.EndDate),
+            F.Label(),
+            F.TextBoxFor(m => m.Password),
+            F.TextBoxFor(m => m.ConfirmPassword),
+            F.Label(),
+            F.NumberBoxFor(m => m.Number1),
+            F.NumberBoxFor(m => m.Number2),
+            F.Label(),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").CssClass("marginr").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1"),
+            F.Button().ID("btnReset").Text("重置表单").OnClientClick("F.ui.SimpleForm1.reset();")
+        )
+    )
+
+}
+

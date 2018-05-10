@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeNodeExpand";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).OnNodeExpand(Url.Action("Tree1_NodeExpand"), new Parameter("nodeInfo", "getNodeInfo(arguments[1])")).OnNodeCollapse(Url.Action("Tree1_NodeCollapse"), new Parameter("nodeInfo", "getNodeInfo(arguments[1])")).Title("树控件")
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").NodeID("zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").Leaf(false).NodeID("suiping")
+                                        .Nodes(
+                                            F.TreeNode().Text("槐树乡").Leaf(false).NodeID("huaishu")
+                                                .Nodes(
+                                                    F.TreeNode().Text("陈庄村").NodeID("chenzhuang")
+                                                )
+                                        )
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").Expanded(true).NodeID("hefei")
+                                .Nodes(
+                                    F.TreeNode().Text("金色池塘小区").NodeID("golden"),
+                                    F.TreeNode().Text("中国科学技术大学").NodeID("ustc")
+                                )
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function getNodeInfo(nodeId) {
+            var nodeData = F.ui.Tree1.getNodeData(nodeId);
+
+            return {
+                id: nodeId,
+                text: nodeData.text
+            };
+        }
+
+    </script>
+
+}

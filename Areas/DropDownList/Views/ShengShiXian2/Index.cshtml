@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "DropDownList/ShengShiXian2";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("中国省市县联动")
+        .Items(
+            F.DropDownList().ID("ddlSheng").Label("省份").ShowRedStar(true).CompareType(CompareType.String).CompareValue("-1").CompareOperator(Operator.NotEqual).CompareMessage("请选择省份！").OnSelectedIndexChanged(Url.Action("ddlSheng_SelectedIndexChanged"), 
+                    new Parameter("sheng", "F.ui.ddlSheng.getValue()")).DataSource(ViewBag.ShengDataSource),
+            F.DropDownList().ID("ddlShi").Label("地区市").ShowRedStar(true).CompareType(CompareType.String).CompareValue("-1").CompareOperator(Operator.NotEqual).CompareMessage("请选择地区市！").OnSelectedIndexChanged(Url.Action("ddlShi_SelectedIndexChanged"), 
+                        new Parameter("sheng", "F.ui.ddlSheng.getValue()"),
+                        new Parameter("shi", "F.ui.ddlShi.getValue()")).Enabled(false)
+                .Items(
+                    F.ListItem().Text("选择地区市").Value("-1")
+                ),
+            F.DropDownList().ID("ddlXian").ShowRedStar(true).CompareType(CompareType.String).CompareValue("-1").CompareOperator(Operator.NotEqual).CompareMessage("请选择县区市！").Label("县区市").Enabled(false)
+                .Items(
+                    F.ListItem().Text("选择县区市").Value("-1")
+                ),
+            F.Button().ID("btnSubmit").Text("获取选中的省市县").ValidateForms("SimpleForm1").ValidateTarget(Target.Top).OnClick(Url.Action("btnSubmit_Click"),
+                    new Parameter("sheng", "F.ui.ddlSheng.getValue()"),
+                    new Parameter("shi", "F.ui.ddlShi.getValue()"),
+                    new Parameter("xian", "F.ui.ddlXian.getValue()"))
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult").ShowLabel(false).CssStyle("font-weight:bold;"))
+    <br>
+
+
+    @{
+        // 省份下拉列表中插入一项
+        var ddlSheng = F.GetControl<DropDownList>("ddlSheng");
+        ddlSheng.Items.Insert(0, new ListItem("选择省份", "-1"));
+        ddlSheng.SelectedValue = "-1";
+    }
+
+
+}
+

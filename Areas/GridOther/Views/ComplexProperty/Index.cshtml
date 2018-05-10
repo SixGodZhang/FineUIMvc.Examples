@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "GridOther/ComplexProperty";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").Title("表格").ShowBorder(true).ShowHeader(true).EnableCheckBoxSelect(true).DataIDField("Id").DataTextField("MyText")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().DataField("MyText").HeaderText("姓名"),
+            F.RenderField().Width(80).DataField("Year").HeaderText("入学年份"),
+            F.RenderCheckField().Width(80).DataField("MyCheckBox").HeaderText("是否在校"),
+            F.RenderField().HeaderText("是否在校").DataField("MyCheckBox").RendererFunction("renderAtSchool"),
+            F.RenderField().ExpandUnusedSpace(true).DataField("Info.UserName").HeaderText("老师（二级属性）")
+        ).DataSource(ViewBag.Grid1DataSource)
+    )
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 文本 - 是否在校
+        function renderAtSchool(value, params) {
+            return value ? '是' : '否';
+        }
+
+    </script>
+}

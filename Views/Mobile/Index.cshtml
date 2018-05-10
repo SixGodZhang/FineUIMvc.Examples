@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "Mobile/Index";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        /*
+        body {
+            overflow: hidden;
+        }
+
+        .iphonebg {
+            position: absolute;
+            background: #111;
+            border-radius: 55px;
+            box-shadow: 0px 0px 0px 2px #aaa;
+            top: -75px;
+            left: 35px;
+            width: 360px;
+            height: 768px;
+            padding: 100px 20px;
+        }
+
+            .iphonebg:before {
+                content: '';
+                width: 60px;
+                height: 10px;
+                border-radius: 10px;
+                position: absolute;
+                left: 50%;
+                margin-left: -30px;
+                background: #333;
+                top: 50px;
+            }
+
+            .iphonebg:after {
+                content: '';
+                position: absolute;
+                width: 60px;
+                height: 60px;
+                left: 50%;
+                margin-left: -30px;
+                bottom: 20px;
+                border-radius: 100%;
+                box-sizing: border-box;
+                border: 5px solid #333;
+            }
+
+            .iphonebg .myiframe {
+                width: 320px;
+                height: 568px;
+                position: absolute;
+                top: 100px;
+                left: 20px;
+                background: white;
+            }
+
+        .qrcode {
+            position: absolute;
+            top: 10px;
+            left: 450px;
+        }
+        */
+        .phonebg {
+            position: absolute;
+            top: 10px;
+            left: 35px;
+            margin-bottom: 10px;
+        }
+
+        .myiframe {
+            border-radius: 0px;
+            width: 320px;
+            height: 568px;
+            background: white;
+            box-shadow: 0 0 10px #888;
+        }
+
+        .qrcode {
+            position: absolute;
+            bottom: 0;
+            left: 400px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @{
+        string file = Request.QueryString["file"];
+
+        // 如果不带参数访问此页面，则转到main.aspx
+        if (String.IsNullOrEmpty(file))
+        {
+            Response.Redirect("~/Mobile/Main");
+            return;
+        }
+
+        if (!file.StartsWith("~/"))
+        {
+            file = "~/" + file;
+        }
+
+        string resolvedUrl = Url.Content(file);
+        if (Request.Browser.IsMobileDevice)
+        {
+            Response.Redirect(resolvedUrl);
+        }
+    }
+
+
+    <div class="phonebg">
+        <iframe class="f-iframe myiframe" id="myiframe" src="@resolvedUrl"></iframe>
+
+
+        <div class="qrcode">
+            <img style="width:200px;height:200px;" src="@Url.Content("~/res/images/fineuimvc_mobile.png?v2")" />
+            <div style="font-size: 12px; text-align: center; padding-top: 5px;">
+                请打开手机，扫描二维码
+                <br />
+                移动示例支持 iOS、Android 系统
+            </div>
+        </div>
+    </div>
+
+}
+

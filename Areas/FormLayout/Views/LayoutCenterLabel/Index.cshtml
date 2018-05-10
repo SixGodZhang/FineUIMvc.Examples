@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "FormLayout/LayoutCenterLabel";
+    var F = Html.F();
+}
+
+
+@section head {
+    <style>
+        .formtitle .f-field-body {
+            text-align: center;
+            font-size: 20px;
+            line-height: 1.2em;
+            margin: 10px 0;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").BodyPadding(10).ID("Form1").LabelWidth(100).ShowHeader(false).Title("表单")
+        .Rows(
+            F.FormRow()
+                .Items(
+                    F.Label().ID("Label2").CssClass("formtitle f-widget-header").Text("这是表单标题")
+                ),
+            F.FormRow().ColumnWidths("40% 60%")
+                .Items(
+                    F.Label().ID("Label1").Label("标签").Text("标签的值"),
+                    F.CheckBox().ID("CheckBox1").Text("复选框").Label("复选框")
+                ),
+            F.FormRow().ColumnWidths("40% 60%")
+                .Items(
+                    F.DropDownList().ID("DropDownList1").Label("下拉列表").EmptyText("请选择一项").Required(true).ShowRedStar(true).AutoSelectFirstItem(false)
+                        .Items(
+                            F.ListItem().Text("可选项 1").Value("0"),
+                            F.ListItem().Text("可选项 2").Value("1")
+                        ),
+                    F.TextBox().ID("TextBox1").ShowRedStar(true).Label("文本框").Required(true).Text("")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Center)
+                .Items(
+                    F.Button().Text("验证此表单并提交").CssClass("mybutton").ValidateForms("Form1").ID("btnSubmit").OnClick(Url.Action("btnSubmit_Click"), "Form1"),
+                    F.Button().ID("btnResetForm1").CssClass("mybutton").Text("重置表单").OnClientClick("F.ui.Form1.reset();")
+                )
+        )
+    )
+
+
+}
+

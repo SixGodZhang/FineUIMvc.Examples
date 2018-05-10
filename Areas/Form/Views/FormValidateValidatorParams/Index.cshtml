@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Form/FormValidateValidatorParams";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("用户注册表单")
+        .Items(
+            F.TextBox().ID("TextBox1").Label("输入框一").Required(true).ShowRedStar(true).Attribute("data-maxlength", "3").ValidatorFunction("inputValidator"),
+            F.TextBox().ID("TextBox2").Label("输入框二").Required(true).ShowRedStar(true).Attribute("data-maxlength", "6").ValidatorFunction("inputValidator"),
+            F.Button().ID("btnRegister").Text("注册").OnClick(Url.Action("btnRegister_Click"), "SimpleForm1").ValidateForms("SimpleForm1")
+        )
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>
+            [输入框一]的最大长度为 3 个字符。
+        </li>
+        <li>
+            [输入框二]的最大长度为 6 个字符。
+        </li>
+    </ul>
+
+
+}
+
+@section script {
+
+    <script>
+        function inputValidator() {
+            var inputCmp = this;
+            var value = $.trim(inputCmp.getValue());
+            var maxLength = parseInt(inputCmp.getAttr('data-maxlength'), 10);
+
+            if (value.length <= maxLength) {
+                return true;
+            } else {
+                return '最多只能输入 ' + maxLength + ' 个字符！';
+            }
+        }
+    </script>
+
+}

@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Block/Form";
+    ViewBag.BodyBGColor = true;
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .myblockform .f-panel-body .f-field {
+            margin: 0;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).Layout(LayoutType.Block).BlockConfigSpace(20).ShowBorder(false).ShowHeader(false)
+        .Items(
+            F.Panel().BlockMD(6).Layout(LayoutType.Block).BlockConfigSpace(20).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().ID("Panel1").CssClass("blockpanel myblockform").BlockMD(12).Layout(LayoutType.Block).BlockConfigSpace(20).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("表单 1")
+                        .Items(
+                            F.Label().ID("Label1").BlockMD(6).Label("标签").Text("标签的值"),
+                            F.CheckBox().ID("CheckBox1").BlockMD(6).Text("复选框").Label("复选框"),
+                            F.DropDownList().ID("DropDownList1").BlockMD(6).Required(true).ShowRedStar(true).AutoSelectFirstItem(false).Label("下拉列表")
+                                .Items(
+                                    F.ListItem().Text("可选项 1").Value("0"),
+                                    F.ListItem().Text("可选项 2").Value("2"),
+                                    F.ListItem().Text("可选项 3").Value("3"),
+                                    F.ListItem().Text("可选项 4").Value("4"),
+                                    F.ListItem().Text("可选项 5").Value("5"),
+                                    F.ListItem().Text("可选项 6").Value("6"),
+                                    F.ListItem().Text("可选项 7").Value("7"),
+                                    F.ListItem().Text("可选项 8").Value("8")
+                                ),
+                            F.TextBox().ID("TextBox1").BlockMD(6).ShowRedStar(true).Label("文本框").Required(true).Text(""),
+                            F.Button().BlockMD(12).Text("验证此表单并提交").ValidateForms("Panel1").ID("btnSubmitForm1").OnClick(Url.Action("btnSubmitForm1_Click"))
+                        ),
+                    F.Panel().ID("Panel2").CssClass("blockpanel myblockform").BlockMD(12).Layout(LayoutType.Block).BlockConfigSpace(20).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("表单 2")
+                        .Items(
+                            F.DatePicker().BlockMD(6).EnableEdit(false).Required(true).Label("日期").EmptyText("请选择日期").ID("DatePicker1").SelectedDate("2014-07-10").ShowRedStar(true),
+                            F.TimePicker().ID("TimePicker1").BlockMD(6).EnableEdit(false).ShowRedStar(true).Label("时间").Increment(30).Required(true).Text("08:30").EmptyText("请选择时间"),
+                            F.CheckBox().BlockMD(12).ID("cbxAtSchool").Label("是否在读"),
+                            F.CheckBoxList().ID("CheckBoxList1").BlockMD(12).Label("复选框列表").ColumnNumber(3)
+                                .Items(
+                                    F.CheckItem().Text("可选项 1").Value("value1"),
+                                    F.CheckItem().Text("可选项 2").Value("value2").Selected(true),
+                                    F.CheckItem().Text("可选项 3").Value("value3").Selected(true),
+                                    F.CheckItem().Text("可选项 4").Value("value4").Selected(true),
+                                    F.CheckItem().Text("可选项 5").Value("value5").Selected(true)
+                                ),
+                            F.RadioButtonList().ID("RadioButtonList2").BlockMD(12).Label("单选框列表").Required(true).ColumnNumber(3)
+                                .Items(
+                                    F.RadioItem().Text("可选项 1").Value("value1"),
+                                    F.RadioItem().Text("可选项 2").Value("value2"),
+                                    F.RadioItem().Text("可选项 3").Value("value3"),
+                                    F.RadioItem().Text("可选项 4").Value("value4"),
+                                    F.RadioItem().Text("可选项 5").Value("value5")
+                                )
+                        )
+                        .Toolbars(
+                            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Center)
+                                .Items(
+                                    F.Button().ID("btnSubmitForm2").Text("验证此表单并提交").OnClick(Url.Action("btnSubmitForm2_Click")).ValidateForms("Panel2")
+                                )
+                        )
+                ),
+            F.Panel().ID("Panel3").CssClass("blockpanel myblockform").BlockMD(6).Layout(LayoutType.Block).BlockConfigSpace(20).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("表单 3")
+                .Items(
+                    F.Label().ID("Label3").BlockMD(6).Label("电话").Text("0551-1234567"),
+                    F.Label().ID("Label16").BlockMD(6).Label("申请人").Text("admin"),
+                    F.Label().ID("Label4").BlockMD(6).Label("编号").Text("200804170006"),
+                    F.TextBox().ID("TextBox2").BlockMD(6).Required(true).ShowRedStar(true).Label("电子邮箱").RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址"),
+                    F.DropDownList().ID("DropDownList3").BlockMD(12).Label("审批人").Required(true).ShowRedStar(true).EmptyText("请选择审批人").AutoSelectFirstItem(false)
+                        .Items(
+                            F.ListItem().Text("老大甲").Value("0"),
+                            F.ListItem().Text("老大乙").Value("1"),
+                            F.ListItem().Text("老大丙").Value("2"),
+                            F.ListItem().Text("老大丁").Value("3"),
+                            F.ListItem().Text("老大午").Value("4"),
+                            F.ListItem().Text("老大己").Value("5")
+                        ),
+                    F.NumberBox().ID("NumberBox1").BlockMD(12).Label("申请数量").NoDecimal(true).NoNegative(true).MaxValue(1000).Required(true).ShowRedStar(true),
+                    F.TextArea().ID("TextArea1").BlockMD(12).Label("描述").ShowRedStar(true).Required(true),
+                    F.Panel().BlockMD(12).ShowBorder(false).ShowHeader(false)
+                        .Items(
+                            F.Button().ID("btnSubmitForm3").Text("验证此表单并提交").OnClick(Url.Action("btnSubmitForm3_Click")).ValidateForms("Panel3")
+                        )
+                )
+        )
+    )
+
+
+
+}

@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Grid/Controllers/RowExpanderGridDataController.cs";
+    ViewBag.Title = "Grid/RowExpanderGrid";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().Width(850).Title("表格（嵌套表格仅用于数据展示，不适合复杂的逻辑处理）").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").IsViewPort(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100),
+            F.RenderField().ColumnID("Desc").RenderAsRowExpander(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Listener("rowexpanderexpand", "onRowExpanderExpand").Listener("rowexpandercollapse", "onRowExpanderCollapse")
+    )
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onRowExpanderExpand(event, rowId) {
+            var grid = this, rowEl = grid.getRowEl(rowId), rowData = grid.getRowData(rowId);
+
+            var tplEl = rowEl.find('.f-grid-rowexpander-details .f-grid-cell');
+            if (!tplEl.text()) {
+
+                var url = '@Url.Content("~/Grid/RowExpanderGridData")';
+                url += '?rowId=' + rowId + '&name=' + encodeURIComponent(rowData.values['Name']); // 这里可传递行中任意数据（rowData）
+
+                F.ui({
+                    type: 'grid',
+                    renderTo: tplEl,
+                    header: false,
+                    columnMenu: false,
+                    columnResizing: false,
+                    cls: 'gridinrowexpander',
+                    fields: ['type', 'yuwen', 'shuxue', 'yingwen', 'wuli', 'huaxue'],
+                    columns: [{
+                        text: '', field: 'type', width: 80
+                    }, {
+                        text: '语文', field: 'yuwen', width: 80
+                    }, {
+                        text: '数学', field: 'shuxue', width: 80
+                    }, {
+                        text: '英文', field: 'yingwen', width: 80
+                    }, {
+                        text: '物理', field: 'wuli', width: 80
+                    }, {
+                        text: '化学', field: 'huaxue', width: 80
+                    }, {
+                        text: '平均成绩', columnId: 'avg', flex: 1,
+                        renderer: function (value, params) {
+                            var total = 0;
+
+                            var kemuList = ['yuwen', 'shuxue', 'yingwen', 'wuli', 'huaxue'];
+                            $.each(kemuList, function (index, item) {
+                                total += params.rowData.values[item];
+                            });
+
+                            return Math.round(total / kemuList.length);
+                        }
+                    }],
+                    dataUrl: url,
+                    listeners: {
+                        dataload: function () {
+                            rowExpandersDoLayout();
+                        }
+                    }
+                });
+            }
+        }
+
+        function onRowExpanderCollapse(event, rowId) {
+            rowExpandersDoLayout();
+        }
+
+        // 重新布局表格和行扩展列中的表格（解决出现纵向滚动条时的布局问题）
+        function rowExpandersDoLayout() {
+
+            // 先布局外部表格
+            F.ui.Grid1.doLayout();
+
+            // 再布局内部表格
+            $('.f-grid-row:not(.f-grid-rowexpander-collapsed) .gridinrowexpander').each(function () {
+                var gridInside = F($(this).attr('id'));
+                gridInside.doLayout();
+            });
+        }
+
+    </script>
+}

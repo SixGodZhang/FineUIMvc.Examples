@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Form/DatePickerTime";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.DatePicker().Required(true).DateFormatString("yyyy-MM-dd HH:mm:ss").Label("开始日期").EmptyText("请选择开始日期").ID("DatePicker1").ShowRedStar(true).ShowTime(true).SelectedDate(DateTime.Now),
+            F.DatePicker().ID("DatePicker2").Required(true).Readonly(false).CompareControl("DatePicker1").DateFormatString("yyyy-MM-dd HH:mm:ss").CompareOperator(Operator.GreaterThan).CompareMessage("结束日期应该大于开始日期").Label("结束日期").ShowRedStar(true).ShowTime(true),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult").ShowLabel(false))
+
+
+}
+

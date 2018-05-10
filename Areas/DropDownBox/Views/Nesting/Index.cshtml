@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/Nesting";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉框嵌套").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下拉表格中选择").DataControlID("Grid1").MatchFieldWidth(false)
+                .PopPanel(
+                    F.Panel().ID("Panel1").Width(550).Height(300).ShowHeader(false).BodyPadding(10).Layout(LayoutType.VBox).Hidden(true)
+                        .Items(
+                            F.Form().ID("Form1").LabelWidth(50).LabelAlign(LabelAlign.Right).ShowBorder(false).ShowHeader(false)
+                                .Rows(
+                                    F.FormRow().ColumnWidths("150px 100%")
+                                        .Items(
+                                            F.DropDownList().Label("性别").EmptyText("请选择").ID("ddlGender").AutoSelectFirstItem(false).AutoShowClearIcon(true).OnSelectedIndexChanged(Url.Action("ddlGender_SelectedIndexChanged"), "Form1,Grid1")
+                                                .Items(
+                                                    F.ListItem().Text("男").Value("1"),
+                                                    F.ListItem().Text("女").Value("0")
+                                                ),
+                                            F.DropDownBox().Label("专业").EmptyText("请选择").ID("ddbMajor").DataControlID("CheckBoxList1").MatchFieldWidth(true).EnableMultiSelect(true).AutoShowClearIcon(true).OnTextChanged(Url.Action("ddbMajor_TextChanged"), "Form1,Grid1")
+                                                .PopPanel(
+                                                    F.SimpleForm().ID("SimpleForm2").BodyPadding(10).AutoScroll(true).ShowBorder(true).ShowHeader(false).Hidden(true)
+                                                        .Items(
+                                                            F.Label().ID("Label1").Text("请选择专业："),
+                                                            F.CheckBoxList().ID("CheckBoxList1").ColumnNumber(2)
+                                                                .Items(
+                                                                    F.CheckItem().Text("化学系").Value("化学系"),
+                                                                    F.CheckItem().Text("数学系").Value("数学系"),
+                                                                    F.CheckItem().Text("物理系").Value("物理系"),
+                                                                    F.CheckItem().Text("自动化系").Value("自动化系"),
+                                                                    F.CheckItem().Text("材料科学与工程系").Value("材料科学与工程系")
+                                                                )
+                                                        )
+                                                )
+                                        )
+                                ),
+                            F.Grid().ID("Grid1").BoxFlex(1).ShowBorder(true).ShowHeader(false).DataIDField("Id").DataTextField("Name").Width(550).Height(300).EnableMultiSelect(false)
+                                .Columns(
+                                    F.RenderField().Width(100).DataField("Name").HeaderText("姓名"),
+                                    F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(100),
+                                    F.RenderField().ExpandUnusedSpace(true).DataField("Major").HeaderText("所学专业")
+                                ).DataSource(ViewBag.SourceDataTable)
+                        )
+                ),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Config/Icons";
+    var F = Html.F();
+}
+
+@using System.Text;
+
+
+@section head {
+
+    <style type="text/css">
+        ul.icons {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            ul.icons li {
+                display: inline-block;
+                margin: 0 10px 10px 0;
+                text-align: center;
+                border-style: solid;
+                border-width: 1px;
+                padding: 10px 5px;
+                width: 150px;
+            }
+
+                ul.icons li img {
+                    width: 16px;
+                    height: 16px;
+                }
+
+                ul.icons li .title {
+                    margin-top: 10px;
+                }
+
+        .mysearch {
+            text-align: left;
+        }
+
+            .mysearch .f-field-textbox {
+                height: 46px;
+                font-size: 24px;
+                line-height: 28px;
+                padding: 8px 12px;
+            }
+    </style>
+}
+
+@section body {
+
+    <div class="mysearch">
+        @(F.TextBox().Width(350).EmptyText("搜索图标").ShowLabel(false).ID("tbxSearch").Listener("change", "onSearchBoxChange"))
+    </div>
+    <br />
+
+    @{
+        StringBuilder sb = new StringBuilder();
+
+        string iconUrl = Url.Content("~/res/images/empty.png");
+
+        sb.Append("<ul class=\"icons\">");
+        foreach (string icon in Enum.GetNames(typeof(Icon)))
+        {
+            Icon iconType = (Icon)Enum.Parse(typeof(Icon), icon);
+
+            if (iconType != Icon.None)
+            {
+                iconUrl = Url.Content(IconHelper.GetIconUrl(iconType));
+            }
+
+            sb.AppendFormat("<li class=\"f-state-default\"><img src=\"{0}\"/><div class=\"title\">{1}</div></li>", iconUrl, icon);
+        }
+        sb.Append("</ul>");
+
+    }
+
+    @Html.Raw(sb.ToString())
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onSearchBoxChange(event) {
+            var keyword = this.getValue().toLowerCase();
+
+            $('ul.icons li').each(function () {
+                var cnode = $(this), title = cnode.find('.title').text().toLowerCase();
+
+                if (title.indexOf(keyword) >= 0) {
+                    cnode.show();
+                } else {
+                    cnode.hide();
+                }
+            });
+        }
+
+
+        F.ready(function () {
+            $('ul.icons li').hover(function () {
+                $(this).addClass('f-state-hover');
+            }, function () {
+                $(this).removeClass('f-state-hover');
+            });
+        });
+
+    </script>
+
+}

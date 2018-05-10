@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "FormTable/TableStyleFormCompare";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelWidth(200).ShowBorder(true).ShowHeader(true).MessageTarget(MessageTarget.Qtip).Title("简单表单")
+        .Items(
+            F.SimpleForm().ID("SimpleForm3").ShowBorder(false).ShowHeader(false).EnableTableStyle(true).MarginBottom(10)
+                .Items(
+                    F.DatePicker().ID("DatePicker1").Label("开始日期").SelectedDate(DateTime.Now).Required(true),
+                    F.DatePicker().ID("DatePicker2").Label("结束日期（大于开始日期）").Required(true).CompareControl("DatePicker1").CompareOperator(Operator.GreaterThan).CompareMessage("结束日期应该大于开始日期！")
+                ),
+            F.SimpleForm().ID("SimpleForm3").ShowBorder(false).ShowHeader(false).EnableTableStyle(true).MarginBottom(10)
+                .Items(
+                    F.TextBox().ID("TextBox1").Required(true).Label("文本框 1").Text("FineUIMvc"),
+                    F.TextBox().ID("TextBox2").Required(true).Label("文本框 2（等于文本框 1）").CompareControl("TextBox1").CompareOperator(Operator.Equal).CompareMessage("文本框 2 应该等于文本框 1！")
+                ),
+            F.SimpleForm().ID("SimpleForm3").ShowBorder(false).ShowHeader(false).EnableTableStyle(true).MarginBottom(10)
+                .Items(
+                    F.NumberBox().ID("NumberBox1").Required(true).Label("数字框 1").Text("30"),
+                    F.NumberBox().ID("NumberBox2").Required(true).Label("数字框 2（大于等于数字框 1）").CompareControl("NumberBox1").CompareOperator(Operator.GreaterThanEqual).CompareMessage("数字框 2 应该大于等于数字框 1!")
+                ),
+            F.SimpleForm().ID("SimpleForm3").ShowBorder(false).ShowHeader(false).EnableTableStyle(true)
+                .Items(
+                    F.Label().ID("Label1").Label("标签 1").Text("88"),
+                    F.NumberBox().ID("NumberBox3").Required(true).Label("文本框 3（大于等于标签 1）").CompareControl("Label1").CompareOperator(Operator.GreaterThanEqual).CompareType(CompareType.Int).CompareMessage("文本框 3 应该大于等于标签 1！")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").CssClass("marginr").Text("提交表单"),
+                    F.Button().ID("btnReset").Text("重置表单").OnClientClick("F.ui.SimpleForm1.reset();")
+                )
+        )
+    )
+
+
+}
+

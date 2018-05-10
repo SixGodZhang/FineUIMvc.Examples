@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Message/AlertCustomIcon";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().Text("点击弹出对话框（Icon）").ID("btnHello").OnClick(Url.Action("btnHello_Click")))
+    <br>
+    <br>
+
+    @(F.Button().Text("在顶层窗口弹出对话框（IconUrl）").ID("btnHello2").OnClick(Url.Action("btnHello2_Click")))
+    <br>
+    <br>
+
+    @(F.Button().Text("在顶层窗口弹出对话框（IconFont）").ID("btnHello3").OnClick(Url.Action("btnHello3_Click")))
+
+
+}
+

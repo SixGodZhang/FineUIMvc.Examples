@@ -1,0 +1,123 @@
+﻿@{
+    var F = Html.F();
+
+    var _bodyClass = "";
+    if (ViewBag.BodyBGColor != null)
+    {
+        _bodyClass = "f-body-bgcolor";
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Html.Raw(ViewBag.Title)</title>
+    @if (ViewBag.SourceFiles != null)
+    {
+        <meta name="sourcefiles" content="@ViewBag.SourceFiles" />
+    }
+
+    @F.RenderCss()
+    <link href="~/res/css/common.css" rel="stylesheet" type="text/css" />
+    @RenderSection("head", false)
+
+</head>
+<body class="@_bodyClass">
+
+    @Html.AntiForgeryToken()
+
+    @{
+        var pm = F.PageManager;
+
+        // 主题
+        HttpCookie themeCookie = Request.Cookies["Theme"];
+        if (themeCookie != null)
+        {
+            string themeValue = themeCookie.Value;
+
+            Theme theme;
+            if (Enum.TryParse<Theme>(themeValue, true, out theme))
+            {
+                // 先清空CustomTheme，再设置Theme
+                pm.CustomTheme(String.Empty);
+                pm.Theme(theme);
+            }
+            else
+            {
+                pm.CustomTheme(themeValue);
+            }
+        }
+
+        // 语言
+        HttpCookie langCookie = Request.Cookies["Language"];
+        if (langCookie != null)
+        {
+            string langValue = langCookie.Value;
+
+            Language lang;
+            if (Enum.TryParse<Language>(langValue, true, out lang))
+            {
+                pm.Language(lang);
+            }
+            else
+            {
+                pm.CustomLanguage(langValue);
+            }
+        }
+
+        // 加载动画
+        HttpCookie loadingCookie = Request.Cookies["Loading"];
+        if (loadingCookie != null)
+        {
+            int loadingNumber = Convert.ToInt32(loadingCookie.Value);
+            pm.LoadingImageNumber(loadingNumber);
+        }
+
+
+        // 基础版不支持 DisplayMode，MobileAdaption，EnableAnimation
+        if (Constants.IS_BASE)
+        {
+            pm.MobileAdaption(false);
+            pm.DisplayMode(FineUIMvc.DisplayMode.Normal);
+            pm.EnableAnimation(false);
+        }
+        else
+        {
+            // 显示模式
+            HttpCookie modeCookie = Request.Cookies["MenuMode"];
+            if (modeCookie != null)
+            {
+                string modeValue = modeCookie.Value;
+                try
+                {
+                    pm.DisplayMode((DisplayMode)Enum.Parse(typeof(DisplayMode), modeValue, true));
+                }
+                catch (Exception)
+                {
+                    pm.DisplayMode(FineUIMvc.DisplayMode.Normal);
+                }
+            }
+
+
+            // 是否移动页面
+            var area = ViewContext.RouteData.DataTokens["area"];
+            var areaName = (area == null ? "" : area.ToString().ToLower());
+            var controllerName = ViewContext.RouteData.Values["controller"].ToString().ToLower();
+            if (controllerName == "mobile" || areaName.StartsWith("mobile"))
+            {
+                // 强制设为大字体、移动设备自适应
+                pm.DisplayMode(FineUIMvc.DisplayMode.Large);
+                pm.MobileAdaption(true);
+            }
+        }
+    }
+    @F.PageManager
+
+    @RenderSection("body", true)
+
+    @F.RenderScript()
+    @RenderSection("script", false)
+
+
+</body>
+</html>

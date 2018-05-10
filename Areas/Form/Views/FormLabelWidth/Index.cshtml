@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Form/FormLabelWidth";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").BodyPadding(10).ID("Form1").LabelWidth(120).LabelAlign(LabelAlign.Right).Title("表单（LabelWidth=120 LabelAlign=Right）")
+        .Rows(
+            F.FormRow().ColumnWidths("50% 50%")
+                .Items(
+                    F.Label().ID("Label1").Label("标签").LabelWidth(150).LabelAlign(LabelAlign.Left).Text("标签的值"),
+                    F.CheckBox().ID("CheckBox1").Text("复选框").Label("复选框")
+                ),
+            F.FormRow().ColumnWidths("50% 50%")
+                .Items(
+                    F.DropDownList().ID("DropDownList1").Required(true).LabelWidth(150).LabelAlign(LabelAlign.Left).ShowRedStar(true).AutoSelectFirstItem(false).Label("下拉列表（长标签）")
+                        .Items(
+                            F.ListItem().Text("可选项 1").Value("0"),
+                            F.ListItem().Text("可选项 2").Value("1")
+                        ),
+                    F.TextBox().ID("TextBox1").ShowRedStar(true).Label("文本框").Required(true).Text("")
+                ),
+            F.FormRow()
+                .Items(
+                    F.Panel().ID("Panel1").CssStyle("text-align: right;").ShowBorder(false).ShowHeader(false)
+                        .Items(
+                            F.Button().Text("验证此表单并提交").ValidateForms("Form1").ID("btnSubmitForm1").OnClick(Url.Action("btnSubmitForm1_Click"), "Form1")
+                        )
+                )
+        )
+    )
+    <br>
+    注：表单字段定义的 LabelWidth 和 LabelAlign 属性会覆盖 Form 的同名属性
+
+
+}
+

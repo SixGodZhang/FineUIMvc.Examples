@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonClick";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Button().ID("btnServerClick").Text("服务器端事件").OnClick(Url.Action("btnServerClick_Click")))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnClientClick").Text("客户端事件").OnClientClick("alert('这是客户端事件');"))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnClientClick2").Text("客户端事件（通过ViewBag传递）").OnClientClick(ViewBag.btnClientClick2Script))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnChangeClientClick2").Text("改变上个按钮的客户端事件").OnClick(Url.Action("btnChangeClientClick2_Click")))
+
+
+}

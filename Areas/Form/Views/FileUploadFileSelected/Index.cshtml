@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Form/FileUploadFileSelected";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .photo {
+            height: 150px;
+            line-height: 150px;
+            overflow: hidden;
+        }
+
+            .photo img {
+                height: 150px;
+                vertical-align: middle;
+            }
+    </style>
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("表单").ShowHeader(true)
+        .Items(
+            F.Image().ID("imgPhoto").CssClass("photo").ImageUrl(Url.Content("~/res/images/blank.png")).ShowEmptyLabel(true),
+            F.FileUpload().ID("filePhoto").ShowRedStar(false).ShowEmptyLabel(true).ButtonText("上传个人头像").ButtonOnly(true).Required(false).ButtonIcon(Icon.ImageAdd).OnFileSelected(Url.Action("filePhoto_FileSelected"), "filePhoto"),
+            F.TextBox().Label("用户名").ID("tbxUserName").Required(true).ShowRedStar(true),
+            F.TextBox().Label("邮箱").ID("tbxEmail").Required(true).RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址").ShowRedStar(true),
+            F.Button().ID("btnSubmit").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1", new Parameter("imgPhotoUrl", "F.ui.imgPhoto.el.find('img').attr('src')")).ValidateForms("SimpleForm1").Text("提交表单")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+

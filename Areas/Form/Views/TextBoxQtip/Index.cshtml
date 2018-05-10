@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Form/TextBoxQtip";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("登录表单").ShowHeader(true).LabelAlign(LabelAlign.Right)
+        .Items(
+            F.TextBox().Label("用户名").EmptyText("请输入用户名").ID("tbxUserName").Required(true).ShowRedStar(true).Attribute("data-qtitle", "用户名").Attribute("data-qtip", "通过Attributes属性设置的提示信息，鼠标移动到标签和输入框都会提示"),
+            F.TextBox().ID("tbxPassword").Label("密码").EmptyText("请输入密码").TextMode(TextMode.Password).Required(true).ShowRedStar(true),
+            F.Button().ID("btnSubmit").CssClass("marginr").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1").ValidateForms("SimpleForm1").Text("登录"),
+            F.Button().ID("btnReset").Text("重置").Listener("click", "F.ui.SimpleForm1.reset();")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult").ShowLabel(false))
+    <br>
+    <br>
+    <ul>
+        <li>【用户名】的提示信息，在鼠标移动到标签和输入框时都会显示</li>
+        <li>【密码】的提示信息，仅在鼠标移动到标签时才会显示</li>
+    </ul>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        F.ready(function () {
+
+            F.ui.tbxPassword.el.find('.f-field-fieldlabel').attr({
+                'data-qtitle': '密码',
+                'data-qtip': '通过 JavaScript 设置的提示信息，鼠标移动到标签时才会提示'
+            });
+
+        });
+
+    </script>
+}

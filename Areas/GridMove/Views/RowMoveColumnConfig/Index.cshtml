@@ -1,0 +1,254 @@
+﻿@{
+    ViewBag.Title = "GridMove/RowMoveColumnConfig";
+    var F = Html.F();
+}
+
+
+@using Newtonsoft.Json.Linq;
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格").DataIDField("Id").DataTextField("Name").EnableHeaderMenu(false)
+        .Columns(
+            F.RowNumberField().ColumnID("RowNumber"),
+            F.RenderField().HeaderText("姓名").ColumnID("Name").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").ColumnID("AtSchool").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").ColumnID("Major").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("注册日期").ColumnID("LogTime").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .Toolbars(
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Top)
+                .Items(
+                    F.Button().ID("btnColumnConfig").Text("列配置").IconFont(IconFont._Gear).Listener("click", "onColumnConfigClick")
+                )
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+
+    @(F.Window().ID("Window1").Title("列配置").IsModal(true).EnableClose(true).IconFont(IconFont._Group).Width(500).Height(350).Layout(LayoutType.HBox).BodyPadding(10).Hidden(true)
+        .Items(
+            F.Grid().ID("Grid2").BoxFlex(1).ShowBorder(true).ShowHeader(false).DataIDField("ColumnID").EnableHeaderMenu(false).MarginRight(5)
+                .Columns(
+                    F.RowNumberField().ColumnID("RowNumber"),
+                    F.RenderField().ColumnID("ColumnID").HeaderText("ID"),
+                    F.RenderField().ColumnID("HeaderText").HeaderText("标题").BoxFlex(1),
+                    F.RenderCheckField().ColumnID("IsShow").HeaderText("显示").RenderAsStaticField(true)
+                ).Listener("rowdblclick", "onGridConfigDblClick"),
+            F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).Width(120).Layout(LayoutType.VBox).BoxConfigPosition(BoxLayoutPosition.Start)
+                .Items(
+                    F.Button().ID("btnMoveUp").Text("上移").MarginBottom(5).Listener("click", "onMoveUpClick"),
+                    F.Button().ID("btnMoveDown").Text("下移").MarginBottom(20).Listener("click", "onMoveDownClick"),
+                    F.Button().ID("btnShowHide").Text("显示隐藏").MarginBottom(5).Listener("click", "onShowHideClick"),
+                    F.Button().ID("btnChangeHeaderText").Text("修改标题").MarginBottom(20).Listener("click", "onChangeHeaderTextClick"),
+                    F.Button().ID("btnResetColumnConfig").Text("还原默认值").MarginBottom(20).Listener("click", "onResetColumnConfigClick"),
+                    F.Button().ID("btnCloseWindow").Text("关闭").MarginBottom(5).Listener("click", "onCloseWindowClick")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面（保持列顺序）").Listener("click", "onRefreshClick"))
+
+    @{
+        JArray savedColumns = ViewBag.Grid1Columns as JArray;
+        if (savedColumns != null && savedColumns.Count > 0)
+        {
+            var grid1 = F.GetControl<Grid>("Grid1");
+
+            // 将数据库保存的列顺序应用到表格列上
+            int order = 0;
+            foreach (JObject column in savedColumns)
+            {
+                GridColumn foundColumn = grid1.FindColumn(column.Value<string>("columnId"));
+                if (foundColumn != null)
+                {
+                    foundColumn.ColumnOrder = order;
+
+                    // 约定：hidden 属性一定存在
+                    bool hidden = column.Value<bool>("hidden");
+                    foundColumn.Hidden = hidden;
+
+                    // 约定：text 属性一定存在
+                    string text = column.Value<string>("text");
+                    foundColumn.HeaderText = text;
+                }
+                order++;
+            }
+
+        }
+    }
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        @Html.Raw(ViewBag.StartupScript)
+
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+        // 更新主表格的列配置
+        function updateMainGridColumnConfig() {
+            var grid = F.ui.Grid1;
+            var gridConfig = F.ui.Grid2;
+
+            // 从配置表格读取配置数据
+            var configedColumns = $.map(gridConfig.data, function (item, index) {
+                return {
+                    columnId: item.id,
+                    hidden: !item.values['IsShow'],
+                    text: item.values['HeaderText']
+                };
+            });
+
+
+            // 更新主表格
+            var newcolumns = [];
+            $.each(configedColumns, function (index, item) {
+                var originalColumn = grid.getColumn(item.columnId);
+                originalColumn.hidden = item.hidden;
+                originalColumn.text = item.text;
+
+                newcolumns.push(originalColumn);
+            });
+            grid.columns = newcolumns;
+            grid.loadData();
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("GridConfig_Change")', {
+                configedColumns: F.toJSON(configedColumns)
+            });
+        }
+
+
+        // 点击[列配置]按钮
+        function onColumnConfigClick(event) {
+            var grid = F.ui.Grid1;
+            var gridConfig = F.ui.Grid2;
+
+            // 初始化列配置表格
+            var records = $.map(grid.columns, function (item, index) {
+                return {
+                    id: item.columnId,
+                    values: {
+                        'ColumnID': item.columnId,
+                        'HeaderText': item.text,
+                        'IsShow': !item.hidden
+                    }
+                };
+            });
+            gridConfig.loadData(records);
+
+            gridConfig.selectRow(0);
+
+            // 显示列配置窗体
+            F.ui.Window1.show();
+        }
+
+
+        // 切换列配置[显示]列
+        function toggleGridConfigIsShow(rowId) {
+            var gridConfig = F.ui.Grid2;
+            var grid = F.ui.Grid1;
+
+            var rowData = gridConfig.getRowData(rowId);
+            var rowId = rowData.id;
+
+            var toggledShow = !rowData.values['IsShow'];
+            gridConfig.updateCellValue(rowData, 'IsShow', toggledShow, true);
+
+
+            updateMainGridColumnConfig();
+        }
+
+        // 列配置表格 - 行双击事件
+        function onGridConfigDblClick(event, rowId) {
+            toggleGridConfigIsShow(rowId);
+        }
+        // 列配置表格 - 点击[显示隐藏]按钮
+        function onShowHideClick(event) {
+            var rowId = F.ui.Grid2.getSelectedRow();
+            if (rowId) {
+                toggleGridConfigIsShow(rowId);
+            }
+        }
+
+        // 列配置表格 - 点击[上移]按钮
+        function onMoveUpClick(event) {
+            var gridConfig = F.ui.Grid2;
+            var rowId = gridConfig.getSelectedRow();
+            if (rowId) {
+                gridConfig.moveRowUp(rowId);
+            }
+
+            updateMainGridColumnConfig();
+        }
+
+        // 列配置表格 - 点击[下移]按钮
+        function onMoveDownClick(event) {
+            var gridConfig = F.ui.Grid2;
+            var rowId = gridConfig.getSelectedRow();
+            if (rowId) {
+                gridConfig.moveRowDown(rowId);
+            }
+
+            updateMainGridColumnConfig();
+        }
+
+        // 列配置表格 - 点击[修改标题]按钮
+        function onChangeHeaderTextClick(event) {
+            var gridConfig = F.ui.Grid2;
+
+            var rowId = gridConfig.getSelectedRow();
+            if (rowId) {
+                var rowData = gridConfig.getRowData(rowId);
+                F.prompt({
+                    message: '请输入新的列标题',
+                    defaultValue: rowData.values['HeaderText'],
+                    ok: function (userInputValue) {
+                        gridConfig.updateCellValue(rowData, 'HeaderText', userInputValue, true);
+
+                        updateMainGridColumnConfig();
+                    }
+                });
+            }
+
+        }
+
+        // 列配置表格 - 点击[还原默认值]按钮
+        function onResetColumnConfigClick(event) {
+            var gridConfig = F.ui.Grid2;
+            var defaultValue = window.GRID_COLUMNCONFIG_DEFAULT;
+
+            // 初始化列配置表格
+            var records = $.map(defaultValue, function (item, index) {
+                return {
+                    id: item.columnId,
+                    values: {
+                        'ColumnID': item.columnId,
+                        'HeaderText': item.text,
+                        'IsShow': !item.hidden
+                    }
+                };
+            });
+            gridConfig.loadData(records);
+
+            updateMainGridColumnConfig();
+        }
+
+        function onCloseWindowClick(event) {
+            F.ui.Window1.hide();
+        }
+
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Grid/CheckFieldPostBack";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").ColumnID("AtSchool2").DataField("AtSchool").RenderAsStaticField(false).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").MarginRight(5).Listener("click", "notifySelectedRows('Grid1');"))
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        var checkboxSelector = '.f-grid-cell-AtSchool2 .f-grid-checkbox';
+
+        F.ready(function () {
+
+            var grid1 = F.ui.Grid1;
+
+            grid1.el.on('click', checkboxSelector, function (event) {
+                var cnode = $(this);
+                var rowData = grid1.getRowData(cnode.closest('.f-grid-row'));
+                var isChecked = cnode.hasClass('f-checked');
+
+                // 触发后台事件
+                F.doPostBack('@Url.Action("Grid1_CheckFieldChanged")', {
+                    rowId: rowData.id,
+                    rowText: rowData.text,
+                    isChecked: isChecked
+                });
+
+            });
+
+        });
+
+    </script>
+}

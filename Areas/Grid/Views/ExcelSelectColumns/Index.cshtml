@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Grid/Views/ExcelSelectColumns/SelectColumnsIFrame.cshtml";
+    ViewBag.Title = "Grid/ExcelSelectColumns";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnSelectColumns").Text("选择需要导出的列").Listener("click", "F.ui.Window1.show();"))
+
+    @(F.Window().ID("Window1").Title("选择需要导出的列").EnableIFrame(true).IFrameUrl(Url.Action("SelectColumnsIFrame")).EnableMaximize(true).Target(Target.Top).EnableResize(true).IsModal(true).Width(450).Height(250).Hidden(true))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function exportToExcel(columns) {
+            var actionUrl = '@Url.Action("ExportToExcel")';
+            window.location.href = F.formatString('{0}?columns={1}', actionUrl, F.urlEncode(F.toJSON(columns)));
+        }
+
+    </script>
+}

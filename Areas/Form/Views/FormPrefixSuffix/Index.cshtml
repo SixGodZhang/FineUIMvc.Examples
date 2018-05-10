@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Form/FormPrefixSuffix";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Right).Title("简单表单")
+        .Items(
+            F.NumberBox().Label("人民币金额").ID("NumberBox2").NoDecimal(true).NoNegative(true).Required(true).EnableSuffix(true).Suffix("万元"),
+            F.NumberBox().Label("美元金额").ID("NumberBox6").NoDecimal(true).NoNegative(true).Required(true).EnablePrefix(true).Prefix("$"),
+            F.TextBox().Label("文本输入框").ID("TextBox1").Required(true).EnablePrefix(true).Prefix("（前缀）").EnableSuffix(true).Suffix("（后缀）"),
+            F.DropDownList().Label("下拉列表").ID("DropDownList1")
+                .Items(
+                    F.ListItem().Text("可选项1").Value("Value1"),
+                    F.ListItem().Text("可选项2").Value("Value2"),
+                    F.ListItem().Text("可选项3").Value("Value3")
+                ).EnablePrefix(true).Prefix("（前缀）").EnableSuffix(true).Suffix("（后缀）").AutoSelectFirstItem(false).Required(true),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+        )
+    )
+
+
+
+}
+

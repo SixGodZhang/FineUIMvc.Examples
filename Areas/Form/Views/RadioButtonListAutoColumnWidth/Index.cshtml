@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Form/RadioButtonListAutoColumnWidth";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelWidth(160).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("简单表单")
+        .Items(
+            F.RadioButtonList().ID("RadioButtonList1").Label("列表一").AutoColumnWidth(true)
+                .Items(
+                    F.RadioItem().Text("可选项 1").Value("value1"),
+                    F.RadioItem().Text("可选项 2").Value("value2"),
+                    F.RadioItem().Text("可选项 3").Value("value3")
+                ),
+            F.Button().ID("btnServerSetSelectedValue").CssClass("marginr").Text("选中上面列表中的第一项").OnClick(Url.Action("btnServerSetSelectedValue_Click")),
+            F.Button().ID("btnServerGetSelectedValue").CssClass("marginr").Text("获取上面列表的选中项").OnClick(Url.Action("btnServerGetSelectedValue_Click"), new Parameter("selected", "getRadioButtonList1Selected()")),
+            F.Button().ID("btnClientGetSelectedValue").Text("获取上面列表的选中项（JavaScript 脚本）").OnClientClick("alertSelectedValue();"),
+            F.Label(),
+            F.RadioButtonList().ID("RadioButtonList2").Label("列表二（三列）").AutoColumnWidth(true).ColumnNumber(3).DataTextField("Name").DataValueField("Id").DataSource(ViewBag.RadioButtonList2DataSource).SelectedValue(ViewBag.RadioButtonList2SelectedValue),
+            F.Label(),
+            F.RadioButtonList().ID("RadioButtonList3").OnSelectedIndexChanged(Url.Action("RadioButtonList3_SelectedIndexChanged"), new Parameter("selected", "this.getValue()")).Label("列表三（选中改变事件）").ColumnNumber(3).ShowRedStar(true).Required(true).AutoColumnWidth(true)
+                .Items(
+                    F.RadioItem().Text("可选项 1（很长的可选项）").Value("value1"),
+                    F.RadioItem().Text("可选项 2").Value("value2"),
+                    F.RadioItem().Text("可选项 3").Value("value3"),
+                    F.RadioItem().Text("可选项 4").Value("value4"),
+                    F.RadioItem().Text("可选项 5").Value("value5"),
+                    F.RadioItem().Text("可选项 6").Value("value6"),
+                    F.RadioItem().Text("可选项 7").Value("value7"),
+                    F.RadioItem().Text("可选项 8").Value("value8")
+                ),
+            F.Label(),
+            F.RadioButtonList().ID("rblVertical").Label("列表四（竖排）").ColumnNumber(3).ColumnVertical(true).ShowRedStar(true).Required(true).AutoColumnWidth(true)
+                .Items(
+                    F.RadioItem().Text("可选项 1").Value("value1"),
+                    F.RadioItem().Text("可选项 2").Value("value2"),
+                    F.RadioItem().Text("可选项 3").Value("value3"),
+                    F.RadioItem().Text("可选项 4").Value("value4"),
+                    F.RadioItem().Text("可选项 5").Value("value5"),
+                    F.RadioItem().Text("可选项 6").Value("value6"),
+                    F.RadioItem().Text("可选项 7").Value("value7"),
+                    F.RadioItem().Text("可选项 8").Value("value8")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+                )
+        )
+    )
+
+
+}
+
+
+@section script {
+    <script type="text/javascript">
+
+        function alertSelectedValue() {
+            var list1 = F.ui.RadioButtonList1;
+
+            var checkedValue = list1.getValue();
+            if (checkedValue) {
+                top.F.alert("列表一选中项的值：" + checkedValue);
+            } else {
+                top.F.alert("列表一没有选中项！");
+            }
+        }
+
+
+        function getRadioButtonList1Selected() {
+            var list = F.ui.RadioButtonList1;
+
+            var result = {};
+            $.each(list.items, function (index, item) {
+                if (item.isChecked()) {
+                    result = {
+                        'label': item.getInputLabel(),
+                        'value': item.getInputValue()
+                    };
+
+                    return false; // break
+                }
+            });
+
+            return F.toJSON(result);
+        }
+
+    </script>
+}

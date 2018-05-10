@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "FormTable/TableStyleLayoutInfo";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .userphoto {
+            text-align: center;
+        }
+
+        .uploadbutton .f-field-body-cell-rightpart {
+            padding: 5px 20px !important;
+        }
+
+        .uploadbutton .f-btn {
+            width: 100%;
+        }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Title("信息录入").IsModal(false).EnableClose(false).EnableResize(true).Width(850).BodyPadding(10).AutoScroll(true)
+        .Items(
+            F.Form().ID("Form1").LabelAlign(LabelAlign.Right).RedStarPosition(RedStarPosition.BeforeText).LabelWidth(90).ShowBorder(false).ShowHeader(false).EnableTableStyle(true).MessageTarget(MessageTarget.Qtip)
+                .Items(
+                    F.Panel().ID("Panel2").ShowBorder(false).ShowHeader(false).Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.StretchMax)
+                        .Items(
+                            F.Panel().ID("Panel1").Title("面板1").BoxFlex(5).ShowBorder(false).ShowHeader(false)
+                                .Items(
+                                    F.TextBox().ID("tbxName").Label("会员姓名").ShowRedStar(true).Required(true),
+                                    F.DropDownList().ID("ddlSex").Label("性别").ShowRedStar(true).Required(true).CompareMessage("性别不能为空！")
+                                        .Items(
+                                            F.ListItem().Text("男").Value("男").Selected(true),
+                                            F.ListItem().Text("女").Value("女")
+                                        ),
+                                    F.DatePicker().ID("dpBirthDay").Label("出生日期").EmptyText("请选择日期").EnableEdit(false).ShowRedStar(true).Required(true),
+                                    F.TextBox().ID("tbxAge").Label("年龄").Required(true).ShowRedStar(true).CompareMessage("年龄不能为空！"),
+                                    F.DropDownList().ID("ddlMarriage").Label("婚姻状况").ShowRedStar(true).Required(true)
+                                        .Items(
+                                            F.ListItem().Text("未婚").Value("0").Selected(true),
+                                            F.ListItem().Text("已婚").Value("1"),
+                                            F.ListItem().Text("离异").Value("2"),
+                                            F.ListItem().Text("丧偶").Value("3"),
+                                            F.ListItem().Text("未说明").Value("4")
+                                        ),
+                                    F.DropDownList().ID("ddlNation").Label("民族").ShowRedStar(true).Required(true)
+                                        .Items(
+                                            F.ListItem().Text("汉族").Value("汉族").Selected(true),
+                                            F.ListItem().Text("回族").Value("回族"),
+                                            F.ListItem().Text("壮族").Value("壮族"),
+                                            F.ListItem().Text("回族").Value("回族"),
+                                            F.ListItem().Text("苗族").Value("苗族"),
+                                            F.ListItem().Text("维吾尔族").Value("维吾尔族"),
+                                            F.ListItem().Text("土家族").Value("土家族"),
+                                            F.ListItem().Text("彝族").Value("彝族"),
+                                            F.ListItem().Text("蒙古族").Value("蒙古族"),
+                                            F.ListItem().Text("藏族").Value("藏族"),
+                                            F.ListItem().Text("布依族").Value("布依族"),
+                                            F.ListItem().Text("侗族").Value("侗族"),
+                                            F.ListItem().Text("瑶族").Value("瑶族"),
+                                            F.ListItem().Text("朝鲜族").Value("朝鲜族"),
+                                            F.ListItem().Text("白族").Value("白族"),
+                                            F.ListItem().Text("其他").Value("其他")
+                                        )
+                                ),
+                            F.Panel().ID("Panel4").BoxFlex(3).ShowBorder(false).ShowHeader(false).Layout(LayoutType.VBox)
+                                .Items(
+                                    F.TextBox().ID("tbxArchivesNum").Label("档案号").EmptyText("不填自动生成"),
+                                    F.DropDownList().ID("ddlReasonsFile").Label("建档原因").ShowRedStar(true).Required(true)
+                                        .Items(
+                                            F.ListItem().Text("").Value("0").Selected(true),
+                                            F.ListItem().Text("糖尿病").Value("1").Selected(true),
+                                            F.ListItem().Text("糖尿病高危个体").Value("2"),
+                                            F.ListItem().Text("动脉硬化临床前期").Value("3"),
+                                            F.ListItem().Text("肥胖").Value("4"),
+                                            F.ListItem().Text("高血压").Value("5"),
+                                            F.ListItem().Text("代谢综合征").Value("6"),
+                                            F.ListItem().Text("冠心病").Value("7"),
+                                            F.ListItem().Text("血脂异常").Value("8"),
+                                            F.ListItem().Text("亚健康").Value("9"),
+                                            F.ListItem().Text("脂肪肝").Value("10"),
+                                            F.ListItem().Text("痛风").Value("11")
+                                        ),
+                                    F.TextArea().ID("tbxConfName").Label("并发症").BoxFlex(1)
+                                ),
+                            F.Panel().ID("Panel5").CssClass("nolabelpanel").Title("面板1").BoxFlex(2).ShowBorder(false).ShowHeader(false).Layout(LayoutType.VBox)
+                                .Items(
+                                    F.Image().ID("Image1").ImageUrl(Url.Content("~/res/images/blank_180.png")).ImageHeight(120).BoxFlex(1).CssClass("userphoto"),
+                                    F.FileUpload().ID("FileUpload1").ButtonText("上传照片").ButtonOnly(true).CssClass("uploadbutton")
+                                )
+                        ),
+                    F.Form().ID("Form7").ShowBorder(false).ShowHeader(false).MessageTarget(MessageTarget.Qtip)
+                        .Rows(
+                            F.FormRow()
+                                .Items(
+                                    F.TextBox().ID("tbxPassWord").Label("密码").EmptyText("默认为手机号码后6位"),
+                                    F.DropDownList().ID("ddlLevel").Label("会员级别").CompareMessage("类型不能为空！")
+                                        .Items(
+                                            F.ListItem().Text("普通会员").Value("0").Selected(true),
+                                            F.ListItem().Text("银牌会员").Value("1"),
+                                            F.ListItem().Text("金牌会员").Value("2"),
+                                            F.ListItem().Text("钻石会员").Value("3")
+                                        )
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.TextBox().ID("ManageShow").Label("健康顾问"),
+                                    F.DropDownList().ID("ddlCardType").Label("卡类型")
+                                        .Items(
+                                            F.ListItem().Text("主卡").Value("0").Selected(true),
+                                            F.ListItem().Text("副卡").Value("1")
+                                        )
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.TextBox().ID("tbxOwnCardID").Label("会员卡号"),
+                                    F.TextBox().ID("tbxHostCardID").Label("主卡号")
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.TextBox().ID("tbxRecommender").Label("推荐人卡号"),
+                                    F.TextBox().ID("tbxRecomName").Label("推荐人姓名")
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.NumberBox().ID("nbxShoukaSum").Label("售卡金额").NoDecimal(true).MinValue(0),
+                                    F.DropDownList().ID("ddlPayType").Label("支付方式")
+                                        .Items(
+                                            F.ListItem().Text("现金支付").Value("0").Selected(true),
+                                            F.ListItem().Text("银行卡支付").Value("1"),
+                                            F.ListItem().Text("支票支付").Value("2"),
+                                            F.ListItem().Text("信用卡支付").Value("3")
+                                        )
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.DropDownList().ID("ddlCertificates").Label("证件类别")
+                                        .Items(
+                                            F.ListItem().Text("身份证").Value("0").Selected(true),
+                                            F.ListItem().Text("军官证").Value("1"),
+                                            F.ListItem().Text("护照").Value("2"),
+                                            F.ListItem().Text("驾驶证").Value("3")
+                                        ),
+                                    F.TextBox().ID("tbxIDCardEdit").Label("证件号")
+                                ),
+                            F.FormRow().ColumnWidths("50% 50%")
+                                .Items(
+                                    F.TextBox().ID("tbxCustomerEmail").Label("邮箱").RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址"),
+                                    F.TextBox().ID("tbxCustomerTel").Label("手机号").Regex(@"^[1]+[358]+\d{9}$")
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.DropDownList().ID("ddlEducation").Label("文化程度")
+                                        .Items(
+                                            F.ListItem().Text("研究生").Value("研究生").Selected(true),
+                                            F.ListItem().Text("大学本科").Value("大学本科"),
+                                            F.ListItem().Text("大学专科").Value("大学专科 "),
+                                            F.ListItem().Text("中等职业").Value("中等职业"),
+                                            F.ListItem().Text("普通高级中学").Value("普通高级中学"),
+                                            F.ListItem().Text("初级中学").Value("初级中学"),
+                                            F.ListItem().Text("小学").Value("小学"),
+                                            F.ListItem().Text("小学以下").Value("小学以下")
+                                        ),
+                                    F.DropDownList().ID("ddlProfession").Label("职业")
+                                        .Items(
+                                            F.ListItem().Text("国家机关、党群组织、企业、事业单位负责人").Value("国家机关、党群组织、企业、事业单位负责人").Selected(true),
+                                            F.ListItem().Text("专业技术人员").Value("专业技术人员"),
+                                            F.ListItem().Text("办事人员和有关人员 ").Value("办事人员和有关人员 "),
+                                            F.ListItem().Text("商业、服务业人员").Value("商业、服务业人员"),
+                                            F.ListItem().Text("农、林、牧、渔、水利业生产人员").Value("农、林、牧、渔、水利业生产人员"),
+                                            F.ListItem().Text("生产、运输设备操作人员及有关人员").Value("生产、运输设备操作人员及有关人员"),
+                                            F.ListItem().Text("军人").Value("军人"),
+                                            F.ListItem().Text("不便分类的其他从业人员").Value("不便分类的其他从业人员"),
+                                            F.ListItem().Text("婴幼儿、学龄前儿童").Value("婴幼儿、学龄前儿童"),
+                                            F.ListItem().Text("学生").Value("学生"),
+                                            F.ListItem().Text("家务").Value("家务"),
+                                            F.ListItem().Text("无业或待业").Value("无业或待业"),
+                                            F.ListItem().Text("其他").Value("其他")
+                                        )
+                                ),
+                            F.FormRow()
+                                .Items(
+                                    F.TextBox().ID("tbxNativePlace").Label("籍贯"),
+                                    F.DropDownList().ID("ddlUserState").Label("会员状态").CompareMessage("会员状态不能为空！")
+                                        .Items(
+                                            F.ListItem().Text("启用").Value("0").Selected(true),
+                                            F.ListItem().Text("禁用").Value("1")
+                                        )
+                                )
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("Button1").IconFont(IconFont._Save).Text("保存信息").ValidateForms("Form1").ValidateMessageBox(false)
+                )
+        )
+    )
+    <br>
+    <br>
+
+
+}
+

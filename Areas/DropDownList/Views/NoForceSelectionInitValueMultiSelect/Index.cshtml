@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "DropDownList/NoForceSelectionInitValueMultiSelect";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉列表（不强制选择，初始值，多选）").ShowHeader(true)
+        .Items(
+            F.DropDownList().ID("DropDownList1").EnableEdit(true).AutoSelectFirstItem(false).ForceSelection(false).Text("初始自定义值").EnableMultiSelect(true)
+                .Items(
+                    F.ListItem().Text("可选项1").Value("Value1"),
+                    F.ListItem().Text("可选项2（不可选择）").Value("Value2").EnableSelect(false),
+                    F.ListItem().Text("可选项3（不可选择）").Value("Value3").EnableSelect(false),
+                    F.ListItem().Text("可选项4").Value("Value4"),
+                    F.ListItem().Text("可选项5").Value("Value5"),
+                    F.ListItem().Text("可选项6").Value("Value6"),
+                    F.ListItem().Text("可选择项7").Value("Value7"),
+                    F.ListItem().Text("可选择项8").Value("Value8"),
+                    F.ListItem().Text("可选择项9").Value("Value9"),
+                    F.ListItem().Text("普通型1 < L > 1.5").Value("普通型1 < L > 1.5")
+                ),
+            F.Button().ID("btnSelectItem6").Text("选中[可选项6]和[可选项4]").OnClick(Url.Action("btnSelectItem6_Click")).CssClass("marginr"),
+            F.Button().ID("btnSetText").Text("更新为[用户输入值]").OnClick(Url.Action("btnSetText_Click")).CssClass("marginr"),
+            F.Button().ID("btnGetSelection").Text("获取此下拉列表的选中项").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+    下拉列表的属性设置为：
+    <ul>
+        <li>AutoSelectFirstItem="false"：初始不强制选中第一项</li>
+        <li>EnableEdit="true"：可以手工编辑</li>
+        <li>ForceSelection="false"：不强制选择</li>
+        <li>EnableMultiSelect="true"：可以多选</li>
+    </ul>
+
+
+
+}
+

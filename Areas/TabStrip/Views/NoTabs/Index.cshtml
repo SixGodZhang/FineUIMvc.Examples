@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "TabStrip/NoTabs";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(250).EnableTabCloseMenu(true).ShowBorder(true)
+        .Tabs(
+            F.Tab().ID("Tab1").Title("标签一").EnableClose(false).Hidden(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label5").Text("标签一中的文本")
+                ),
+            F.Tab().ID("Tab2").Title("标签二").BodyPadding(10).Hidden(true).EnableClose(true)
+                .Items(
+                    F.Label().ID("Label4").Text("标签二中的文本")
+                ),
+            F.Tab().ID("Tab3").Title("标签三").BodyPadding(10).Hidden(true).EnableClose(true)
+                .Items(
+                    F.Label().ID("Label3").Text("标签三中的文本")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnShowTab1").Text("显示标签一").CssClass("marginr").Listener("click", "onShowTab1Click"))
+
+    @(F.Button().ID("btnShowTab2").Text("显示标签二").CssClass("marginr").Listener("click", "onShowTab2Click"))
+
+    @(F.Button().ID("btnShowTab3").Text("显示标签三").CssClass("marginr").Listener("click", "onShowTab3Click"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnShowActiveTab1").Text("显示并激活标签一").CssClass("marginr").Listener("click", "onShowActiveTab1Click"))
+
+    @(F.Button().ID("btnShowActiveTab2").Text("显示并激活标签二").CssClass("marginr").Listener("click", "onShowActiveTab2Click"))
+
+    @(F.Button().ID("btnShowActiveTab3").Text("显示并激活标签三").CssClass("marginr").Listener("click", "onShowActiveTab3Click"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnHideTab1").Text("隐藏标签一").CssClass("marginr").Listener("click", "onHideTab1Click"))
+
+    @(F.Button().ID("btnHideTab2").Text("隐藏标签二").CssClass("marginr").Listener("click", "onHideTab2Click"))
+
+    @(F.Button().ID("btnHideTab3").Text("隐藏标签三").CssClass("marginr").Listener("click", "onHideTab3Click"))
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+}
+
+
+
+@section script {
+    <script>
+
+        function onShowTab1Click(event) {
+            F.ui.Tab1.show();
+        }
+
+        function onShowTab2Click(event) {
+            F.ui.Tab2.show();
+        }
+
+        function onShowTab3Click(event) {
+            F.ui.Tab3.show();
+        }
+
+
+        function onShowActiveTab1Click(event) {
+            F.ui.Tab1.active();
+        }
+
+        function onShowActiveTab2Click(event) {
+            F.ui.Tab2.active();
+        }
+
+        function onShowActiveTab3Click(event) {
+            F.ui.Tab3.active();
+        }
+
+
+        function onHideTab1Click(event) {
+            F.ui.Tab1.hide();
+        }
+
+        function onHideTab2Click(event) {
+            F.ui.Tab2.hide();
+        }
+
+        function onHideTab3Click(event) {
+            F.ui.Tab3.hide();
+        }
+
+    </script>
+}

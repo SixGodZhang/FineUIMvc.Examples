@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "GridInput/CheckBoxList";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .myradiolist input {
+            vertical-align: text-bottom;
+        }
+
+        .myradiolist label {
+            margin-right: 3px;
+        }
+    </style>
+
+
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(80),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(80),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("爱好").DataField("Hobby").RendererFunction("renderHobby").Width(300)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("获取用户输入的爱好").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("inputs", "getUserInputs()")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderHobby(value, params) {
+            var hobbies = value.split(',');
+            var checkedHtml = ' checked="checked" ';
+            var readingHtml = F.formatString('<label><input {0}value="reading" type="checkbox">读书</label>', $.inArray('reading', hobbies) >= 0 ? checkedHtml : '');
+            var basketballHtml = F.formatString('<label><input {0}value="basketball" type="checkbox">篮球</label>', $.inArray('basketball', hobbies) >= 0 ? checkedHtml : '');
+            var travelHtml = F.formatString('<label><input {0}value="travel" type="checkbox">旅游</label>', $.inArray('travel', hobbies) >= 0 ? checkedHtml : '');
+            var movieHtml = F.formatString('<label><input {0}value="movie" type="checkbox">电影</label>', $.inArray('movie', hobbies) >= 0 ? checkedHtml : '');
+            var musicHtml = F.formatString('<label><input {0}value="music" type="checkbox">音乐</label>', $.inArray('music', hobbies) >= 0 ? checkedHtml : '');
+            return F.formatString('<div class="mycheckboxlist">{0}</div>', readingHtml + basketballHtml + travelHtml + movieHtml + musicHtml);
+        }
+
+        var inputselector = '.mycheckboxlist input[type=checkbox]';
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                var checkedValues = [];
+                rowEl.find(inputselector).filter(':checked').each(function () {
+                    checkedValues.push($(this).val());
+                });
+
+                result.push([rowData.id, rowData.text, checkedValues]);
+            });
+
+            return F.toJSON(result);
+        }
+
+    </script>
+}

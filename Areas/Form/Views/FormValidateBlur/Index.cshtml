@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Form/FormValidateBlur";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("用户注册表单")
+        .Items(
+            F.TextBox().ID("tbxUserName").Label("用户名").Required(true).NextFocusControl("tbxPassword").OnBlur(Url.Action("tbxUserName_Blur"), new Parameter("userName", "F.ui.tbxUserName.getValue()")).ShowRedStar(true).Text("admin"),
+            F.TextBox().ID("tbxPassword").Label("密码").Required(true).ShowRedStar(true).NextFocusControl("btnRegister").TextMode(TextMode.Password),
+            F.Button().ID("btnRegister").Text("注册").OnClick(Url.Action("btnRegister_Click"), "SimpleForm1").ValidateForms("SimpleForm1").ValidateTarget(Target.Top)
+        )
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>
+            [用户名]失去焦点，如果为 admin，则标记为无效；否则去除无效标记
+        </li>
+        <li>
+            [用户名]按下 Enter 键，如果为 admin，则标记为无效；否则去除无效标记，并跳转到[密码]
+        </li>
+        <li>
+            [密码]按下 Enter 键，提交表单
+        </li>
+    </ul>
+
+
+}
+

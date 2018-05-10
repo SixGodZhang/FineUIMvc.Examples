@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/GridPagingDatabaseUpdateValue";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉表格（数据库分页）").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下拉表格中选择").EnableMultiSelect(true).MatchFieldWidth(false)
+                .PopPanel(
+                    F.Grid().ID("Grid1").Width(650).Height(300).DataIDField("Id").DataTextField("Name").EnableMultiSelect(true).KeepCurrentSelection(true).PageSize(5).ShowBorder(true).ShowHeader(false).AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_PageIndexChanged"), "Grid1").EnableCheckBoxSelect(true).Hidden(true)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+                ),
+            F.Panel().CssClass("f-field").ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Button().ID("btnUpdateValue").CssClass("marginr").Text("更新下拉框的值为[张娟娟,叶鹏]").OnClick(Url.Action("btnUpdateValue_Click")),
+                    F.Button().ID("btnClearValue").CssClass("marginr").Text("清空下拉框的值").OnClick(Url.Action("btnClearValue_Click")),
+                    F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+                )
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

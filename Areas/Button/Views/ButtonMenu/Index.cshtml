@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonMenu";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Button().ID("btnMenu").Text("中国科学技术大学").IconFont(IconFont._Bicycle)
+        .Menu(F.Menu()
+            .Items(
+                F.MenuHyperLink().Icon(Icon.TagGreen).Target("_blank").NavigateUrl("http://scms.ustc.edu.cn/").Text("化学与材料科学学院"),
+                F.MenuButton().Icon(Icon.TagBlue).Text("管理学院")
+                    .Menu(F.Menu()
+                        .Items(
+                            F.MenuHyperLink().Icon(Icon.TagPink).Target("_blank").NavigateUrl("http://is.ustc.edu.cn/").Text("工商管理系"),
+                            F.MenuHyperLink().Icon(Icon.TagPurple).Target("_blank").NavigateUrl("http://stat.ustc.edu.cn/").Text("统计与金融系")
+                        )
+                    )
+            )
+        )
+    )
+    <br>
+    <br>
+
+   
+
+}

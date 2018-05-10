@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/RadioButtonListMatchFieldWidthRight";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(true).Layout(LayoutType.HBox).BodyPadding(10).BoxConfigPosition(BoxLayoutPosition.End).BoxConfigAlign(BoxLayoutAlign.Start).ShowHeader(true).Title("面板（Layout=HBox BoxConfigPosition=End）").IsViewPort(true)
+        .Items(
+            F.SimpleForm().ID("SimpleForm1").BodyPadding(10).Width(400).ShowBorder(true).Title("下拉单选框列表（MatchFieldWidth）").ShowHeader(true)
+                .Items(
+                    F.DropDownBox().ID("DropDownBox1").DataControlID("RadioButtonList1").Value("js").MatchFieldWidth(false).EnableMultiSelect(false)
+                        .PopPanel(
+                            F.SimpleForm().ID("SimpleForm2").BodyPadding(10).AutoScroll(true).ShowBorder(true).ShowHeader(false).Width(650).Hidden(true)
+                                .Items(
+                                    F.Label().ID("Label1").Text("请选择一种编程语言："),
+                                    F.RadioButtonList().ID("RadioButtonList1").ColumnNumber(3)
+                                        .Items(
+                                            F.RadioItem().Text("C#").Value("csharp"),
+                                            F.RadioItem().Text("JavaScript").Value("js"),
+                                            F.RadioItem().Text("JAVA").Value("java"),
+                                            F.RadioItem().Text("Ruby").Value("ruby"),
+                                            F.RadioItem().Text("PHP").Value("php"),
+                                            F.RadioItem().Text("Objective-C").Value("objc"),
+                                            F.RadioItem().Text("Python").Value("python"),
+                                            F.RadioItem().Text("Perl").Value("perl"),
+                                            F.RadioItem().Text("C++").Value("cplusplus"),
+                                            F.RadioItem().Text("Basic").Value("basic"),
+                                            F.RadioItem().Text("Go").Value("go"),
+                                            F.RadioItem().Text("Swift").Value("swift")
+                                        )
+                                )
+                        ),
+                    F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1"),
+                    F.Label().ID("labResult")
+                )
+        )
+    )
+
+
+}
+

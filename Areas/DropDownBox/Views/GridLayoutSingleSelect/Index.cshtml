@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/GridLayoutSingleSelect";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉表格（复杂布局，单选）").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下拉表格中选择").EnableMultiSelect(false).MatchFieldWidth(false).DataControlID("Grid1")
+                .PopPanel(
+                    F.Panel().ID("Panel1").BodyPadding(10).Width(650).Height(300).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).Hidden(true)
+                        .Items(
+                            F.Form().ID("Form5").ShowBorder(false).ShowHeader(false)
+                                .Rows(
+                                    F.FormRow()
+                                        .Items(
+                                            F.TwinTriggerBox().Width(300).EmptyText("在姓名中查找").ShowLabel(false).ID("ttbSearch").ShowTrigger1(false).OnTrigger1Click(Url.Action("ttbSearch_Trigger1Click"), "Panel1").OnTrigger2Click(Url.Action("Grid1_DoReBind"), "Panel1").Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search),
+                                            F.RadioButtonList().ID("rblAtSchool").Label("是否在校").OnSelectedIndexChanged(Url.Action("Grid1_DoReBind"), "Panel1")
+                                                .Items(
+                                                    F.RadioItem().Text("全部").Value("-1").Selected(true),
+                                                    F.RadioItem().Text("在校").Value("1"),
+                                                    F.RadioItem().Text("离校").Value("0")
+                                                )
+                                        )
+                                ),
+                            F.Grid().ID("Grid1").BoxFlex(1).DataIDField("Id").DataTextField("Name").EnableMultiSelect(false).PageSize(5).ShowBorder(true).ShowHeader(false).AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_DoReBind"), "Panel1").EnableCheckBoxSelect(true)
+                                .Columns(
+                                    F.RowNumberField(),
+                                    F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                                    F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                                    F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                                    F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                                    F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                                    F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                                ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+                        )
+                ),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}
+
+

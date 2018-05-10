@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "DataModel/Login";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    <div>
+        用户名：admin
+        <br>
+        密码：admin888
+        <br>
+        <br>
+        <br>
+        注意：在任意输入框内按回车键都会触发表单的提交（相当于点击【登陆】按钮）。
+    </div>
+
+    @(F.Window().Width(350).WindowPosition(WindowPosition.GoldenSection).EnableClose(false).IsModal(false).Title("登录表单").ID("Window1")
+        .Items(
+            F.SimpleForm().ShowHeader(false).BodyPadding(10).ShowBorder(false).ID("SimpleForm1")
+                .Items(
+                    F.TextBox().ShowRedStar(true).Required(true).Label("用户名").MaxLength(20).ID("UserName"),
+                    F.TextBox().ShowRedStar(true).Required(true).RequiredMessage("密码不能为空！").EnableValidateTrim(false).TextMode(TextMode.Password).Label("密码").MaxLength(9).MaxLengthMessage("密码最大为 9 个字符！").MinLength(3).MinLengthMessage("密码最小为 3 个字符！")
+                        .Regex("^(?:[0-9]+[a-zA-Z]|[a-zA-Z]+[0-9])[a-zA-Z0-9]*$").RegexMessage("密码至少包含一个字母和数字！").ID("Password")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().OnClick(Url.Action("btnLogin_Click"), "SimpleForm1").ValidateTarget(Target.Top).ValidateForms("SimpleForm1").Type(ButtonType.Submit).Text("登录").ID("btnLogin"),
+                    F.Button().Type(ButtonType.Reset).Text("重置").ID("btnReset")
+                )
+        )
+    )
+    <br>
+
+
+}
+

@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Form/TwinTriggerBoxBlur";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("表单").ShowHeader(true)
+        .Items(
+            F.TwinTriggerBox().ID("TwinTriggerBox1").ShowLabel(false).OnTrigger1Click(Url.Action("TwinTriggerBox1_Trigger1Click")).OnTrigger2Click(Url.Action("TwinTriggerBox1_Trigger2Click"), new Parameter("text", "F.ui.TwinTriggerBox1.getValue()")).Trigger1Icon(TriggerIcon.Clear).ShowTrigger1(false).EmptyText("搜索用户名").Trigger2Icon(TriggerIcon.Search).OnClientBlur("onTwinTriggerBox1Blur")
+
+        )
+    )
+    <br />
+    <br />
+    注：文本输入框失去焦点时，触发后台搜索事件。
+
+}
+
+@section script{
+    <script>
+
+        // 记录上一次 TwinTriggerBox1 的值
+        var __lastTriggerBoxValue;
+
+        function onTwinTriggerBox1Blur(event) {
+            var value = this.getValue();
+
+            // 值改变时才回发
+            if (value !== __lastTriggerBoxValue) {
+                __lastTriggerBoxValue = value;
+
+                // 触发后台事件
+                F.doPostBack('@Url.Action("TwinTriggerBox1_Trigger2Click")', {
+                    'text': F.ui.TwinTriggerBox1.getValue()
+                });
+            }
+        }
+
+
+
+        F.ready(function () {
+            // 设置 TwinTriggerBox1 初始值
+            __lastTriggerBoxValue = F.ui.TwinTriggerBox1.getValue();
+        });
+
+    </script>
+}
+

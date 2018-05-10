@@ -1,0 +1,559 @@
+﻿@{
+    ViewBag.Title = "Block/Dashboard";
+    ViewBag.BodyBGColor = true;
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        body.f-body {
+            overflow-x: hidden;
+        }
+
+        .blockpanel {
+            min-height: 150px;
+        }
+
+        .mycard {
+            margin: 20px;
+        }
+
+            .mycard .title {
+                position: relative;
+                font-size: 0.9em;
+                opacity: 0.8;
+                filter: alpha(opacity=80);
+                margin-bottom: 10px;
+            }
+
+                .mycard .title .infoicon {
+                    position: absolute;
+                    right: 0;
+                    cursor: pointer;
+                }
+
+            .mycard .desc {
+                height: 145px;
+                font-size: 0.95em;
+                line-height: 1.5em;
+            }
+
+            .mycard .number {
+                font-size: 30px;
+                line-height: 40px;
+                height: 40px;
+            }
+
+            .mycard .number-subtext {
+                font-size: 16px;
+            }
+
+            .mycard .chart {
+                height: 60px;
+                position: relative;
+            }
+
+                .mycard .chart .f-progressbar {
+                    position: absolute;
+                    top: 50%;
+                    height: 8px;
+                    margin-top: -4px;
+                    width: 100%;
+                }
+
+            .mycard .footer {
+                border-top-width: 1px;
+                border-top-style: solid;
+                margin-top: 10px;
+                padding-top: 10px;
+                height: 35px;
+                line-height: 24px;
+            }
+
+            .mycard .f-icon.f-iconfont-triangle-up {
+                vertical-align: middle;
+                color: red;
+            }
+
+            .mycard .f-icon.f-iconfont-triangle-down {
+                vertical-align: middle;
+                color: green;
+            }
+
+            .mycard.rank {
+                background: url(@Url.Content("~/res/images/up.png")) no-repeat;
+                padding-left: 80px;
+            }
+
+        .f-theme-mint_choc .mycard.rank,
+        .f-theme-dark_hive .mycard.rank,
+        .f-theme-dot_luv .mycard.rank,
+        .f-theme-eggplant .mycard.rank,
+        .f-theme-le_frog .mycard.rank,
+        .f-theme-overcast .mycard.rank,
+        .f-theme-swanky_purse .mycard.rank,
+        .f-theme-trontastic .mycard.rank,
+        .f-theme-ui_darkness .mycard.rank,
+        .f-theme-vader .mycard.rank,
+        .f-theme-excite_bike .mycard.rank,
+        .f-theme-black_tie .mycard.rank,
+        .f-theme-cupertino .mycard.rank,
+        .f-theme-humanity .mycard.rank,
+        .f-theme-pepper_grinder .mycard.rank,
+        .f-theme-south_street .mycard.rank,
+        .f-theme-sunny .mycard.rank,
+        .f-theme-ui_lightness .mycard.rank {
+            background-image: none;
+            padding: 0;
+        }
+
+        .mytabstrip > .f-tabstrip-header > .f-panel-title {
+            margin-left: 20px;
+        }
+
+            .mytabstrip > .f-tabstrip-header > .f-panel-title .f-tab-header {
+                margin-right: 10px;
+            }
+
+                .mytabstrip > .f-tabstrip-header > .f-panel-title .f-tab-header.f-state-active {
+                    background-color: transparent;
+                    background-image: none;
+                }
+
+        .mytabstrip .tabstrip-chart {
+            height: 350px;
+        }
+
+        .mytable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .mytable th {
+                font-weight: normal;
+                border-bottom: solid 1px #ddd;
+            }
+
+            .mytable td,
+            .mytable th {
+                padding: 10px;
+                text-align: left;
+            }
+
+        .myform .f-panel-body .f-field {
+            margin: 0;
+        }
+
+        .mychart-pie {
+            min-height: 300px;
+        }
+
+        .mysitestats {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+            font-size: 14px;
+            margin-left: -10px;
+        }
+
+            .mysitestats li {
+                display: inline-block;
+                padding: 10px;
+                border-width: 1px;
+                border-style: solid;
+                margin: 0 10px 20px 10px;
+                min-width: 85px;
+            }
+
+                .mysitestats li .title {
+                    font-size: 0.9em;
+                    opacity: 0.8;
+                    filter: alpha(opacity=80);
+                    margin-bottom: 10px;
+                }
+
+                .mysitestats li .content {
+                    font-size: 1.1em;
+                    font-weight: normal;
+                }
+
+        .mynumber {
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            display: inline-block;
+        }
+
+            .mynumber.round {
+                border-radius: 20px;
+            }
+    </style>
+
+}
+
+@section body {
+
+    <div id="block1">
+        <div class="mycard">
+            <div class="title">
+                今日浏览量
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="number">
+                12,000
+            </div>
+            <div class="chart chart1">
+            </div>
+            <div class="footer f-widget-content">
+                日均浏览量 15,000
+            </div>
+        </div>
+        <div class="mycard" style="display: none;">
+            <div class="title">
+                今日浏览量
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="desc">
+                今日浏览量的详细描述。
+                <br />
+                FineUI 是基于 jQuery 的专业 ASP.NET WebForms/MVC/Core 控件库。
+            </div>
+        </div>
+    </div>
+
+    <div id="block2">
+        <div class="mycard">
+            <div class="title">
+                今日独立IP
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="number">
+                800
+            </div>
+            <div class="chart chart2">
+            </div>
+            <div class="footer f-widget-content">
+                日均独立IP 900
+            </div>
+        </div>
+        <div class="mycard" style="display: none;">
+            <div class="title">
+                今日独立IP
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="desc">
+                今日独立IP的详细描述。
+                <br />
+                FineUI 是基于 jQuery 的专业 ASP.NET WebForms/MVC/Core 控件库。
+            </div>
+        </div>
+    </div>
+
+    <div id="block3">
+        <div class="mycard">
+            <div class="title">
+                今日用户量
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="number">
+                900
+            </div>
+            <div class="chart chart3">
+            </div>
+            <div class="footer f-widget-content">
+                周同比 10% <i class="f-icon f-iconfont f-iconfont-triangle-down"></i>
+                &nbsp;
+                日环比 20% <i class="f-icon f-iconfont f-iconfont-triangle-up"></i>
+            </div>
+        </div>
+        <div class="mycard" style="display: none;">
+            <div class="title">
+                今日用户量
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="desc">
+                今日用户量的详细描述。
+                <br />
+                FineUI 是基于 jQuery 的专业 ASP.NET WebForms/MVC/Core 控件库。
+            </div>
+        </div>
+    </div>
+
+    <div id="block4">
+        <div class="mycard rank">
+            <div class="title">
+                今日排名
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="number">
+                <span class="number-subtext">上升</span> 9 <span class="number-subtext">位</span>
+            </div>
+            <div class="chart">
+                <div class="f-progressbar f-widget f-widget-content f-corner-all">
+                    <div class="f-progressbar-value f-widget-header" style="width: 70%;">
+                    </div>
+                </div>
+            </div>
+            <div class="footer f-widget-content">
+                分类排名前 32% <i class="f-icon f-iconfont f-iconfont-triangle-up"></i>
+            </div>
+        </div>
+        <div class="mycard" style="display: none;">
+            <div class="title">
+                今日排名
+                <i class="f-icon f-iconfont f-iconfont-info infoicon"></i>
+            </div>
+            <div class="desc">
+                今日排名的详细描述。
+                <br />
+                FineUI 是基于 jQuery 的专业 ASP.NET WebForms/MVC/Core 控件库。
+            </div>
+        </div>
+    </div>
+
+    <div id="block5">
+        <table class="mytable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Operator</th>
+                    <th>PV</th>
+                    <th>UV</th>
+                    <th>IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="mynumber round f-widget-header">1</span></td>
+                    <td>电信</td>
+                    <td>12,000</td>
+                    <td>9,000</td>
+                    <td>6,000</td>
+                </tr>
+                <tr>
+                    <td><span class="mynumber round f-widget-header">2</span></td>
+                    <td>联通</td>
+                    <td>10,000</td>
+                    <td>8,000</td>
+                    <td>5,000</td>
+                </tr>
+                <tr>
+                    <td><span class="mynumber round f-widget-header">3</span></td>
+                    <td>移动</td>
+                    <td>9,000</td>
+                    <td>6,000</td>
+                    <td>4,000</td>
+                </tr>
+                <tr>
+                    <td><span class="mynumber">4</span></td>
+                    <td>长宽</td>
+                    <td>6,000</td>
+                    <td>5,000</td>
+                    <td>3,000</td>
+                </tr>
+                <tr>
+                    <td><span class="mynumber">5</span></td>
+                    <td>铁通</td>
+                    <td>4,000</td>
+                    <td>3,000</td>
+                    <td>2,000</td>
+                </tr>
+                <tr>
+                    <td><span class="mynumber">6</span></td>
+                    <td>其它</td>
+                    <td>8,000</td>
+                    <td>5,000</td>
+                    <td>2,000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="block6">
+        <table class="mytable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Browser</th>
+                    <th>PV</th>
+                    <th>UV</th>
+                    <th>IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Chrome</td>
+                    <td>12,600</td>
+                    <td>9,600</td>
+                    <td>6,600</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Firefox</td>
+                    <td>10,600</td>
+                    <td>8,600</td>
+                    <td>5,600</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Safari</td>
+                    <td>9,600</td>
+                    <td>6,600</td>
+                    <td>4,600</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>IE</td>
+                    <td>6,600</td>
+                    <td>5,600</td>
+                    <td>3,600</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Edge</td>
+                    <td>4,600</td>
+                    <td>3,600</td>
+                    <td>2,600</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Others</td>
+                    <td>8,600</td>
+                    <td>5,600</td>
+                    <td>2,600</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    @(F.Panel().IsFluid(true).Layout(LayoutType.Block).BlockConfigSpace(20).ShowBorder(false).ShowHeader(false)
+        .Items(
+            F.Panel().CssClass("blockpanel").BlockMD(6).BlockLG(3).ShowBorder(true).ShowHeader(false).ContentEl("#block1"),
+            F.Panel().CssClass("blockpanel").BlockMD(6).BlockLG(3).ShowBorder(true).ShowHeader(false).ContentEl("#block2"),
+            F.Panel().CssClass("blockpanel").BlockMD(6).BlockLG(3).ShowBorder(true).ShowHeader(false).ContentEl("#block3"),
+            F.Panel().CssClass("blockpanel").BlockMD(6).BlockLG(3).ShowBorder(true).ShowHeader(false).ContentEl("#block4"),
+            F.TabStrip().CssClass("blockpanel mytabstrip").BlockMD(12).ShowInkBar(true).ShowBorder(true).ActiveTabIndex(0)
+                .Tabs(
+                    F.Tab().Layout(LayoutType.Block).BlockConfigSpace(0).Title("浏览量")
+                        .Items(
+                            F.Panel().BlockMD(6).BlockLG(8).ShowBorder(false).ShowHeader(false).Content("<div class=\"tabstrip-chart chart1\"></div>"),
+                            F.Panel().BlockMD(6).BlockLG(4).BodyPadding(20).ShowBorder(false).ShowHeader(false).ContentEl("#block5")
+                        ),
+                    F.Tab().Layout(LayoutType.Block).BlockConfigSpace(0).Title("用户量")
+                        .Items(
+                            F.Panel().BlockMD(6).BlockLG(8).ShowBorder(false).ShowHeader(false).Content("<div class=\"tabstrip-chart chart2\"></div>"),
+                            F.Panel().BlockMD(6).BlockLG(4).BodyPadding(20).ShowBorder(false).ShowHeader(false).ContentEl("#block6")
+                        )
+                )
+                .Tools(
+                    F.Tool().ToolTip("打开详细数据").IconFont(IconFont._More).Listener("click", "onTabstripToolClick")
+                ),
+            F.Panel().BlockMD(6).BlockLG(8).Layout(LayoutType.Block).BlockConfigSpace(20).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Grid().ID("Grid1").CssClass("blockpanel mygrid").BlockMD(12).ShowBorder(true).ShowHeader(true).Title("表格示例").EnableCheckBoxSelect(true).EnableAlternateRowColor(false).EnableRowLines(false).DataIDField("Id")
+                        .DataUrl(Url.Content("~/GridDataUrl/PagingDatabaseData")).AllowPaging(true).IsDatabasePaging(true).PageSize(10)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名"),
+                            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份"),
+                            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").RenderAsStaticField(true).HeaderText("是否在校"),
+                            F.RenderField().ColumnID("Major").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true).HeaderText("所学专业")
+                        ),
+                    F.Form().CssClass("blockpanel myform").BlockMD(12).Layout(LayoutType.Block).BlockConfigSpace(10).BodyPadding(20).ShowBorder(true).ShowHeader(true).Title("表单示例").LabelAlign(LabelAlign.Right)
+                        .Items(
+                            F.Label().ID("Label1").BlockMD(6).Label("标签").Text("标签的值"),
+                            F.CheckBox().ID("CheckBox1").BlockMD(6).Text("复选框").Label("复选框"),
+                            F.DropDownList().ID("DropDownList1").BlockMD(6).Required(true).ShowRedStar(true).AutoSelectFirstItem(false).Label("下拉列表")
+                                .Items(
+                                    F.ListItem().Text("可选项 1").Selected(true).Value("0"),
+                                    F.ListItem().Text("可选项 2").Value("2"),
+                                    F.ListItem().Text("可选项 3").Value("3")
+                                ),
+                            F.TextBox().ID("TextBox1").BlockMD(6).ShowRedStar(true).Label("文本框").Required(true).Text(""),
+                            F.DatePicker().BlockMD(6).EnableEdit(false).Required(true).Label("日期").EmptyText("请选择日期").ID("DatePicker1").SelectedDate("2014-07-10").ShowRedStar(true),
+                            F.TimePicker().ID("TimePicker1").BlockMD(6).EnableEdit(false).ShowRedStar(true).Label("时间").Increment(30).Required(true).Text("08:30").EmptyText("请选择时间"),
+                            F.CheckBoxList().ID("CheckBoxList1").BlockMD(12).Label("复选框列表").ColumnNumber(3)
+                                .Items(
+                                    F.CheckItem().Text("可选项 1").Value("value1"),
+                                    F.CheckItem().Text("可选项 2").Value("value2").Selected(true),
+                                    F.CheckItem().Text("可选项 3").Value("value3").Selected(true),
+                                    F.CheckItem().Text("可选项 4").Value("value4").Selected(true),
+                                    F.CheckItem().Text("可选项 5").Value("value5").Selected(true)
+                                ),
+                            F.TextArea().ID("TextArea1").BlockMD(12).Label("描述").ShowRedStar(true).Required(true)
+                        )
+                ),
+            F.Panel().BlockMD(6).BlockLG(4).Layout(LayoutType.Block).BlockConfigSpace(20).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().CssClass("blockpanel").BlockMD(12).BodyPadding("20px 20px 0 20px").ShowBorder(true).ShowHeader(true).Title("本站统计").Content("<ul class=\"mysitestats\"></ul>"),
+                    F.Panel().CssClass("blockpanel").BlockMD(12).BodyPadding(20).ShowBorder(true).ShowHeader(true).Title("访问来源").Content("<div class=\"mychart-pie\"></div>")
+                )
+        )
+    )
+
+    <div class="f-widget-content" id="emptycontent"></div>
+
+}
+
+
+@section script {
+
+    <script src="~/res/third-party/echarts/echarts.min.js"></script>
+    <script src="~/res/js/dashboard_chart.js"></script>
+    <script>
+
+        function onTabstripToolClick(event) {
+            parent.addExampleTab && parent.addExampleTab({
+                id: 'dashboard_iframe_grid',
+                iframeUrl: '@Url.Content("~/IFrame/GridIFrame")',
+                title: '表格与编辑窗体',
+                refreshWhenExist: true
+            });
+        }
+
+        function renderMajor(value) {
+            return F.formatString('<a href="http://gsa.ustc.edu.cn/search?q={0}" target="_blank" data-qtip="{1}">{1}</a>', encodeURIComponent(value), value);
+        }
+
+        F.ready(function () {
+
+            $('.mycard .infoicon').click(function () {
+                var card1 = $(this).parents('.mycard');
+                var card2 = card1.siblings('.mycard');
+                // 翻转动画
+                F.flip(card1, card2);
+            });
+
+
+            // 本站统计
+            var siteStats = [];
+            function addToSiteStats(title, content) {
+                siteStats.push('<li class="f-state-default"><div class="title">' + title + '</div><div class="content">' + content + '</div></li>');
+            }
+            var examplesCount = parent.getExamplesCount ? parent.getExamplesCount() : '---';
+            var examplesCountTitle = '示例数';
+            var cookieShowOnlyBase = F.cookie('ShowOnlyBase');
+            if (cookieShowOnlyBase == 'true') {
+                examplesCountTitle += '（仅基础版）';
+            }
+            addToSiteStats(examplesCountTitle, examplesCount);
+
+            var cookieSearchText = F.cookie('SearchText');
+            if (cookieSearchText) {
+                addToSiteStats('搜索关键字', cookieSearchText);
+            }
+
+            addToSiteStats('显示模式', F.displayMode);
+            addToSiteStats('语言', F.language);
+            addToSiteStats('主题', F.theme);
+            addToSiteStats('版本', F.version);
+            $('.mysitestats').html(siteStats.join(''));
+
+        });
+
+    </script>
+
+}

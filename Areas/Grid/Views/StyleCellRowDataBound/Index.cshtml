@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Grid/StyleCellRowDataBound";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .color1 {
+            background-color: #0094ff;
+            color: #fff;
+        }
+
+        .color2 {
+            background-color: #0026ff;
+            color: #fff;
+        }
+
+        .color3 {
+            background-color: #b200ff;
+            color: #fff;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Attribute("data-source-key", "source1").RowDataBoundFunction("grid1RowDataBound")
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+
+    @(F.Button().ID("Button1").Text("重新绑定表格").OnClick(Url.Action("Button1_Click"),
+            new Parameter("fields", "F.ui.Grid1.fields"),
+            new Parameter("source", "F.ui.Grid1.getAttr('data-source-key')"))
+    )
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 在 RowDataBound 中改变单元格CSS类
+        function grid1RowDataBound(rowData) {
+            var rowValues = rowData.values;
+
+            var entranceYear = rowValues['EntranceYear'];
+            if (entranceYear >= 2002 && entranceYear <= 2004) {
+                rowValues['EntranceYear.cls'] = 'color3';
+            }
+
+
+            var gender = rowValues['Gender'];
+            if (gender == 1) {
+                rowValues['Gender.cls'] = 'color1';
+            }
+        }
+
+    </script>
+}

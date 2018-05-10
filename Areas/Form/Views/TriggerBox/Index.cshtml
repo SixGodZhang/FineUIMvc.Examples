@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Form/TriggerBox";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("表单").ShowHeader(true)
+        .Items(
+            F.TriggerBox().ID("TriggerBox1").ShowLabel(false).Readonly(false).TriggerIcon(TriggerIcon.Search).EmptyText("打开弹出窗口")
+                .OnClientTriggerClick("F.ui.Window1.show();")
+        )
+    )
+
+    @(F.Window().ID("Window1").Title("弹出窗口").BodyPadding(10).IsModal(true).Hidden(true).Target(Target.Top).Width(450).Height(300)
+        .Items(
+            F.Button().ID("btnCloseWindow").Text("关闭当前窗口").OnClick(Url.Action("btnCloseWindow_Click"))
+        )
+    )
+
+}
+

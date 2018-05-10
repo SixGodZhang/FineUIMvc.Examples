@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Layout/VBoxFormGrid";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel7").Margin(5).BodyPadding(10).AutoScroll(true).Title("面板（Layout=VBox BodyPadding=5 AutoScroll=true），高度变小时可能出现纵向滚动条").ShowBorder(true).ShowHeader(true).Layout(LayoutType.VBox).IsViewPort(true)
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("Button1").Text("测试按钮"),
+                    F.ToolbarSeparator().ID("ToolbarSeparator2"),
+                    F.Button().ID("Button2").Text("测试按钮")
+                )
+        )
+        .Items(
+            F.Form().ID("Form5").ShowBorder(true).ShowHeader(true).Title("表单").BodyPadding("5 5 0 5").CssStyle("border-bottom:none;")
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox1").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox2").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox3").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox4").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox5").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox6").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox7").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox8").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox9").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox10").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox11").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox12").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox13").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox14").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox15").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox16").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox17").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox18").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox19").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox20").Label("Label").Text("")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox21").Label("Label").Text(""),
+                            F.TextBox().ID("TextBox22").Label("Label").Text("")
+                        )
+                ),
+            F.Grid().Title("表格（BoxFlex=1 MinHeight=300）").ShowHeader(true).ShowBorder(true).ID("Grid2").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true).BoxFlex(1).MinHeight(300)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar2")
+                        .Items(
+                            F.Button().ID("btnPopupWindow").Text("测试按钮"),
+                            F.ToolbarSeparator().ID("ToolbarSeparator1"),
+                            F.Button().ID("btnCheckSelection").Text("测试按钮")
+                        )
+                )
+                .Columns(
+                    F.RowNumberField(),
+                    F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                    F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                    F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                    F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                    F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                    F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                )
+                .DataSource(DataSourceUtil.GetDataTable())
+            )
+    )
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

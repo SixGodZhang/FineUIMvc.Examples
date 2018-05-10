@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Form/FormTextAlign";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .text-align-center input {
+            text-align: center;
+        }
+
+        .text-align-right input {
+            text-align: right;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelWidth(150).Title("简单表单")
+        .Items(
+            F.TextBox().Label("文本输入框").ID("TextBox1").Required(true).Text("文本居左").ShowRedStar(true),
+            F.TextBox().Label("文本输入框（居中）").ID("TextBox2").CssClass("text-align-center").Text("文本居中").Required(true).ShowRedStar(true),
+            F.TextBox().Label("文本输入框（居右）").ID("TextBox3").CssClass("text-align-right").Text("文本居右").Required(true).ShowRedStar(true),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+        )
+    )
+
+
+
+}
+

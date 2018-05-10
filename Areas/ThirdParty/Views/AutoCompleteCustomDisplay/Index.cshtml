@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "ThirdParty/AutoCompleteCustomDisplay";
+    var F = Html.F();
+}
+
+
+
+@section head {
+
+    <link rel="stylesheet" href="~/res/third-party/jqueryuiautocomplete/jquery-ui.css" />
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelWidth(60).Width(600).BodyPadding(10).Title("简单表单")
+        .Items(
+            F.TextBox().ID("TextBox1").Label("标题").EmptyText("输入字母 j 试试"),
+            F.TextBox().ID("TextBox2").Label("值"),
+            F.TextBox().ID("TextBox3").Label("描述")
+        )
+    )
+    <br>
+    参考：http://jqueryui.com/autocomplete/#custom-data
+
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/third-party/jqueryuiautocomplete/jquery-ui.js" type="text/javascript"></script>
+    <script>
+
+        F.ready(function () {
+
+            var projects = [
+                {
+                    value: "jquery",
+                    label: "jQuery",
+                    desc: "the write less, do more, JavaScript library"
+                },
+                {
+                    value: "jquery-ui",
+                    label: "jQuery UI",
+                    desc: "the official user interface library for jQuery"
+                },
+                {
+                    value: "sizzlejs",
+                    label: "Sizzle JS",
+                    desc: "a pure-JavaScript CSS selector engine"
+                }
+            ];
+
+            $('#TextBox1 input').autocomplete({
+                minLength: 0,
+                source: projects,
+                select: function (event, ui) {
+                    var $this = $(this);
+                    $this.val(ui.item.label);
+                    $('#TextBox2 input').val(ui.item.value);
+                    $('#TextBox3 input').val(ui.item.desc);
+                    return false;
+                }
+            }).autocomplete('instance')._renderItem = function (ul, item) {
+                return $("<li>").append("<a><span class='autocomplete-item-title'>" + item.label + "</span><br/>" + item.desc + "</a>").appendTo(ul);
+            };
+
+        });
+
+
+    </script>
+
+}

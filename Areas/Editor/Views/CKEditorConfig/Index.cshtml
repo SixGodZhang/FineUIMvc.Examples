@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Editor/CKEditorConfig";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Top).Title("表单")
+        .Items(
+            F.HtmlEditor().Label("文本编辑器").ID("HtmlEditor1").Editor(Editor.CKEditor)
+                .BasePath(Url.Content("~/res/third-party/ckeditor/")).ToolbarSet(EditorToolbarSet.Full).Height(350).Text("<p>FineUIPro<br>基于 jQuery 的专业 ASP.NET 控件库。<br><br>FineUI的使命<br>创建 No JavaScript，No CSS，No UpdatePanel，No ViewState，No WebServices 的网站应用程序。<br><br>支持的浏览器<br>Chrome、Firefox、Safari、IE 8.0+<br><br>相关链接<br>首页：http://fineui.com/pro/<br>示例：http://pro.fineui.com/<br>更新：http://fineui.com/version_pro/</p>")
+                .Options(
+                    F.OptionItem().Key("uiColor").Value("#aed0ea"),
+                    F.OptionItem().Key("language").Value("zh"),
+                    F.OptionItem().Key("toolbar").Value("[['Bold','Italic','Underline','Strike'],['NumberedList','BulletedList'],['JustifyLeft','JustifyCenter','JustifyRight'],['Link','Unlink'],['Source']]").PersistOriginal(true)
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("Button2").CssClass("marginr").Text("设置编辑器的值").OnClick(Url.Action("Button2_Click")))
+
+    @(F.Button().ID("Button1").Text("获取编辑器的值").OnClick(Url.Action("Button1_Click"),
+            new Parameter("text", "F.htmlEncode(F.ui.HtmlEditor1.getValue())"))
+    )
+    <br>
+    <br>
+    注：本示例通过 Options 属性设置 CKEditor 的背景色（浅蓝色），语言（繁体中文）和工具栏（自定义）。参考文档：http://docs.ckeditor.com/#!/guide/dev_configuration
+
+
+}
+

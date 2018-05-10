@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/GridDataUrl/Controllers/GridDataUrlDataController.cs";
+    ViewBag.Title = "GridDataUrl/CellStyle";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style type="text/css">
+        .color1 {
+            background-color: #0094ff;
+            color: #fff;
+        }
+
+        .color2 {
+            background-color: #0026ff;
+            color: #fff;
+        }
+
+        .color3 {
+            background-color: #b200ff;
+            color: #fff;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .DataUrl(Url.Content("~/GridDataUrl/GridDataUrlData"))
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100).RendererFunction("renderEntranceYear"),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderGender(value, params) {
+            if (value == 1) {
+                params.tdCls = 'color1';
+            }
+
+            return value == 1 ? '男' : '女';
+        }
+
+        function renderEntranceYear(value, params) {
+
+            var entranceYear = params.rowData.values['EntranceYear'];
+
+            if (entranceYear >= 2002 && entranceYear <= 2004) {
+                params.tdCls = 'color3';
+            }
+
+            return value;
+        }
+
+    </script>
+}

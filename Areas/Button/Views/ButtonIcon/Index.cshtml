@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Button/ButtonIcon";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Button().ID("btnIcon1").Text("图标在左侧").Icon(Icon.Email).CssClass("marginr"))
+
+    @(F.Button().ID("btnIcon2").Text("图标在右侧").Icon(Icon.Star).IconAlign(IconAlign.Right).CssClass("marginr"))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnIcon3").Text("图标在上面").Icon(Icon.Email).IconAlign(IconAlign.Top).CssClass("marginr"))
+
+    @(F.Button().ID("btnIcon4").Text("图标在下面").Icon(Icon.Star).IconAlign(IconAlign.Bottom).CssClass("marginr"))
+
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnCustomIcon").Text("自定义图标（点击修改图标）").IconUrl(Url.Content("~/res/images/16/1.png")).OnClick(Url.Action("btnCustomIcon_Click"), new Parameter("iconUrl", "this.icon")))
+
+    <br />
+    <br />
+    只有图片的按钮：
+    <br />
+    <br />
+    @(F.Button().IconUrl(Url.Content("~/res/images/16/1.png")).CssClass("marginr"))
+    @(F.Button().IconUrl(Url.Content("~/res/images/16/8.png")).CssClass("marginr"))
+
+
+    <br />
+    <br />
+    大按钮：
+    <br />
+    <br />
+
+    @(F.Button().Icon(Icon.Email).Size(ButtonSize.Large).Text("图标在左侧").CssClass("marginr"))
+    @(F.Button().Icon(Icon.Star).Size(ButtonSize.Large).Text("图标在右侧").IconAlign(IconAlign.Right).CssClass("marginr"))
+
+    <br />
+    <br />
+
+    @(F.Button().Icon(Icon.Email).Size(ButtonSize.Large).Text("图标在上面").IconAlign(IconAlign.Top).CssClass("marginr"))
+    @(F.Button().Icon(Icon.Email).Size(ButtonSize.Large).Text("图标在下面").IconAlign(IconAlign.Bottom).CssClass("marginr"))
+
+
+
+}
+
+
+
+
+

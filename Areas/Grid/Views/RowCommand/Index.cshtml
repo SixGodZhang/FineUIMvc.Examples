@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Grid/RowCommand";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mybtn3 .f-icon.f-icon-remove {
+            color: red;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("").RendererFunction("renderAction1").Width(80),
+            F.RenderField().HeaderText("").RendererFunction("renderAction2").Width(80),
+            F.RenderField().HeaderText("").RendererFunction("renderAction3").Width(80)
+
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderAction1(value, params) {
+            return '<a class="action-btn mybtn1" href="javascript:;">按钮</a>';
+        }
+
+        function renderAction2(value, params) {
+            var deleteImageUrl = '@Url.Content("~/res/icon/delete.png")';
+            return '<a class="action-btn mybtn2" href="javascript:;"><img class="f-grid-cell-icon" src="' + deleteImageUrl + '"></a>';
+        }
+
+        function renderAction3(value, params) {
+            return '<a class="action-btn mybtn3" href="javascript:;"><i class="f-icon f-grid-cell-iconfont f-icon-remove"></i></a>';
+        }
+
+        function doAction(cnode) {
+            var grid1 = F.ui.Grid1;
+            var rowData = grid1.getRowData(cnode.closest('.f-grid-row'));
+            var column = grid1.getColumn(cnode.parents('.f-grid-cell'));
+
+            var message = '你点击了第 ' + (rowData.index + 1) + ' 行，第 ' + (column.index + 1) + ' 列，行ID：' + rowData.id + '，姓名：' + rowData.text;
+
+            F.notify({
+                message: message,
+                target: '_top',
+                header: false,
+                positionX: 'center',
+                positionY: 'top'
+            });
+        }
+
+        F.ready(function () {
+
+            var grid1 = F.ui.Grid1;
+            grid1.el.on('click', 'a.action-btn', function (event) {
+                var cnode = $(this);
+
+                if (cnode.hasClass('mybtn2') || cnode.hasClass('mybtn3')) {
+                    F.confirm({
+                        message: '你确定要这么做吗？',
+                        target: '_top',
+                        ok: function () {
+                            doAction(cnode);
+                        }
+                    });
+                } else {
+                    doAction(cnode);
+                }
+            });
+
+        });
+
+
+    </script>
+}

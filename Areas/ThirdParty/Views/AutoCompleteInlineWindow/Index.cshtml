@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "ThirdParty/AutoCompleteInlineWindow";
+    var F = Html.F();
+}
+
+@section head {
+
+    <link rel="stylesheet" href="~/res/third-party/jqueryuiautocomplete/jquery-ui.css" />
+
+}
+
+@section body {
+
+    @(F.Window().ID("SimpleForm1").Width(500).Layout(LayoutType.Fit).BodyPadding(10).Title("简单表单")
+        .Items(
+            F.SimpleForm().ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.TextBox().ID("TextBox1").ShowLabel(false).EmptyText("输入字母 a 试试"),
+                    F.Button().Text("获取输入值").ID("Button1").OnClick(Url.Action("Button1_Click"), "SimpleForm1"),
+                    F.Label().ID("labResult")
+                )
+        )
+    )
+
+
+}
+
+@section script {
+
+    <script src="~/res/third-party/jqueryuiautocomplete/jquery-ui.js" type="text/javascript"></script>
+    <script>
+
+        F.ready(function () {
+
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"];
+
+
+            $('#TextBox1 input').autocomplete({
+                source: availableTags,
+                open: function (event, ui) {
+                    var inputEl = $(this);
+                    // 当前输入框所在窗体的z-index
+                    var wndZIndex = parseInt(inputEl.parents('.f-window').css('z-index'), 10);
+
+                    // 设置autocomplete弹出层的z-index
+                    inputEl.autocomplete('widget').css('z-index', wndZIndex + 1);
+                }
+            });
+
+
+        });
+
+    </script>
+
+}

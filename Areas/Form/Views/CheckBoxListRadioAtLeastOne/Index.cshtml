@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Form/CheckBoxListRadioAtLeastOne";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("复选框列表（至少选中一项）")
+        .Items(
+            F.CheckBoxList().ID("CheckBoxList1").ColumnNumber(2).Label("列表一").Listener("change", "onCheckBoxListChange")
+                .Items(
+                    F.CheckItem().Text("可选项 1").Value("value1"),
+                    F.CheckItem().Text("可选项 2").Value("value2").Selected(true),
+                    F.CheckItem().Text("可选项 3").Value("value3"),
+                    F.CheckItem().Text("可选项 4").Value("value4"),
+                    F.CheckItem().Text("可选项 5").Value("value5"),
+                    F.CheckItem().Text("可选项 6").Value("value6")
+                )
+        )
+    )
+
+}
+
+
+@section script {
+
+    <script>
+
+        // 同时只能选中一项
+        function onCheckBoxListChange(event, checkbox, isChecked) {
+            var me = this;
+
+            // 当前操作是：取消选中
+            if (!isChecked) {
+                // 如果一项都没选中，则本次取消操作无效
+                if (!me.getValue().length) {
+                    // 重新选中本项
+                    me.setValue(checkbox.getInputValue());
+                }
+            }
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("CheckBoxList1_Change")', {
+                selected: me.getValue()
+            });
+        }
+
+    </script>
+
+}

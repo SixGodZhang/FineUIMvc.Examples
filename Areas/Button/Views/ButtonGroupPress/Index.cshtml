@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonGroupPress";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).AutoScroll(true).Layout(LayoutType.VBox).BoxConfigChildMargin("0 0 10 0").IsViewPort(true).BodyPadding(10)
+        .Items(
+            F.ButtonGroup().EnablePressGroup(true)
+                .Items(
+                    F.Button().ID("btnIcon1").Text("图标在左侧").EnablePress(true).Pressed(true).Icon(Icon.Email),
+                    F.Button().ID("btnIcon2").Text("图标在右侧").EnablePress(true).IconAlign(IconAlign.Right).Icon(Icon.Star),
+                    F.Button().ID("Button7").Text("图标在左侧").EnablePress(true).IconFont(IconFont._Home),
+                    F.Button().ID("Button8").Text("图标在右侧").EnablePress(true).IconAlign(IconAlign.Right).IconFont(IconFont._Car)
+                ),
+            F.ButtonGroup().ID("ButtonGroup1").EnablePressGroup(true)
+                .Items(
+                    F.Button().ID("btnIcon3").Text("图标在上面").EnablePress(true).IconAlign(IconAlign.Top).Icon(Icon.Email),
+                    F.Button().ID("btnIcon4").Text("图标在下面").EnablePress(true).Pressed(true).IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                    F.Button().ID("Button9").Text("图标在上面").EnablePress(true).IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                    F.Button().ID("Button10").Text("图标在下面").EnablePress(true).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                ),
+            F.Label().Text("只有图片的按钮："),
+            F.ButtonGroup().ID("ButtonGroup2").EnablePressGroup(true)
+                .Items(
+                    F.Button().ID("Button1").EnablePress(true).IconUrl(Url.Content("~/res/images/16/1.png")),
+                    F.Button().ID("Button2").EnablePress(true).IconUrl(Url.Content("~/res/images/16/8.png")),
+                    F.Button().ID("Button11").EnablePress(true).Pressed(true).IconFont(IconFont._Android),
+                    F.Button().ID("Button12").EnablePress(true).IconFont(IconFont._Apple),
+                    F.Button().ID("Button13").EnablePress(true).IconFont(IconFont._Car),
+                    F.Button().ID("Button14").EnablePress(true).IconFont(IconFont._Card)
+                ),
+            F.Label().Text("下面的按钮分组的按下状态改变时，会触发自定义回发事件："),
+            F.ButtonGroup().ID("ButtonGroup3").EnablePressGroup(true)
+                .Items(
+                    F.Button().ID("Button3").Text("按钮一").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Top).Icon(Icon.Email),
+                    F.Button().ID("Button4").Text("按钮二").EnablePress(true).Pressed(true).Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                    F.Button().ID("Button5").Text("按钮三").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                    F.Button().ID("Button6").Text("按钮四").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                ).OnPressChanged(Url.Action("ButtonGroup_PressChanged"), new Parameter("pressedInfo", "getPressedInfo(this)")),
+            F.Label().Text("可以不选（AllowNonePress=true）："),
+            F.ButtonGroup().ID("ButtonGroup4").EnablePressGroup(true).AllowNonePress(true)
+                .Items(
+                    F.Button().ID("Button15").Text("按钮一").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Top).Icon(Icon.Email),
+                    F.Button().ID("Button16").Text("按钮二").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                    F.Button().ID("Button17").Text("按钮三").EnablePress(true).Pressed(true).Size(ButtonSize.Large).IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                    F.Button().ID("Button18").Text("按钮四").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                ).OnPressChanged(Url.Action("ButtonGroup_PressChanged"), new Parameter("pressedInfo", "getPressedInfo(this)")),
+            F.Label().Text("可以多选（AllowMultiPress=true）："),
+            F.ButtonGroup().ID("ButtonGroup5").EnablePressGroup(true).AllowMultiPress(true)
+                .Items(
+                    F.Button().ID("Button19").Text("按钮一").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Top).Icon(Icon.Email),
+                    F.Button().ID("Button20").Text("按钮二").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                    F.Button().ID("Button21").Text("按钮三").EnablePress(true).Size(ButtonSize.Large).IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                    F.Button().ID("Button22").Text("按钮四").EnablePress(true).Pressed(true).Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                ).OnPressChanged(Url.Action("ButtonGroup_PressChanged"), new Parameter("pressedInfo", "getPressedInfo(this)"))
+            )
+    )
+
+}
+
+
+@section script {
+
+    <script>
+
+        // 获取按钮分组按下状态的信息
+        function getPressedInfo(btngroup) {
+            var result = {
+                id: btngroup.id,
+                pressed: []
+            };
+
+            $.each(btngroup.items, function (index, btn) {
+                if (btn.isPressed()) {
+                    // 按下按钮的显示文本
+                    result.pressed.push(btn.getText());
+                }
+            });
+
+            return F.toJSON(result);
+        }
+
+
+    </script>
+
+}

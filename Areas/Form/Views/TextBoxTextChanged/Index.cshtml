@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Form/TextBoxTextChanged";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Top).Title("简单表单").ShowHeader(true)
+        .Items(
+            F.TextBox().ID("TextBox1").Label("文本框一（文本改变事件）").EmptyText("输入字符会立即触发TextChanged事件").OnTextChanged(Url.Action("TextBox1_TextChanged"), new Parameter("text", "F.ui.TextBox1.getValue()")),
+            F.TextBox().ID("TextBox2").Label("文本框二（失去焦点事件）").EmptyText("输入字符后失去焦点，会触发Blur事件").OnBlur(Url.Action("TextBox2_Blur"), new Parameter("text", "F.ui.TextBox2.getValue()"))
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult1"))
+    <br>
+
+    @(F.Label().ID("labResult2"))
+
+
+}
+

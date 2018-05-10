@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/IFrame/Views/PassValue/IFrameWindow.cshtml";
+    ViewBag.Title = "IFrame/PassValue";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").Title("表单").BodyPadding(10)
+        .Items(
+            F.TextBox().Label("你所在的省份").ID("tbxProvince").Text("安徽"),
+            F.Button().ID("Button1").OnClick(Url.Action("Button1_Click"), 
+                    new Parameter("province", "F.ui.tbxProvince.getValue()")).Text("从列表中选择")
+        )
+    )
+
+    @(F.Window().ID("Window1").Title("编辑").EnableIFrame(true).EnableMaximize(true).EnableResize(true).Target(Target.Parent).OnClose(Url.Action("Window1_Close")).IsModal(true).Width(550).Height(350).Hidden(true))
+
+}

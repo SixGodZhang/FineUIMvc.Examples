@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Message/Notify";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").Title("创建通知对话框").LabelWidth(180).BodyPadding(10)
+        .Items(
+            F.GroupPanel().ID("GroupPanel2").Layout(LayoutType.Anchor).Title("常用属性")
+                .Items(
+                    F.TextBox().ID("tbxMessage").Required(true).ShowRedStar(true).Label("消息提示").Text("数据保存成功！"),
+                    F.NumberBox().ID("nbDisplayMilliseconds").Label("显示的毫秒数（0不消失）").Required(true).ShowRedStar(true).NoDecimal(true).NoNegative(true).MaxValue(60000).Text("5000"),
+                    F.CheckBox().ID("cbxShowLoading").Checked(false).Label("是否显示正在加载图片"),
+                    F.CheckBox().ID("cbxIsModal").Checked(false).Label("是否模式对话框")
+                ),
+            F.GroupPanel().ID("GroupPanel4").Layout(LayoutType.Anchor).Title("位置与排列")
+                .Items(
+                    F.TextBox().ID("tbxBodyPadding").Label("正文区域内边距").Text("10px"),
+                    F.DropDownList().ID("ddlPositionX").Label("横向显示位置")
+                        .Items(
+                            F.ListItem().Value("Left").Text("左侧"),
+                            F.ListItem().Value("Center").Text("中间"),
+                            F.ListItem().Value("Right").Text("右侧").Selected(true)
+                        ),
+                    F.DropDownList().ID("ddlPositionY").Label("纵向显示位置")
+                        .Items(
+                            F.ListItem().Value("Top").Text("顶部"),
+                            F.ListItem().Value("Center").Text("中间"),
+                            F.ListItem().Value("Bottom").Text("底部").Selected(true)
+                        ),
+                    F.DropDownList().ID("ddlMessageAlign").Label("正文排列位置")
+                        .Items(
+                            F.ListItem().Value("Left").Text("靠左").Selected(true),
+                            F.ListItem().Value("Center").Text("居中"),
+                            F.ListItem().Value("Right").Text("靠右")
+                        )
+                ),
+            F.GroupPanel().ID("GroupPanel1").Layout(LayoutType.Anchor).Title("标题栏设置")
+                .Items(
+                    F.CheckBox().ID("cbxShowHeader").Checked(true).Listener("change", "onShowHeaderChange").Label("是否显示标题栏"),
+                    F.TextBox().ID("tbxTitle").Label("对话框标题").Text(""),
+                    F.CheckBox().ID("cbxEnableDrag").Checked(true).Label("是否可移动"),
+                    F.CheckBox().ID("cbxEnableClose").Checked(true).Label("是否可关闭")
+                ),
+            F.GroupPanel().ID("GroupPanel3").Layout(LayoutType.Anchor).Title("其它属性")
+                .Items(
+                    F.TextBox().ID("tbxID").Label("对话框ID"),
+                    F.NumberBox().ID("nbWidth").NoDecimal(true).NoNegative(true).Label("对话框宽度").MinValue(200).MaxValue(900),
+                    F.NumberBox().ID("nbMinWidth").NoDecimal(true).NoNegative(true).Label("对话框最小宽度"),
+                    F.NumberBox().ID("nbMaxWidth").NoDecimal(true).NoNegative(true).Label("对话框最大宽度"),
+                    F.DropDownList().ID("ddlMessageBoxIcon").Label("消息图标")
+                        .Items(
+                            F.ListItem().Value("None").Text("无图标").Selected(true),
+                            F.ListItem().Value("Information").Text("消息"),
+                            F.ListItem().Value("Warning").Text("警告"),
+                            F.ListItem().Value("Question").Text("问题"),
+                            F.ListItem().Value("Error").Text("错误"),
+                            F.ListItem().Value("Success").Text("成功")
+                        ),
+                    F.DropDownList().ID("ddlTarget").Label("弹出位置")
+                        .Items(
+                            F.ListItem().Value("Self").Text("当前页面").Selected(true),
+                            F.ListItem().Value("Parent").Text("父页面"),
+                            F.ListItem().Value("Top").Text("顶层页面")
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().Text("点击弹出通知对话框").ID("btnSubmit").ValidateForms("SimpleForm1").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+                )
+        )
+    )
+
+    <br>
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onShowHeaderChange(event) {
+            var checked = this.getValue();
+
+            F.ui.tbxTitle.setHidden(!checked);
+            F.ui.cbxEnableDrag.setHidden(!checked);
+            F.ui.cbxEnableClose.setHidden(!checked);
+        }
+
+        function notifyHideCallback() {
+            F.notify('通知框消失了！');
+        }
+
+    </script>
+}

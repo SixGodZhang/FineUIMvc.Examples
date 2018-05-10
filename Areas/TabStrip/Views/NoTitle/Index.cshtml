@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "TabStrip/NoTitle";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(150).ShowBorder(true).TabPosition(TabPosition.Top).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().IconFont(IconFont._Windows).TitleToolTip("标签一的提示文本").BodyPadding(10)
+                .Items(
+                    F.Label().Text("第一个标签的内容")
+                ),
+            F.Tab().Icon(Icon.Accept).TitleToolTip("标签二的提示文本").BodyPadding(10)
+                .Items(
+                    F.Label().Text("第二个标签的内容")
+                ),
+            F.Tab().IconFont(IconFont._Apple).TitleToolTip("标签三的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第三个标签的内容")
+                ),
+            F.Tab().Icon(Icon.Clock).TitleToolTip("标签四的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第四个标签的内容")
+                ),
+            F.Tab().IconFont(IconFont._Android).TitleToolTip("标签五的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第五个标签的内容")
+                ),
+            F.Tab().Icon(Icon.Computer).TitleToolTip("标签六的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第六个标签的内容")
+                ),
+            F.Tab().IconFont(IconFont._Google).TitleToolTip("标签七的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第七个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip2").Height(150).ShowBorder(true).TabPosition(TabPosition.Bottom).ActiveTabIndex(3)
+        .Tabs(
+            F.Tab().ID("Tab1").IconFont(IconFont._Windows).TitleToolTip("标签一的提示文本").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label1").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab2").Icon(Icon.Accept).TitleToolTip("标签二的提示文本").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label2").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab3").IconFont(IconFont._Apple).TitleToolTip("标签三的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label3").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab4").Icon(Icon.Clock).TitleToolTip("标签四的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label4").Text("第四个标签的内容")
+                ),
+            F.Tab().ID("Tab5").IconFont(IconFont._Android).TitleToolTip("标签五的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label5").Text("第五个标签的内容")
+                ),
+            F.Tab().ID("Tab6").Icon(Icon.Computer).TitleToolTip("标签六的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label6").Text("第六个标签的内容")
+                ),
+            F.Tab().ID("Tab7").IconFont(IconFont._Google).TitleToolTip("标签七的提示文本").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label7").Text("第七个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>选项卡的标题栏文本为空</li>
+        <li>选项卡标题栏有提示信息</li>
+    </ul>
+    <br>
+
+
+}
+

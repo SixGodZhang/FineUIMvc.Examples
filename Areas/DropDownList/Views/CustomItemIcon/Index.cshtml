@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "DropDownList/CustomItemIcon";
+    var F = Html.F();
+}
+
+
+@functions {
+
+
+    /// <summary>
+    /// 计算列表项的Display属性
+    /// </summary>
+    /// <param name="items"></param>
+    /// <returns></returns>
+    public ListItemExtension[] ResolveDropDownListItems(params ListItemExtension[] items)
+    {
+        foreach (ListItemExtension item in items)
+        {
+            item.Display(String.Format("<img src=\"{0}\">&nbsp;", Url.Content("~/res/icon/flag_" + item.Source.Value + ".png")) + item.Source.Text);
+        }
+
+        return items;
+    }
+}
+
+@section head {
+
+    <style>
+        ul.f-field-dropdownlist-pop img {
+            vertical-align: middle;
+        }
+    </style>
+
+}
+
+@section body {
+
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("列表项图标").ShowHeader(true)
+        .Items(
+            F.DropDownList().ID("DropDownList1")
+                .Items(ResolveDropDownListItems(
+                    F.ListItem().Text("中国").Value("cn").Selected(true),
+                    F.ListItem().Text("法国").Value("fr"),
+                    F.ListItem().Text("美国").Value("us"),
+                    F.ListItem().Text("英国").Value("england"),
+                    F.ListItem().Text("澳大利亚").Value("au"),
+                    F.ListItem().Text("意大利").Value("it"),
+                    F.ListItem().Text("加拿大").Value("ca")
+                )),
+            F.Button().ID("btnSelectItem6").Text("选中“澳大利亚”").OnClick(Url.Action("btnSelectItem6_Click")).CssClass("marginr"),
+            F.Button().ID("btnGetSelection").Text("获取此下拉列表的选中项").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+    <br />
+    <br />
+    注：本示例在 Razor 视图中自定义函数 ResolveDropDownListItems。
+}
+

@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "GridInput/RadioButtonList";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .myradiolist input {
+            vertical-align: text-bottom;
+        }
+
+        .myradiolist label {
+            margin-right: 3px;
+        }
+    </style>
+
+
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(100),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("获取用户输入的分组值").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("inputs", "getUserInputs()")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderGender(value, params) {
+            var radioName = 'radio_' + params.rowData.id;
+            var checkedHtml = ' checked="checked" ';
+            var manHtml = F.formatString('<label><input {0}name="{1}" value="男" type="radio">男</label>', value === 1 ? checkedHtml : '', radioName);
+            var womanHtml = F.formatString('<label><input {0}name="{1}" value="女" type="radio">女</label>', value !== 1 ? checkedHtml : '', radioName);
+            return F.formatString('<div class="myradiolist">{0}{1}</div>', manHtml, womanHtml);
+        }
+
+        var inputselector = '.myradiolist input[type=radio]';
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                result.push([rowData.id, rowData.text, rowEl.find(inputselector).filter(':checked').val()]);
+            });
+
+            return F.toJSON(result);
+        }
+
+    </script>
+}

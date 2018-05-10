@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeNodeSelectClient";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件（多选）").EnableMultiSelect(true)
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").Expanded(true).NodeID("Zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").NodeID("Suiping"),
+                                    F.TreeNode().Text("西平县").NodeID("Xiping")
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("Luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("Anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").NodeID("Hefei"),
+                            F.TreeNode().Text("黄山市").NodeID("Huangshan")
+                        )
+                )
+        ).Listener("nodeselect", "onTree1NodeSelect").Listener("nodedeselect", "onTree1NodeDeselect").Listener("selectionchange", "onTree1SelectionChange")
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+    <br />
+    事件列表（<a href="javascript:$('#result').html('');">clear</a>）：
+    <ul id="result"></ul>
+
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onTree1NodeSelect(event, nodeId) {
+            var date = new Date();
+            $('#result').append(F.formatString('<li>[{0}:{1}] nodeselect：{2}</li>',
+                date.getMinutes(),
+                date.getSeconds(),
+                nodeId));
+        }
+
+        function onTree1NodeDeselect(event, nodeId) {
+            var date = new Date();
+            $('#result').append(F.formatString('<li>[{0}:{1}] nodedeselect：{2}</li>',
+                date.getMinutes(),
+                date.getSeconds(),
+                nodeId));
+        }
+
+        function onTree1SelectionChange(event) {
+            var date = new Date();
+            $('#result').append(F.formatString('<li>[{0}:{1}] selectionchange</li>',
+                date.getMinutes(),
+                date.getSeconds()));
+        }
+
+    </script>
+}

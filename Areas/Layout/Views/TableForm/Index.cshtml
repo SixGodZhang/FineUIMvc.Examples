@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Layout/TableForm";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mytable td.f-layout-table-cell {
+            padding: 5px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Form().ID("Form2").Height(450).Width(850).ShowBorder(true).CssClass("mytable").Layout(LayoutType.Table).TableConfigColumns(3).ShowHeader(true).Title("表单（Height=450 Width=750 Layout=Table）").LabelAlign(LabelAlign.Right).LabelWidth(120)
+        .Items(
+            F.Panel().ID("Panel1").Title("Panel1").Width(300).Height(210).TableRowspan(2).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label1").Label("标签（靠右）").Text("Width=300 Height=210 TableRowspan=2")
+                ),
+            F.Panel().ID("Panel3").Title("Panel2").Width(430).Height(100).TableColspan(2).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label2").Label("标签（靠左）").LabelAlign(LabelAlign.Left).Text("Width=430 Height=100 TableColspan=2")
+                ),
+            F.Panel().ID("Panel4").Title("Panel3").Width(200).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").Text("Width=200 Height=100")
+                ),
+            F.Panel().ID("Panel5").Title("Panel4").Width(220).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label4").Text("Width=220 Height=100")
+                )
+        )
+    )
+
+
+}
+

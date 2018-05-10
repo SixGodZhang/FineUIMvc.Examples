@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/GridSearchDropDownList";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉表格（下拉列表过滤，表头菜单过滤）").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下拉表格中选择").EnableMultiSelect(true).MatchFieldWidth(false)
+                .PopPanel(
+                    F.Grid().ID("Grid1").Width(650).Height(300).DataIDField("Id").DataTextField("Name").EnableMultiSelect(true).KeepCurrentSelection(true).PageSize(5).ShowBorder(true).ShowHeader(false).AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_DoReBind"), "Grid1").EnableCheckBoxSelect(true).AllowFilters(true).OnFilterChanged(Url.Action("Grid1_DoReBind"), "Grid1").Hidden(true)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true).EnableFilter(true)
+                                .Filter(F.GridFilter()
+                                    .Operator(
+                                        F.DropDownList().ID("DropDownList1")
+                                            .Items(
+                                                F.ListItem().Text("等于").Value("equal"),
+                                                F.ListItem().Text("包含").Value("contain").Selected(true),
+                                                F.ListItem().Text("开始于").Value("start"),
+                                                F.ListItem().Text("结束于").Value("end")
+                                            )
+                                    )
+                                ),
+                            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                        )
+                        .Toolbars(
+                            F.Toolbar().Position(ToolbarPosition.Top)
+                                .Items(
+                                    F.Label().Text("是否在校："),
+                                    F.DropDownList().ID("ddlAtSchool").OnSelectedIndexChanged(Url.Action("Grid1_DoReBind"), "Grid1")
+                                        .Items(
+                                            F.ListItem().Text("全部").Value("-1"),
+                                            F.ListItem().Text("在校").Value("1"),
+                                            F.ListItem().Text("离校").Value("0")
+                                        )
+                                )
+                        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+                ),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}
+
+

@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Form/ChangeConfirmFormTable";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .steps {
+            border: solid 1px red;
+            padding: 5px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").ShowBorder(true).Title("表单").ShowHeader(true).AutoScroll(true).BodyPadding(10)
+        .Items(
+            F.Label().ID("Label2").EncodeText(false).CssClass("steps")
+                .Text("按照如下步骤操作来观察“确认关闭”对话框：<ul><li>编辑本表单（比如选中复选框、修改日期）</li><li>点击弹出窗体右上角关闭图标、关闭按钮、当前选项卡关闭图标、浏览器的关闭按钮或者浏览器的刷新图标，<a target='_blank' href='" + Url.Content("~/res/images/formchangeconfirm.png") + "'>查看图示</a></li><li>弹出确认关闭窗体的对话框</li></ul>"),
+            F.NumberBox().ID("NumberBox1").Label("数字输入框").Required(true).ShowRedStar(true),
+            F.CheckBox().ID("CheckBox1").Label("复选框"),
+            F.TextBox().ID("TextBox1").Label("文本输入框").ShowRedStar(true).Required(true),
+            F.DatePicker().ID("DatePicker1").SelectedDate("2008-05-09").Label("日期选择器").Text("2008-05-09"),
+            F.TextBox().ID("TextBox2").Label("默认隐藏的字段").Hidden(true),
+            F.DropDownList().Label("下拉列表").ID("DropDownList1")
+                .Items(
+                    F.ListItem().Text("可选项1").Value("Value1").Selected(true),
+                    F.ListItem().Text("可选项2（不可选择）").Value("Value2").EnableSelect(false),
+                    F.ListItem().Text("可选项3（不可选择）").Value("Value3").EnableSelect(false),
+                    F.ListItem().Text("可选项4").Value("Value4"),
+                    F.ListItem().Text("可选项5").Value("Value5"),
+                    F.ListItem().Text("可选项6").Value("Value6"),
+                    F.ListItem().Text("可选择项7").Value("Value7"),
+                    F.ListItem().Text("可选择项8").Value("Value8"),
+                    F.ListItem().Text("普通型1 < L > 1.5").Value("普通型1 < L > 1.5"),
+                    F.ListItem().Text("可选择项9").Value("Value9"),
+                    F.ListItem().Text("可选择项10").Value("Value10"),
+                    F.ListItem().Text("可选择项11").Value("Value11"),
+                    F.ListItem().Text("可选择项12").Value("Value12"),
+                    F.ListItem().Text("可选择项13").Value("Value13"),
+                    F.ListItem().Text("可选择项14").Value("Value14"),
+                    F.ListItem().Text("可选择项15").Value("Value15"),
+                    F.ListItem().Text("可选择项16").Value("Value16")
+                ),
+            F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1).Height(250)
+                .Columns(
+                    F.RowNumberField(),
+                    F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名")
+                        .Editor(
+                            F.TextBox().ID("tbxName").Required(true)
+                        ),
+                    F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别")
+                        .Editor(
+                            F.DropDownList().ID("ddlGender").Required(true)
+                                .Items(
+                                    F.ListItem().Text("男").Value("1"),
+                                    F.ListItem().Text("女").Value("0")
+                                )
+                        ),
+                    F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业")
+                        .Editor(
+                            F.TextBox().ID("tbxMajor").Required(true)
+                        )
+                ).DataSource(ViewBag.Grid1DataSource)
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().Text("刷新本页面").ID("btnClose").Icon(Icon.SystemClose).Listener("click", "onCloseClick"),
+                    F.Button().ID("btnClosePostBack").Text("保存数据").ValidateForms("SimpleForm1").OnClick(Url.Action("btnClosePostBack_Click"), "SimpleForm1").Icon(Icon.SystemSave)
+                )
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+    <script>
+
+        function onCloseClick() {
+            window.location.reload();
+        }
+
+        F.beforeUnload(function () {
+
+            var form = F.ui.SimpleForm1;
+            // 表单数据改变了
+            if (form.isDirty()) {
+                return '当前表单数据已经被修改，确认放弃修改？';
+            }
+
+            var grid = F.ui.Grid1;
+            // 表格数据改变了
+            if (grid.getModifiedData().length) {
+                return '当前表格数据已经被修改，确认放弃修改？';
+            }
+
+        });
+
+
+    </script>
+}
+

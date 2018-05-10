@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "IFrame/IFrameIFrame/IFrameWindow";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("formPanel").ShowBorder(false).ShowHeader(false).IsViewPort(true).BodyPadding(10)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().ID("btnPostBackClose").Listener("click", "F.activeWindow.hidePostBack();").Text("回发弹出窗体"),
+                    F.Button().ID("Button1").Text("本页面弹出窗体").Listener("click", "F.ui.Window3.show();"),
+                    F.Button().ID("Button2").Text("父页面弹出窗体").Listener("click", "F.ui.Window4.show();")
+                )
+        )
+        .Items(
+            F.Label().ID("labResult").CssStyle("font-weight:bold;")
+                .Text("页面加载时间：" + DateTime.Now.ToLongTimeString())
+        )
+    )
+
+    @(F.Window().ID("Window3").EnableIFrame(true).IFrameUrl(Url.Content("~/IFrame/IFrameIFrame/IFrameWindow2")).EnableMaximize(true).EnableResize(true).OnClose(Url.Action("Window3_Close")).Height(300).Width(600).Title("窗体三").Hidden(true))
+
+    @(F.Window().ID("Window4").EnableIFrame(true).IFrameUrl(Url.Content("~/IFrame/IFrameIFrame/IFrameWindow2")).OnClose(Url.Action("Window4_Close")).EnableMaximize(true).EnableResize(true).Target(Target.Parent).Height(300).Width(600).Title("窗体四").Hidden(true))
+
+
+}
+

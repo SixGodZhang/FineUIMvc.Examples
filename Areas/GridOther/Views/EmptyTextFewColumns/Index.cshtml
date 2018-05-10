@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "GridOther/EmptyTextFewColumns";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .grid-empty-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            margin-left: -250px;
+            margin-top: -15px;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(350).Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableTextSelection(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100).Hidden(true),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").Width(350).Hidden(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80).Hidden(true),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100).Hidden(true)
+        ).Attribute("data-source-key", "source1").EmptyText("<div class=\"grid-empty-text\">Oops...一条数据也没有找到！</div>")
+    )
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button1_Click"),
+            new Parameter("fields", "F.ui.Grid1.fields"),
+            new Parameter("source", "F.ui.Grid1.getAttr('data-source-key')")).CssClass("marginr").Text("重新绑定表格").ID("Button1")
+    )
+
+    <br>
+    <br>
+    注：初始隐藏了很多列，使得表格的宽度不足以放得下空信息，所以将空信息绝对定位。
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

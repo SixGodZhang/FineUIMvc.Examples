@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "TabStrip/IFrame";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(450).ShowBorder(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().ID("Tab1").BodyPadding(10).Title("标签一")
+                .Items(
+                    F.Label().ID("Label1").Text("文本"),
+                    F.Panel().ID("ContentPanel1").BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("内容面板").Content("这是内容面板中的内容。")
+                ),
+            F.Tab().ID("Tab2").EnableIFrame(true).BodyPadding(10).IFrameUrl(Url.Content("~/Panel/Group")).Title("标签二（IFrame）").Listener("iframeload", "onTab2IFrameLoad"),
+            F.Tab().ID("Tab3").EnableIFrame(true).BodyPadding(10).IFrameUrl(Url.Content("~/Panel/Panel")).Title("标签三（IFrame）").Listener("iframeload", "onTab3IFrameLoad")
+        )
+    )
+    <br>
+    <br>
+    注：标签二 和 标签三 中的IFrame加载完毕时，会在右下角显示提示框。
+    <br>
+
+
+}
+
+@section script {
+
+    <script>
+
+        function onTab2IFrameLoad(event) {
+            F.notify('标签二中的IFrame加载完毕！');
+        }
+
+        function onTab3IFrameLoad(event) {
+            F.notify('标签三中的IFrame加载完毕！');
+        }
+
+    </script>
+}

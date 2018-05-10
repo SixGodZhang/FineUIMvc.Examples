@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Layout/Absolute";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel2").Height(450).ShowBorder(true).Layout(LayoutType.Absolute).ShowHeader(true).Title("面板（Height=450 Width=750 Layout=Absolute）")
+        .Items(
+            F.Panel().ID("Panel1").Width(300).Title("Panel1").Height(300).AbsoluteX(100).BodyPadding(10).AbsoluteY(50).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").EncodeText(false).Text("Width=300 <br>Height=300 <br>AbsoluteX=100 <br>AbsoluteY=50")
+                ),
+            F.Panel().ID("Panel3").Title("Panel2").Width(150).Height(150).AbsoluteX(450).BodyPadding(10).AbsoluteY(150).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label1").EncodeText(false).Text("Width=150 <br>Height=150 <br>AbsoluteX=450 <br>AbsoluteY=150")
+                )
+        )
+    )
+
+
+}
+

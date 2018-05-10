@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "GridEditor/AfterEditSelectCell";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1).OnAfterEdit(Url.Action("Grid1_AfterEdit"), "Grid1",().ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").Width(850).DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1).OnAfterEdit(Url.Action("Grid1_AfterEdit"), "Grid1",
+            new Parameter("selectedCell", "this.getSelectedCell()"))
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名")
+                .Editor(
+                    F.TextBox().ID("tbxName").Required(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别")
+                .Editor(
+                    F.DropDownList().ID("ddlGender").Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("1"),
+                            F.ListItem().Text("女").Value("0")
+                        )
+                ),
+            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份")
+                .Editor(
+                    F.NumberBox().ID("nbxEntranceYear").NoDecimal(true).NoNegative(true).MinValue(2000).MaxValue(2025)
+                ),
+            F.RenderField().Width(120).ColumnID("EntranceDate").DataField("EntranceDate").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("入学日期")
+                .Editor(
+                    F.DatePicker().ID("dpEntranceDate").Required(true)
+                ),
+            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业")
+                .Editor(
+                    F.TextBox().ID("tbxMajor").Required(true)
+                )
+        ).DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+    <br>
+    @(F.Label().ID("labResult"))
+    <br />
+    <br />
+    注：
+    <ul>
+        <li>结束编辑后回发保存数据，并选中最后一个编辑的单元格，方便通过 TAB、ENTER 键进行接下来的操作</li>
+        <li>为了保持表格行ID的稳定，请指定表格的DataIDField</li>
+    </ul>
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

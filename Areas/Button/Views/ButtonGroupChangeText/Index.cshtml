@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonGroupChangeText";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel1").ShowBorder(true).BodyPadding(10).Height(300).Title("面板")
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.ButtonGroup().ID("ButtonGroup1")
+                        .Items(
+                            F.Button().ID("Button1").Text("按钮一").IconAlign(IconAlign.Top).Icon(Icon.Email),
+                            F.Button().ID("Button2").Text("按钮二").IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                            F.Button().ID("Button3").Text("按钮三").IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                            F.Button().ID("Button4").Text("按钮四").IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                        )
+                )
+        )
+        .Items(
+            F.Button().CssClass("marginr").ID("btnChangeButtonText").Text("修改[按钮四]的文本").OnClick(Url.Action("btnChangeButtonText_Click"), new Parameter("text", "F.ui.Button4.getText()")),
+            F.Button().ID("btnShowHideButton").Text("显示隐藏[按钮四]").OnClick(Url.Action("btnShowHideButton_Click"), new Parameter("hidden", "F.ui.Button4.isHidden()"))
+        )
+    )
+    <br>
+    <br>
+
+    @(F.ButtonGroup().ID("ButtonGroup2")
+        .Items(
+            F.Button().ID("Button5").Text("按钮五").IconAlign(IconAlign.Top).Icon(Icon.Email),
+            F.Button().ID("Button6").Text("按钮六").IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+            F.Button().ID("Button7").Text("按钮七").IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+            F.Button().ID("Button8").Text("按钮八").IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+        )
+    )
+    <br>
+
+    @(F.Button().CssClass("marginr").ID("btnChangeButtonText2").Text("修改[按钮八]的文本").OnClick(Url.Action("btnChangeButtonText2_Click"), new Parameter("text", "F.ui.Button8.getText()")))
+
+    @(F.Button().ID("btnShowHideButton2").Text("显示隐藏[按钮八]").OnClick(Url.Action("btnShowHideButton2_Click"), new Parameter("hidden", "F.ui.Button8.isHidden()")))
+
+
+
+
+}
+

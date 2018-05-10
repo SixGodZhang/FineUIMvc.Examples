@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Layout/VBoxHBox";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel2").ShowBorder(true).Layout(LayoutType.VBox).ShowHeader(true).Title("面板（改变页面大小来观察面板的变化）").BodyPadding(10).IsViewPort(true)
+        .Items(
+            F.Panel().ID("Panel1").BoxFlex(1).ShowBorder(false).ShowHeader(false).Layout(LayoutType.HBox).BoxConfigChildMargin("0 5 0 0").MarginBottom(5)
+                .Items(
+                    F.Panel().ID("Panel3").BoxFlex(1).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label1").Text("Label1")
+                        ),
+                    F.Panel().ID("Panel4").BoxFlex(1).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label2").Text("Label2")
+                        ),
+                    F.Panel().ID("Panel6").BoxFlex(1).ShowBorder(true).ShowHeader(false).Margin(0)
+                        .Items(
+                            F.Label().ID("Label3").Text("Label3")
+                        )
+                ),
+            F.Panel().ID("Panel5").BoxFlex(1).ShowBorder(false).ShowHeader(false).Layout(LayoutType.HBox).BoxConfigChildMargin("0 5 0 0")
+                .Items(
+                    F.Panel().ID("Panel7").BoxFlex(1).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label4").Text("Label4")
+                        ),
+                    F.Panel().ID("Panel8").BoxFlex(1).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label5").Text("Label5")
+                        ),
+                    F.Panel().ID("Panel9").BoxFlex(1).ShowBorder(true).ShowHeader(false).Margin(0)
+                        .Items(
+                            F.Label().ID("Label6").Text("Label6")
+                        )
+                )
+        )
+    )
+
+
+}
+

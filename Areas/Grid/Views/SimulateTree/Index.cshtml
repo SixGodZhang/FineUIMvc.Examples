@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Grid/SimulateTree";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true).EnableSimulateTree(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("地区").DataField("Name").DataSimulateTreeLevelField("TreeLevel").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        ).DataSource(ViewBag.Grid1DataSource)
+        
+    )
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

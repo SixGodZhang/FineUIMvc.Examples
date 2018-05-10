@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Form/Calendar";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Calendar().ID("Calendar1").DateFormatString(ViewBag.Calendar1DateFormatString).SelectedDate(ViewBag.Calendar1SelectedDate).OnDateSelect(Url.Action("Calendar1_DateSelect"), new Parameter("selectedDate", "F.ui.Calendar1.getText()")))
+    <br>
+    <br>
+
+    @(F.Button().ID("Button1").OnClick(Url.Action("Button1_Click")).Text(ViewBag.Button1Text))
+    <br>
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+

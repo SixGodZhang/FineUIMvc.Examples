@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Other/ShowLoading";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Width(650).Height(300).Icon(Icon.TagBlue).Title("窗体").EnableMaximize(false).EnableResize(false).IsModal(false).AutoScroll(true).BodyPadding(10)
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Center)
+                .Items(
+                    F.Button().ID("btnRefresh").Text("刷新").IconFont(IconFont._Refresh).OnClientClick("refresh();")
+                )
+        )
+    )
+
+    <div id="source1" style="display:none;">
+        <p>
+            <a href="http://baike.baidu.com/view/1299586.htm" style="font-size: 18px" target="_blank"><b>马克·扎克伯格</b></a>
+        </p>
+        <p>
+            马克·艾略特·扎克伯格（Mark Elliot Zuckerberg），美国社交网站Facebook的创办人，被人们冠以“第二盖茨”的美誉。哈佛大学计算机和心理学专业辍学生。据《福布斯》杂志保守估计，马克·扎克伯格拥有135亿美元身家，是2008年全球最年轻的巨富，也是历来全球最年轻的自行创业亿万富豪。
+        </p>
+        <p>
+            2014年2月10日，马克·扎克伯格及其华裔妻子普莉希拉·陈登上美国《慈善纪事报》2013年年度慈善排行榜榜首。
+        </p>
+    </div>
+    <div id="source2" style="display:none;">
+        <p>
+            <a href="http://baike.baidu.com/view/3645.htm" style="font-size: 18px" target="_blank"><b>比尔·盖茨</b></a>
+        </p>
+        <p>
+            比尔·盖茨（Bill Gates），全名威廉·亨利·盖茨三世，简称比尔或盖茨。1955年10月28日出生于美国华盛顿州西雅图，13岁开始计算机编程设计，18岁考入哈佛大学，一年后从哈佛退学，1975年与好友保罗·艾伦一起创办了微软公司，比尔盖茨担任微软公司董事长、CEO和首席软件设计师。
+        </p>
+        <p>
+            比尔·盖茨1995-2007年连续13年成为《福布斯》全球富翁榜首富，连续20年成为《福布斯》美国富翁榜首富。
+        </p>
+    </div>
+    <div id="source3" style="display:none;">
+        <p>
+            <a href="http://tech.163.com/special/jobsdead/" style="font-size: 18px" target="_blank"><b>乔布斯</b></a>
+        </p>
+        <p>
+            乔布斯于1955年2月24日出生，苹果创始人之一。今年8月苹果超越埃克森美孚成为全球最大市值企业，截止上季度持有现金达到762亿美金，甚至超过了美国政府国库存款。
+        </p>
+        <p>
+            遗憾的是，苹果的取得巨大成功还是无法给乔布斯一个健康的身体，乔布斯2003年被发现患有胰脏癌，随后又查出肝癌，危在旦夕的乔布斯在经历了8年的抗癌斗争、3次病休、若干次手术后，于2011年8月25日正式宣布从CEO位置辞职。2011年10月6日，乔布斯在苹果发布iPhone 4S后的第二天与世长辞。
+        </p>
+    </div>
+    <div id="source4" style="display:none;">
+        <p>
+            <a href="http://book.douban.com/subject/25943598/" style="font-size: 18px" target="_blank"><b>埃隆·马斯克</b></a>
+        </p>
+        <p>
+            埃隆·马斯克（Elon Musk）1971年出生于南非，毕业于美国宾夕法尼亚大学，工程师、企业家、亿万富翁。最成功的全球网上支付平台Paypal创始人之一，现任美国商业航天企业空间探索技术公司（SpaceX）CEO，电动车生产企业特斯拉汽车（Tesla Motors）CEO，光伏发电服务供应企业SolarCity董事长。如今他被视为经济危机后美国创新与科技实力的新象征。
+        </p>
+        <p>
+        </p>
+    </div>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        var currentSourceNumber = 1;
+        function switchContent() {
+            var nextSourceNumber;
+            do {
+                nextSourceNumber = Math.floor(Math.random() * 4) + 1;
+                if (currentSourceNumber !== nextSourceNumber) {
+                    currentSourceNumber = nextSourceNumber;
+                    break;
+                }
+            } while (true);
+
+            F.ui.Window1.bodyEl.html($('#source' + nextSourceNumber).html());
+        }
+
+        function refresh() {
+            // 第一个参数: 遮罩层的透明度
+            F.ui.Window1.showLoading(0.8);
+
+            // 加个延迟，方便观察加载动画
+            window.setTimeout(function () {
+                switchContent();
+                F.ui.Window1.hideLoading();
+            }, 1000);
+        }
+
+        F.ready(function () {
+            refresh();
+        });
+
+    </script>
+
+}
+

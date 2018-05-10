@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Button/LinkButton";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.LinkButton().ID("LinkButton2").Text("客户端事件（服务器生成）").OnClientClick(ViewBag.LinkButton2Script))
+
+    <br />
+
+    @(F.LinkButton().ID("LinkButton3").Text("服务器端事件").OnClick(Url.Action("LinkButton3_Click")))
+
+    <br />
+    <br />
+
+    @(F.LinkButton().ID("LinkButton1").Enabled(false).Text("客户端事件（在页面中定义）").OnClientClick("clickLinkButton();"))
+
+    <br />
+
+    @(F.Button().ID("btnChangeEnable").Text("启用/禁用最后一个链接按钮").OnClick(Url.Action("btnChangeEnable_Click"), new Parameter("enabled", "F.ui.LinkButton1.isEnabled()")))
+
+
+}
+
+@section script {
+    <script>
+        function clickLinkButton() {
+            top.F.alert("定义在页面中的客户端事件！");
+        }
+    </script>
+}

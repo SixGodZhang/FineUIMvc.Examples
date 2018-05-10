@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Layout/Column";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .columnpanel {
+            margin-right: 5px;
+        }
+
+        .rowpanel {
+            margin-bottom: 5px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel2").Height(250).ShowBorder(true).BodyPadding(10).Layout(LayoutType.Column).ShowHeader(true).Title("面板（Height=250 Layout=Column）")
+        .Items(
+            F.Panel().ID("Panel1").Width(200).Height(150).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().Text("Width=200 Height=150")
+                ),
+            F.Panel().ID("Panel4").ColumnWidth("60%").BodyPadding(10).ShowBorder(true).ShowHeader(false).Layout(LayoutType.Fit)
+                .Items(
+                    F.Label().ID("Label1").Text("ColumnWidth=60%<br >长长的文本1<br />长长的文本2<br />长长的文本3<br />长长的文本4").EncodeText(false)
+                ),
+            F.Panel().ID("Panel3").ColumnWidth("40%").BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label2").Text("ColumnWidth=40%")
+                )
+        )
+    )
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel5").Height(250).ShowBorder(true).BodyPadding(10).Layout(LayoutType.Column).ShowHeader(true).Title("面板（Height=250px Layout=Column）")
+        .Items(
+            F.Panel().ID("Panel6").Width(200).Height(150).CssClass("columnpanel").BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").Text("Width=200 Height=150 CssClass=columnpanel")
+                ),
+            F.Panel().ID("Panel7").ColumnWidth("60%").CssClass("columnpanel").BodyPadding(10).ShowBorder(true).ShowHeader(false).Layout(LayoutType.Fit)
+                .Items(
+                    F.Label().ID("Label4").Text("ColumnWidth=60% CssClass=columnpanel<br >长长的文本1<br />长长的文本2<br />长长的文本3<br />长长的文本4").EncodeText(false)
+                ),
+            F.Panel().ID("Panel8").ColumnWidth("40%").BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label5").Text("ColumnWidth=40%")
+                )
+        )
+    )
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel9").Height(350).Layout(LayoutType.Column).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("面板（Height=350 Layout=Column BodyPadding=5）")
+        .Items(
+            F.Panel().ID("Panel13").ColumnWidth("50%").MarginRight(5).Title("ColumnWidth=50% MarginRight=5").ShowBorder(true).ShowHeader(true)
+                .Items(
+                    F.Panel().ID("Panel14").Height(150).MarginBottom(5).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label8").Text("Height=100 MarginBottom=5")
+                        ),
+                    F.Panel().ID("Panel15").Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label9").Text("Height=100")
+                        )
+                ),
+            F.Panel().ID("Panel16").ColumnWidth("50%").Title("ColumnWidth=50%").ShowBorder(true).ShowHeader(true)
+                .Items(
+                    F.Panel().ID("Panel17").Height(100).MarginBottom(5).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label10").Text("Height=100 MarginBottom=5")
+                        ),
+                    F.Panel().ID("Panel18").Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label11").Text("Height=100")
+                        )
+                )
+        )
+    )
+    <br>
+    <br>
+    <br>
+    <strong>【推荐】</strong>使用HBox布局实现与上例相同的界面：
+    <br>
+    <hr>
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel10").Height(350).Layout(LayoutType.HBox).BodyPadding(10).BoxConfigChildMargin("0 5 0 0").ShowBorder(true).ShowHeader(true).Title("面板（Height=350 Layout=HBox BodyPadding=5 BoxConfigChildMargin=0 5 0 0）")
+        .Items(
+            F.Panel().ID("Panel11").BoxFlex(1).Title("BoxFlex=1").ShowBorder(true).ShowHeader(true)
+                .Items(
+                    F.Panel().ID("Panel12").Height(150).MarginBottom(5).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label6").Text("Height=100 MarginBottom=5")
+                        ),
+                    F.Panel().ID("Panel19").Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label7").Text("Height=100")
+                        )
+                ),
+            F.Panel().ID("Panel20").BoxFlex(1).Margin(0).Title("BoxFlex=1 Margin=0").ShowBorder(true).ShowHeader(true)
+                .Items(
+                    F.Panel().ID("Panel21").Height(100).MarginBottom(5).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label12").Text("Height=100 MarginBottom=5")
+                        ),
+                    F.Panel().ID("Panel22").Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                        .Items(
+                            F.Label().ID("Label13").Text("Height=100")
+                        )
+                )
+        )
+    )
+    <br>
+    <br>
+
+
+
+}
+

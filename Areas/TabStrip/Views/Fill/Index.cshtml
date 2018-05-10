@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "TabStrip/Fill";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(150).TabFill(true).ShowBorder(true).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().Text("第一个标签的内容")
+                ),
+            F.Tab().Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().Text("第二个标签的内容")
+                ),
+            F.Tab().Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab7").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label7").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip2").Height(150).TabFill(true).TabSpace(0).ShowBorder(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().ID("Tab1").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label1").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab2").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label2").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab3").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label3").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab8").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label8").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip3").Height(150).TabFill(true).TabSpace(-1).ShowBorder(true).ActiveTabIndex(2)
+        .Tabs(
+            F.Tab().ID("Tab4").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label4").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab5").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label5").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab6").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label6").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab9").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label9").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    注意三个选项卡控件的区别：
+    <ul>
+        <li>第一次选项卡：TabFill="true" TabSpace="2"（默认值）</li>
+        <li>第二次选项卡：TabFill="true" TabSpace="0"</li>
+        <li>第三次选项卡：TabFill="true" TabSpace="-1"（选项卡标题栏之间的间隔完全不见了）</li>
+    </ul>
+    <br>
+    <br>
+
+
+}
+

@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "TabStrip/TabStrip";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(350).ShowBorder(true).TabPosition(TabPosition.Top).EnableTabCloseMenu(false).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().Title("标签一").BodyPadding(10).Layout(LayoutType.Fit)
+                .Items(
+                    F.SimpleForm().ID("SimpleForm1").ShowBorder(false).ShowHeader(false).Title("SimpleForm1").LabelWidth(120)
+                        .Items(
+                            F.Label().ID("Label1").Label("文本").Text("三生石上").CssClass("highlight"),
+                            F.NumberBox().ID("NumberBox1").Label("数字输入框").Required(true).ShowRedStar(true),
+                            F.TextBox().ID("TextBox1").Label("文本输入框").Required(true).ShowRedStar(true),
+                            F.DatePicker().ID("DatePicker1").Label("日期选择器").Required(true).ShowRedStar(true),
+                            F.TextArea().ID("TextArea2").Label("多行文本输入框").Required(true).Height(100).ShowRedStar(true)
+                        )
+                ),
+            F.Tab().Title("<span class='highlight'>标签二（高亮）</span>").BodyPadding(10)
+                .Items(
+                    F.Button().ID("Button1").Text("点击显示提示对话框").OnClick(Url.Action("Button1_Click"))
+                ),
+            F.Tab().Title("标签三").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label3").CssClass("highlight").Text("第三个标签的内容（已经应用了高亮样式）")
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("Button2").CssClass("marginr").ValidateForms("SimpleForm1").Text("验证第一个标签中的表单"))
+
+    @(F.Button().ID("Button3").Text("打开下一个标签").OnClick(Url.Action("Button3_Click"), new Parameter("activeIndex", "F.ui.TabStrip1.getActiveTabIndex()")))
+
+
+}
+

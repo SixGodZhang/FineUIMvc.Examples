@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Grid/RowCommandCustom";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mybtn3 .f-icon.f-icon-remove {
+            color: red;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("").RendererFunction("renderAction3").Width(80)
+
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderAction3(value, params) {
+            return '<a class="action-btn mybtn3" href="javascript:;"><i class="f-icon f-grid-cell-iconfont f-icon-remove"></i></a>';
+        }
+
+        
+        F.ready(function () {
+
+            var grid1 = F.ui.Grid1;
+            grid1.el.on('click', 'a.action-btn', function (event) {
+                var cnode = $(this);
+
+                F.confirm({
+                    message: '你确定要这么做吗？',
+                    target: '_top',
+                    ok: function () {
+                        var rowData = grid1.getRowData(cnode.closest('.f-grid-row'));
+                        var column = grid1.getColumn(cnode.parents('.f-grid-cell'));
+
+                        // 触发后台事件
+                        F.doPostBack('@Url.Action("Grid1_RowCommand")', {
+                            rowId: rowData.id,
+                            rowText: rowData.text,
+                            rowIndex: rowData.index,
+                            columnIndex: column.index
+                        });
+
+                    }
+                });
+            });
+
+        });
+
+
+    </script>
+}

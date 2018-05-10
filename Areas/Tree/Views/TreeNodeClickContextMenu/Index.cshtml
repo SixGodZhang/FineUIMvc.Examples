@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeNodeClickContextMenu";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").Listener("nodeclick", "onTree1NodeClick").ShowHeader(true).Title("树控件")
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市（点击回发）").Expanded(true).NodeID("Zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县（点击回发）").NodeID("Suiping"),
+                                    F.TreeNode().Text("西平县（点击回发，确认提示框）").NodeID("Xiping")
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("Luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("Anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").NodeID("Hefei"),
+                            F.TreeNode().Text("黄山市").NodeID("Huangshan")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+    <br>
+    注：在树节点上点击右键菜单时，会触发 nodeclick 事件。
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        F.ready(function () {
+
+            // 点击右键菜单时，触发 nodeclick 事件
+            F.ui.Tree1.on('beforenodecontextmenu', function (event, nodeId) {
+                this.trigger('nodeclick', [event, nodeId]);
+            });
+
+        });
+
+
+        function onTree1NodeClick(event, nodeId) {
+            var tree = this;
+
+            // 节点为西平县时，先弹出确认提示框
+            if (nodeId === 'Xiping') {
+                if (!confirm('确定回发？')) {
+                    return;
+                }
+            }
+
+
+            if ($.inArray(nodeId, ["Zhumadian", "Suiping", "Xiping"]) >= 0) {
+                var nodeData = tree.getNodeData(nodeId);
+
+                // 触发后台事件
+                F.doPostBack('@Url.Action("Tree1_NodeClick")', {
+                    nodeId: nodeId,
+                    nodeText: nodeData.text
+                });
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Editor/UEditorWindow";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Width(900).Height(500).Layout(LayoutType.Fit).BodyPadding(10).Title("简单表单").IsModal(false).EnableResize(true)
+        .Items(
+            F.SimpleForm().ID("SimpleForm1").Layout(LayoutType.Fit).LabelAlign(LabelAlign.Top).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.HtmlEditor().Label("文本编辑器").ID("HtmlEditor1").Editor(Editor.UEditor)
+                        .BasePath(Url.Content("~/res/third-party/ueditor/")).ToolbarSet(EditorToolbarSet.Full)
+                        .Options(
+                            F.OptionItem().Key("zIndex").Value("99999")
+                        ).Text("<p>FineUIPro<br>基于 jQuery 的专业 ASP.NET 控件库。<br><br>FineUI的使命<br>创建 No JavaScript，No CSS，No UpdatePanel，No ViewState，No WebServices 的网站应用程序。<br><br>支持的浏览器<br>Chrome、Firefox、Safari、IE 8.0+<br><br>相关链接<br>首页：http://fineui.com/pro/<br>示例：http://pro.fineui.com/<br>更新：http://fineui.com/version_pro/</p>")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().ID("Button2").CssClass("marginr").Text("设置编辑器的值").OnClick(Url.Action("Button2_Click")),
+                    F.Button().ID("Button1").Text("获取编辑器的值").OnClick(Url.Action("Button1_Click"),
+                            new Parameter("text", "F.htmlEncode(F.ui.HtmlEditor1.getValue())"))
+                )
+        )
+    )
+    <br>
+    注：本示例不支持文件上传，请根据UEditor官网文档自行配置。
+
+
+
+}
+

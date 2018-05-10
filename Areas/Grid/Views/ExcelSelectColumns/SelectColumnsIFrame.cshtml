@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Grid/SelectColumnsIFrame";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Anchor).BodyPadding(10).IsViewPort(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().ID("btnClose").Text("取消").Icon(Icon.SystemClose).Listener("click", "F.activeWindow.hide();"),
+                    F.Button().ID("btnSaveContinue").Text("导出").Icon(Icon.SystemSave).OnClick(Url.Action("SelectColumnsIFrame_btnSaveContinue_Click"),
+                            new Parameter("columns", "F.ui.cblColumns.getValue()"))
+                )
+        )
+        .Items(
+            F.CheckBoxList().ID("cblColumns").ColumnNumber(3)
+                .Items(
+                    F.CheckItem().Text("姓名").Value("姓名").Selected(true),
+                    F.CheckItem().Text("性别").Value("性别").Selected(true),
+                    F.CheckItem().Text("入学年份").Value("入学年份").Selected(true),
+                    F.CheckItem().Text("是否在校").Value("是否在校").Selected(true),
+                    F.CheckItem().Text("所学专业").Value("所学专业").Selected(true),
+                    F.CheckItem().Text("分组").Value("分组").Selected(true),
+                    F.CheckItem().Text("注册日期").Value("注册日期").Selected(true)
+                )
+        )
+    )
+
+}

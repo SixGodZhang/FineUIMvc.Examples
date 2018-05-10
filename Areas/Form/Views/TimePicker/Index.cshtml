@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Form/TimePicker";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.DatePicker().Required(true).EnableEdit(false).Label("日期").EmptyText("请选择日期").ID("DatePicker1").ShowRedStar(true),
+            F.TimePicker().ID("TimePicker1").ShowRedStar(true).EnableEdit(false).Label("时间").Increment(30).MinTimeText("8:30").MaxTimeText("20:30").Required(true).EmptyText("请选择时间"),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult").ShowLabel(false))
+    <br>
+    <br>
+
+    注：本示例通过EnableEdit属性控制日期和时间选择器不可编辑。
+
+}
+

@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Other/CssStyle";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .red {
+            font-weight: bold;
+            color: Red;
+        }
+
+        .green {
+            font-weight: bold;
+            font-style: italic;
+            font-size: 1.5em;
+            color: Green;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Label().ID("Label1").Text("文本一，注意观察文本的样式"))
+    <br>
+
+    @(F.Button().ID("Button1").OnClick(Url.Action("Button1_Click")).Text("通过 CssStyle 修改文本的样式"))
+    @(F.Button().ID("Button3").OnClick(Url.Action("Button3_Click")).Text("清空 CssStyle 设置的样式"))
+
+    <br>
+    <br>
+
+    @(F.Label().ID("Label2").Text("文本二，注意观察文本的样式"))
+    <br>
+
+    @(F.Button().ID("Button2").OnClick(Url.Action("Button2_Click"),
+            new Parameter("hasClassRed", "F.ui.Label2.el.hasClass('red')")).Text("通过 CssClass 修改文本的样式")
+    )
+    @(F.Button().ID("Button4").OnClick(Url.Action("Button4_Click")).Text("清空 CssClass 设置的样式"))
+    <br>
+    <br>
+
+
+
+}
+

@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "TabStrip/Plain";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip4").Height(150).ShowBorder(true).TabBorderColor(true).TabPlain(true).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().ID("Tab10").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label10").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab11").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label11").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab12").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label12").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab13").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label13").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip5").Height(150).ShowBorder(true).TabAlign(TabAlign.Center).TabBorderColor(true).TabPlain(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().ID("Tab14").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label14").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab15").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label15").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab16").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label16").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab17").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label17").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip6").Height(150).ShowBorder(true).TabAlign(TabAlign.Right).TabBorderColor(true).TabPlain(true).ActiveTabIndex(2)
+        .Tabs(
+            F.Tab().ID("Tab18").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label18").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab19").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label19").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab20").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label20").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab21").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label21").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(150).TabFill(true).TabBorderColor(true).ShowBorder(true).TabPlain(true).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().Text("第一个标签的内容")
+                ),
+            F.Tab().Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().Text("第二个标签的内容")
+                ),
+            F.Tab().Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab7").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label7").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip2").Height(150).TabFill(true).TabSpace(0).TabBorderColor(true).TabPlain(true).ShowBorder(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().ID("Tab1").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label1").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab2").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label2").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab3").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label3").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab8").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label8").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip3").Height(150).TabFill(true).TabSpace(-1).TabBorderColor(true).TabPlain(true).ShowBorder(true).ActiveTabIndex(2)
+        .Tabs(
+            F.Tab().ID("Tab4").Title("标签一").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label4").Text("第一个标签的内容")
+                ),
+            F.Tab().ID("Tab5").Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label5").Text("第二个标签的内容")
+                ),
+            F.Tab().ID("Tab6").Title("标签三").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label6").Text("第三个标签的内容")
+                ),
+            F.Tab().ID("Tab9").Title("标签四").EnableClose(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label9").Text("第四个标签的内容")
+                )
+        )
+    )
+    <br>
+    <br>
+
+
+}
+

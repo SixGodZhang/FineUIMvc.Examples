@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "GridEditor/SelectFromWindowEmptyRowsIFrameWindow";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(false).Title("表格").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true).EnableMultiSelect(false).IsViewPort(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名"),
+            F.RenderField().Width(80).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别"),
+            F.RenderField().Width(80).ColumnID("EntranceYear").DataField("EntranceYear").HeaderText("入学年份"),
+            F.RenderField().Width(100).ColumnID("EntranceDate").DataField("EntranceDate").HeaderText("入学日期"),
+            F.RenderCheckField().Width(80).ColumnID("AtSchool").RenderAsStaticField(true).DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").HeaderText("所学专业").ExpandUnusedSpace(true)
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Center)
+                .Items(
+                    F.Button().ID("Button1").Text("选择后定位到下一行").Icon(Icon.SystemSave).Listener("click", "onGridRowSelectNext"),
+                    F.Button().ID("btnSaveClose").Text("选择后关闭").Icon(Icon.SystemSaveClose).Listener("click", "onGridRowSelectClose"),
+                    F.Button().ID("btnClose").Text("关闭").Icon(Icon.SystemClose).Listener("click", "F.activeWindow.hide();")
+                )
+        ).Listener("rowdblclick", "onGridRowSelectNext")
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 调用父页面的 updateGridRow 函数
+        function updateParentGridRow(activeWindow) {
+            // 选中行数据
+            var rowData = F.ui.Grid1.getSelectedRow(true);
+            var rowValue = rowData.values;
+
+            var selectedValues = {
+                'Name': rowValue['Name'],
+                'Gender': rowValue['Gender'],
+                'EntranceYear': rowValue['EntranceYear'],
+                'EntranceDate': rowValue['EntranceDate'],
+                'AtSchool': rowValue['AtSchool'],
+                'Major': rowValue['Major']
+            };
+
+            // 调用父页面的 updateGridRow 函数
+            activeWindow.window.updateGridRow(selectedValues);
+        }
+
+        function onGridRowSelectClose(event) {
+            var grid1 = F.ui.Grid1;
+            if (!grid1.getSelectedRow()) {
+                F.alert('请至少选择一行！');
+                return;
+            }
+
+            // 返回当前活动Window对象（浏览器窗口对象通过F.getActiveWindow().window获取）
+            var activeWindow = F.getActiveWindow();
+
+            // 调用父页面的 updateGridRow 函数
+            updateParentGridRow(activeWindow);
+
+            // 隐藏当前弹出窗体
+            activeWindow.hide();
+        }
+
+        function onGridRowSelectNext(event) {
+            var grid1 = F.ui.Grid1;
+            if (!grid1.getSelectedRow()) {
+                F.alert('请至少选择一行！');
+                return;
+            }
+
+            // 返回当前活动Window对象（浏览器窗口对象通过F.getActiveWindow().window获取）
+            var activeWindow = F.getActiveWindow();
+
+            // 调用父页面的 updateGridRow 函数
+            updateParentGridRow(activeWindow);
+
+            // 调用父页面的 moveToNextRow 函数
+            activeWindow.window.moveToNextRow();
+        }
+
+
+    </script>
+}

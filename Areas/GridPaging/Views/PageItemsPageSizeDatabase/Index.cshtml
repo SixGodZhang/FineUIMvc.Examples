@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "GridPaging/PageItemsPageSizeDatabase";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).Height(350).ShowHeader(true).ShowBorder(true).Title("表格（数据库分页）").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(5).IsDatabasePaging(true).Listener("paging", "onGrid1PageIndexChanged")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .PageItems(
+            F.ToolbarSeparator(),
+            F.ToolbarText().Text("每页记录数："),
+            F.DropDownList().ID("ddlPageSize").Width(80).Listener("change", "onDdlPageSizeChange")
+                .Items(
+                    F.ListItem().Text("5").Value("5"),
+                    F.ListItem().Text("10").Value("10"),
+                    F.ListItem().Text("15").Value("15"),
+                    F.ListItem().Text("20").Value("20")
+                )
+        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function doPostBackReBindGrid(event) {
+            var grid1 = F.ui.Grid1;
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_ReBindGrid")', {
+                fields: grid1.fields,
+                pageIndex: grid1.pageIndex,
+                pageSize: F.ui.ddlPageSize.getValue()
+            });
+
+        }
+
+        function onDdlPageSizeChange(event) {
+            doPostBackReBindGrid();
+        }
+
+        function onGrid1PageIndexChanged(event) {
+            doPostBackReBindGrid();
+        }
+
+    </script>
+}

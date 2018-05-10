@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Grid/ExcelGroupField";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.GroupField().EnableLock(true).HeaderText("分组一").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.RenderField().Width(100).DataField("Name").HeaderText("姓名"),
+                    F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                    F.GroupField().HeaderText("考试成绩").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().Width(80).DataField("ChineseScore").HeaderText("语文成绩").TextAlign(TextAlign.Center),
+                            F.RenderField().Width(80).DataField("MathScore").HeaderText("数学成绩").TextAlign(TextAlign.Center),
+                            F.RenderField().Width(80).DataField("TotalScore").HeaderText("总成绩").TextAlign(TextAlign.Center)
+                        )
+                ),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("Button1").Text("导出为Excel文件").Listener("click", "onButton1Click"))
+
+
+    <!-- 隐藏表单，用于自定义POST请求 -->
+    @using (Html.BeginForm("ExportToExcel", "ExcelGroupField", FormMethod.Post, new { id = "myform" }))
+    {
+        <input type="hidden" name="content" />
+    }
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function getResolvedColumns(columns) {
+            var result = [];
+            for (var i = 0, count = columns.length; i < count; i++) {
+                var column = columns[i];
+
+                var columnResult = {
+                    text: column.text
+                    //columnType: column.columnType,
+                    //columnId: column.columnId
+                };
+
+                if (column.columns) {
+                    columnResult.columns = getResolvedColumns(column.columns);
+                }
+
+                result.push(columnResult);
+            }
+            return result;
+        }
+
+        function getColumns() {
+            return getResolvedColumns(F.ui.Grid1.columns);
+        }
+
+
+        function onButton1Click(event) {
+            // 自定义POST请求
+            var myform = $('#myform');
+            myform.find('[name=content]').val(F.toJSON(getColumns()));
+            myform[0].submit();
+        }
+
+    </script>
+}

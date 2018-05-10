@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Toolbar/MenuDynamicButton";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Height(300).BodyPadding(10).Title("面板").ShowBorder(true)
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().Text("点击打开新窗体（内联按钮）").OnClientClick("window.open('"+ Url.Content("~/") +"', '_blank');").ID("Button1")
+                )
+        )
+    )
+
+
+    @{
+        Button btn = new Button();
+        btn.Text = "工具栏中的按钮数（动态添加的按钮）";
+        btn.OnClick = new Event("click", Url.Action("btnDynamic_Click"), new Parameter("count", "F.ui.Toolbar1.items.length"));
+        F.GetControl<Toolbar>("Toolbar1").Items.Add(btn);
+    }
+
+}
+

@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Grid/HeaderChangeTextWidth";
+    var F = Html.F();
+}
+
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(300).Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("Button1").CssClass("marginr").Text("修改[入学年份]的标题文本和宽度").OnClick(Url.Action("Button1_Click")))
+
+    @(F.Button().ID("Button2").Text("还原[入学年份]").OnClick(Url.Action("Button2_Click")))
+    <br>
+    <br>
+    注：后台通过注册 JavaScript 代码来改变列的宽度和标题文本。
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 改变列的标题文本和宽度
+        function changeColumnTitleAndWidth(title, width) {
+            var grid1 = F.ui.Grid1;
+
+            var entranceYearColumn = grid1.getColumn('EntranceYear');
+            entranceYearColumn.text = title;
+            entranceYearColumn.width = width;
+
+            grid1.loadData();
+        }
+
+    </script>
+}

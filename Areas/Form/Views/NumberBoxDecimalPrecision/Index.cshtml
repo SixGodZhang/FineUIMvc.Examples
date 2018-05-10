@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Form/NumberBoxDecimalPrecision";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Top).Title("简单表单").LabelWidth(120)
+        .Items(
+            F.NumberBox().ID("NumberBox1").EmptyText("精度为 2，比如 0.35").Label("0 到 1 之间的小数").MaxValue(1).MinValue(0).NoDecimal(false).NoNegative(true).DecimalPrecision(2).Required(true).ShowRedStar(true).Increment(0.01).Text("0.356"),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), new Parameter("number", "F.ui.NumberBox1.getValue()"))
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Top)
+                .Items(
+                    F.Button().ID("Button1").Text("修改精度为 1").OnClick(Url.Action("Button1_Click")),
+                    F.Button().ID("Button2").Text("修改精度为 2").OnClick(Url.Action("Button2_Click")),
+                    F.Button().ID("Button3").Text("修改精度为 3").OnClick(Url.Action("Button3_Click"))
+                )
+        )
+    )
+
+
+}
+

@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Form/TextArea";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单").LabelAlign(LabelAlign.Top).ShowHeader(true)
+        .Items(
+            F.TextArea().ID("TextArea1").EmptyText("文本框的高度会自动扩展").Label("自动扩展高度的文本输入框").AutoGrowHeight(true).AutoGrowHeightMin(100).AutoGrowHeightMax(200)
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+

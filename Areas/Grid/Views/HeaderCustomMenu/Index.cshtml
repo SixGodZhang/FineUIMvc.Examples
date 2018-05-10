@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Grid/HeaderCustomMenu";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableHeaderMenu(false)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true)
+        )
+        .Tools(
+            F.Tool().IconFont(IconFont._Columns).ToolTip("显示隐藏列").ID("toolColumns").TabIndex(0)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function createMenuItems() {
+            var grid1 = F.ui.Grid1;
+
+            var columns = grid1.columns;
+            var columnsMenuItems = [];
+            $.each(columns, function (index, column) {
+                if (column.hideable) {
+                    var options = {
+                        text: column.text,
+                        checked: !column.hidden,
+                        handler: function (event) {
+                            var checked = this.isChecked();
+                            grid1.hideColumn(event, column, !checked);
+                        }
+                    };
+                    var menuCheckBox = new F.MenuCheckBox(options);
+                    columnsMenuItems.push(menuCheckBox);
+                }
+            });
+
+            return new F.Menu({
+                items: columnsMenuItems
+            });
+        }
+
+        F.ready(function () {
+
+            // 为工具图标设置菜单
+            F.ui.toolColumns.setMenu(createMenuItems());
+
+        });
+
+    </script>
+}

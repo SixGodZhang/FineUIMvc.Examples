@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeSelect";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件")
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").Expanded(true).NodeID("Zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").NodeID("Suiping"),
+                                    F.TreeNode().Text("西平县").NodeID("Xiping")
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("Luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("Anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").NodeID("Hefei"),
+                            F.TreeNode().Text("黄山市").NodeID("Huangshan")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnGetSelectedNode").OnClick(Url.Action("btnGetSelectedNode_Click"), new Parameter("selectedNode", "getSelectedNode()")).CssClass("marginr").Text("获取选中的节点"))
+
+    @(F.Button().ID("btnSelectHefei").OnClick(Url.Action("btnSelectHefei_Click")).Text("选中[合肥市]"))
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+        function getSelectedNode() {
+            var result;
+
+            var selectedNode = F.ui.Tree1.getSelectedNode(true);
+            if (selectedNode) {
+                result = {
+                    id: selectedNode.id,
+                    text: selectedNode.text
+                };
+            }
+
+            return F.toJSON(result);
+        }
+    </script>
+
+
+}

@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Form/FormUpdateLabel";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").LabelWidth(100).BodyPadding(10).ID("Form1").Title("表单")
+        .Rows(
+            F.FormRow()
+                .Items(
+                    F.Label().ID("labTitle").Label("标题").HideMode(HideMode.Display).Text("申请单"),
+                    F.Label().ID("labLiuShuiHao").Label("流水号").Text("123456789")
+                ),
+            F.FormRow()
+                .Items(
+                    F.Label().ID("labPhone").Label("固定电话").Text("0551-1234567"),
+                    F.Label().ID("Label16").Label("申请人").Text("admin")
+                ),
+            F.FormRow()
+                .Items(
+                    F.Label().ID("Label4").Label("编号").Text("200804170006"),
+                    F.TextBox().ID("tbxEmail").Required(true).ShowRedStar(true).Label("电子邮箱").EmptyText("请输入常用电子邮箱").RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址！")
+                ),
+            F.FormRow()
+                .Items(
+                    F.DropDownList().ID("DropDownList3").Label("审批人").Required(true).EmptyText("请选择审批人").ShowRedStar(true).AutoSelectFirstItem(false)
+                        .Items(
+                            F.ListItem().Text("老大甲").Value("0"),
+                            F.ListItem().Text("老大乙").Value("1"),
+                            F.ListItem().Text("老大丙").Value("2")
+                        ),
+                    F.DatePicker().Required(true).Label("审批时间").EmptyText("请输入审批时间").ID("dpApplyTime").ShowRedStar(true).DateFormatString("yyyy-MM-dd")
+                ),
+            F.FormRow()
+                .Items(
+                    F.NumberBox().ID("nbxApplyNumber").Label("申请数量").NoDecimal(true).NoNegative(true).EmptyText("请输入申请数量").MaxValue(100).Required(true).ShowRedStar(true)
+                ),
+            F.FormRow()
+                .Items(
+                    F.TextArea().ID("taDescription").Label("描述").ShowRedStar(true).Required(true).MinLength(5)
+                ),
+            F.FormRow()
+                .Items(
+                    F.Panel().ID("Panel2").ShowBorder(false).ShowHeader(false)
+                        .Items(
+                            F.Button().ID("btnSubmit").Text("验证表单并提交").CssClass("marginr").OnClick(Url.Action("btnSubmit_Click"), "Form1").ValidateForms("Form1")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnUpdateLabel").Text("更新[固定电话]标签").CssClass("marginr").Listener("click", "onUpdateLabelClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRemoveRequired").Text("去除[电子邮箱]必填项").CssClass("marginr").Listener("click", "onRemoveRequiredClick"))
+
+    @(F.Button().ID("btnRemoveRegex").Text("去除[电子邮箱]的正则表达式验证").CssClass("marginr").Listener("click", "onRemoveRegexClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRemoveMinLength").Text("去除[描述]的最少5个字符限制").CssClass("marginr").Listener("click", "onRemoveMinLengthClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnChangeMaxValue").Text("将[申请数量]的最大值100改为10").CssClass("marginr").Listener("click", "onChangeMaxValueClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnModifyMaxValue").Text("限制[审批时间]的最大时间为今天").CssClass("marginr").Listener("click", "onModifyMaxValueClick"))
+    <br>
+    <br>
+
+
+}
+
+@section script {
+
+    <script>
+
+        function onUpdateLabelClick(event) {
+            var labPhone = F.ui.labPhone;
+
+            var labPhoneFieldLabel = labPhone.getFieldLabel();
+            if (labPhoneFieldLabel == "移动电话") {
+                labPhone.setFieldLabel("固定电话");
+            } else {
+                labPhone.setFieldLabel("移动电话");
+            }
+        }
+
+        function onRemoveRequiredClick(event) {
+            F.ui.tbxEmail.setRequired(false);
+            F.ui.tbxEmail.setRedStar(false);
+        }
+
+        function onRemoveRegexClick(event) {
+            F.ui.tbxEmail.setRegex('');
+        }
+
+        function onRemoveMinLengthClick(event) {
+            F.ui.taDescription.setMinLength(undefined);
+        }
+
+        function onChangeMaxValueClick(event) {
+            F.ui.nbxApplyNumber.setMaxValue(10);
+        }
+
+        function onModifyMaxValueClick(event) {
+            var datestr = F.formatDate('yyyy-MM-dd', new Date());
+            F.ui.dpApplyTime.setMaxValue('2016-11-22');
+        }
+
+    </script>
+}

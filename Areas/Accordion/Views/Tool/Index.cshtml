@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Accordion/Tool";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Accordion().ID("Accordion1").Title("手风琴控件").Width(300).Height(450).ShowBorder(true).ActivePaneIndex(1).ShowHeader(false)
+        .Panes(
+            F.AccordionPane().ID("AccordionPane1").Title("面板一").IconUrl(Url.Content("~/res/images/16/1.png")).BodyPadding("2px 5px")
+                .Items(
+                    F.Label().ID("Label1").Text("面板一中的文本")
+                )
+                .Tools(
+                    F.Tool().IconFont(IconFont._Gear).ToolTip("设置").Listener("click", "onToolIconClick"),
+                    F.Tool().IconFont(IconFont._Download).ToolTip("下载").Listener("click", "onToolIconClick")
+                ),
+            F.AccordionPane().ID("AccordionPane2").Title("面板二").IconUrl(Url.Content("~/res/images/16/4.png")).BodyPadding("2px 5px")
+                .Items(
+                    F.Label().ID("Label2").Text("面板二中的文本")
+                ),
+            F.AccordionPane().ID("AccordionPane3").Title("面板三").IconUrl(Url.Content("~/res/images/16/7.png")).BodyPadding("2px 5px")
+                .Items(
+                    F.Label().ID("Label3").Text("面板三中的文本")
+                )
+        )
+    )
+    <br>
+
+
+    @(F.Button().OnClick(Url.Action("Button1_Click"), new Parameter("activeIndex", "F.ui.Accordion1.getActivePaneIndex()")).Text("获取当前展开的面板").ID("Button1"))
+    <br>
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button2_Click"), new Parameter("activeIndex", "F.ui.Accordion1.getActivePaneIndex()")).Text("展开下一个面板").ID("Button2"))
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onToolIconClick(event) {
+
+            // 当前点击的图标字体
+            var iconFont = this.iconFont;
+
+            F.notify({
+                message: '你点击了标题栏工具图标：' + iconFont,
+                messageIconFont: iconFont,
+                displayMilliseconds: 3000,
+                positionX: 'center',
+                positionY: 'center'
+            });
+
+
+            // 阻止事件向上传播（点击工具图标时不会折叠展开面板）
+            event.stopPropagation();
+        }
+
+    </script>
+
+}
+

@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/GridSelectAllClient";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉表格（多选）").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下拉表格中选择").MatchFieldWidth(false).EnableMultiSelect(true).DataControlID("Grid1")
+                .PopPanel(
+                    F.Panel().ID("Panel7").BodyPadding(10).Width(650).Height(300).ShowBorder(true).ShowHeader(false).Layout(LayoutType.Fit).Hidden(true)
+                        .Toolbars(
+                            F.Toolbar().Position(ToolbarPosition.Bottom)
+                                .Items(
+                                    F.Button().Text("全选").ID("btnSelectAll").Listener("click", "onSelectAllClick"),
+                                    F.Button().Text("全选化学系").ID("btnSelectHuaxue").Listener("click", "onSelectHuaxueClick"),
+                                    F.Button().Text("全选物理系").ID("btnSelectWuli").Listener("click", "onSelectWuliClick"),
+                                    F.Button().Text("全选材料系（保持已选中项）").ID("btnSelectCailiao").Listener("click", "onSelectSelectCailiaoClick")
+                                )
+                        )
+                        .Items(
+                            F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(false).DataIDField("Id").DataTextField("Name").Width(550).Height(300).EnableMultiSelect(true).KeepCurrentSelection(true).EnableCheckBoxSelect(true).BoxFlex(1)
+                                .Columns(
+                                    F.RenderField().Width(100).DataField("Name").HeaderText("姓名"),
+                                    F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(100),
+                                    F.RenderField().ExpandUnusedSpace(true).DataField("Major").HeaderText("所学专业")
+                                )
+                                .DataSource(DataSourceUtil.GetDataTable())
+                        )
+                ),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").CssClass("marginr").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function getRowIdsByMajor(majorName) {
+            var grid = F.ui.Grid1, rows = [];
+            $.each(grid.data, function (index, rowData) {
+                if (rowData.values['Major'] == majorName) {
+                    rows.push(rowData.id);
+                }
+            });
+            return rows;
+        }
+
+        function onSelectAllClick() {
+            F.ui.Grid1.selectAllRows();
+            // 将数据控件中的值同步到输入框
+            F.ui.DropDownBox1.syncToBox();
+        }
+
+        function onSelectHuaxueClick() {
+            F.ui.Grid1.selectRows(getRowIdsByMajor('化学系'));
+            // 将数据控件中的值同步到输入框
+            F.ui.DropDownBox1.syncToBox();
+        }
+
+        function onSelectWuliClick() {
+            F.ui.Grid1.selectRows(getRowIdsByMajor('物理系'));
+            // 将数据控件中的值同步到输入框
+            F.ui.DropDownBox1.syncToBox();
+        }
+
+        function onSelectSelectCailiaoClick() {
+            F.ui.Grid1.selectRows(getRowIdsByMajor('材料科学与工程系'), true);
+            // 将数据控件中的值同步到输入框
+            F.ui.DropDownBox1.syncToBox();
+        }
+
+    </script>
+}

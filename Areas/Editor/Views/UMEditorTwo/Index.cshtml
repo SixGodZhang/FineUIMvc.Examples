@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Editor/UMEditorTwo";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("Form1").BodyPadding(10).Title("添加文章")
+        .Items(
+            F.TextBox().ID("tbxTitle").Label("文章标题").Required(true),
+            F.HtmlEditor().Label("文章正文").ID("HtmlEditor1").Editor(Editor.UMEditor)
+                .BasePath(Url.Content("~/res/third-party/umeditor/")).ToolbarSet(EditorToolbarSet.Full).Height(400).Text("<p>FineUIPro<br>基于 jQuery 的专业 ASP.NET 控件库。<br><br>FineUI的使命<br>创建 No JavaScript，No CSS，No UpdatePanel，No ViewState，No WebServices 的网站应用程序。<br><br>支持的浏览器<br>Chrome、Firefox、Safari、IE 8.0+<br><br>相关链接<br>首页：http://fineui.com/pro/<br>示例：http://pro.fineui.com/<br>更新：http://fineui.com/version_pro/</p>"),
+            F.HtmlEditor().Label("文章摘要").ID("HtmlEditor2").Editor(Editor.UMEditor)
+                .BasePath(Url.Content("~/res/third-party/umeditor/")).ToolbarSet(EditorToolbarSet.Basic).Height(200)
+        )
+        .Toolbars(
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("Button1").ValidateForms("Form1").Text("获取文章内容").OnClick(Url.Action("Button1_Click"),
+                            new Parameter("title", "F.htmlEncode(F.ui.tbxTitle.getValue())"),
+                            new Parameter("text1", "F.htmlEncode(F.ui.HtmlEditor1.getValue())"),
+                            new Parameter("text2", "F.htmlEncode(F.ui.HtmlEditor2.getValue())")),
+                    F.Button().ID("Button2").Text("更新文章摘要").OnClick(Url.Action("Button2_Click"),
+                            new Parameter("text1", "F.htmlEncode(F.ui.HtmlEditor1.getValue())"))
+                )
+        )
+    )
+
+}
+

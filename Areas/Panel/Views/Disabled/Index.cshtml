@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Panel/Disabled";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").IconFont(IconFont._VolumeUp).BodyPadding(10).Enabled(false).Title("面板").ID("Panel1")
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ID("Toolbar1")
+                .Items(
+                    F.ToolbarText().ID("ToolbarText1").Text("工具条文本一"),
+                    F.ToolbarSeparator().ID("ToolbarSeparator1"),
+                    F.ToolbarText().ID("ToolbarText2").Text("工具条文本二"),
+                    F.ToolbarSeparator().ID("ToolbarSeparator2"),
+                    F.Button().Text("工具条按钮").ID("btnToolbarButton").Listener("click", "onToolbarButtonClick"),
+                    F.ToolbarFill().ID("ToolbarFill1"),
+                    F.ToolbarText().ID("ToolbarText4").Text("工具条文本四")
+                )
+        )
+        .Items(
+            F.Panel().ShowHeader(true).BodyPadding(10).Height(200).ShowBorder(true).Title("内容面板").ID("ContentPanel1").Content("可以在此放置<a href=\"http://www.w3schools.com/html/\" target=\"_blank\">HTML</a>标签。")
+        )
+    )
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button2_Click"), new Parameter("disabled", "F.ui.Panel1.disabled")).Text("启用/禁用面板").CssClass("marginr").ID("Button2"))
+
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onToolbarButtonClick(event) {
+            F.alert("你点击了工具栏按钮");
+        }
+
+    </script>
+}

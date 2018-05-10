@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "ThirdParty/AutoCompleteEmail";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <link rel="stylesheet" href="~/res/third-party/jqueryuiautocomplete/jquery-ui.css" />
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.TextBox().ID("TextBox1").ShowLabel(false).EmptyText("随便输入个字母试试")
+        )
+    )
+
+
+
+}
+
+@section script {
+
+    <script src="~/res/third-party/jqueryuiautocomplete/jquery-ui.js" type="text/javascript"></script>
+    <script>
+
+        F.ready(function () {
+
+            var availableTags = [
+                "qq.com",
+                "163.com",
+                "gmail.com",
+                "outlook.com",
+                "126.com",
+                "sina.com",
+                "yahoo.com",
+                "sohu.com",
+                "foxmail.com",
+                "live.com",
+                "mail.ustc.edu.cn"];
+
+
+            function getFullEmails(name) {
+                var emails = [];
+                for (var i = 0, count = availableTags.length; i < count; i++) {
+                    emails.push(name + "@@" + availableTags[i]);
+                }
+                return emails;
+            }
+
+            $('#TextBox1 input').autocomplete({
+                source: function (request, response) {
+                    if (request.term.indexOf('@@') === -1) {
+                        response(getFullEmails(request.term));
+                    }
+                }
+            });
+
+
+
+        });
+
+    </script>
+
+}

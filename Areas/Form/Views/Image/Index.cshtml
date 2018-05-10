@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Form/Image";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    Icon="World"：
+    <br>
+
+    @(F.Image().ID("Image1").Icon(Icon.World))
+
+    <br>
+    ImageUrl="~/res/icon/world.png"：
+    <br>
+
+    @(F.Image().ID("Image2").ImageUrl("~/res/icon/world.png"))
+
+    <br>
+    ImageUrl="~/res/images/logo/favicon.gif" ImageCssStyle="border:solid 1px #ccc;padding:5px;"：
+    <br>
+
+    @(F.Image().ID("Image3").ImageWidth(32).ImageHeight(32).ImageCssStyle("border:solid 1px #ccc;padding:5px;").ImageUrl("~/res/images/logo/favicon.gif"))
+    <br>
+
+    @(F.Button().Text("改变图片的大小").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("imageWidth", "F.ui.Image3.getWidth()")))
+
+
+}
+

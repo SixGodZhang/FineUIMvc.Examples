@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Grid/ExcelRowCommandDownload";
+    var F = Html.F();
+}
+
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("").RendererFunction("renderDownLoadLink").Width(80)
+
+        ).Listener("rowdblclick", "onGrid1RowDblclick")
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    注：双击行时，同样可以下载文件。
+
+    <!-- 隐藏表单，用于自定义POST请求 -->
+    @using (Html.BeginForm("ExportToExcel", "ExcelRowCommandDownload", FormMethod.Post, new { id = "myform" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="content" />
+    }
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderDownLoadLink(value, params) {
+            return '<a class="action-btn mybtn3" href="javascript:;"><i class="f-icon f-grid-cell-iconfont f-icon-download"></i></a>';
+        }
+
+        
+        function doCustomPost(rowData) {
+            // 自定义POST请求
+            var myform = $('#myform');
+            myform.find('[name=content]').val(F.toJSON(rowData));
+            myform[0].submit();
+        }
+
+        function onGrid1RowDblclick(event, rowId) {
+            doCustomPost(F.ui.Grid1.getRowData(rowId));
+        }
+
+
+        F.ready(function () {
+
+            var grid1 = F.ui.Grid1;
+            grid1.el.on('click', 'a.action-btn', function (event) {
+                var cnode = $(this);
+
+                var rowData = grid1.getRowData(cnode.closest('.f-grid-row'));
+
+                doCustomPost(rowData);
+
+            });
+
+        });
+
+
+    </script>
+}

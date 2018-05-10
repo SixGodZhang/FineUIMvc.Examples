@@ -1,0 +1,209 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeSmart";
+    var F = Html.F();
+}
+
+
+@functions {
+
+
+    private void ResolveTreeNodeCollection(IEnumerable<TreeNode> nodes)
+    {
+        foreach (TreeNode node in nodes)
+        {
+            node.ToolTip = node.Text;
+
+            if (node.Nodes != null && node.Nodes.Count > 0)
+            {
+                ResolveTreeNodeCollection(node.Nodes);
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// 为每个树节点添加Tooltip
+    /// </summary>
+    /// <param name="nodes"></param>
+    /// <returns></returns>
+    public TreeNodeExtension[] ResolveTreeNodes(params TreeNodeExtension[] nodes)
+    {
+        ResolveTreeNodeCollection(nodes.Select(n => n.Source));
+
+        return nodes;
+    }
+}
+
+
+
+
+@section body {
+
+    @(F.Tree().ID("Tree1").Width(300).Height(400).ShowHeader(false).EnableSingleClickExpand(true).MiniMode(false).HideHScrollbar(false).HideVScrollbar(false).ExpanderToRight(false).HeaderStyle(false)
+        .Nodes(ResolveTreeNodes(
+            F.TreeNode().Text("中国").Expanded(true).NodeID("china").IconFont(IconFont._Home)
+                .Nodes(
+                    F.TreeNode().Text("河南省").NodeID("henan")
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").NodeID("zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").Leaf(false).NodeID("suiping")
+                                        .Nodes(
+                                            F.TreeNode().Text("槐树乡").Leaf(false).NodeID("huaishu")
+                                                .Nodes(
+                                                    F.TreeNode().Text("陈庄村").NodeID("chenzhuang")
+                                                )
+                                        )
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").Expanded(true).NodeID("hefei")
+                                .Nodes(
+                                    F.TreeNode().Text("金色池塘小区").NodeID("golden"),
+                                    F.TreeNode().Text("中国科学技术大学").Expanded(true).NodeID("ustc")
+                                        .Nodes(
+                                            F.TreeNode().Text("化学与材料科学学院").NodeID("ustc-huaxue"),
+                                            F.TreeNode().Text("管理学院").NodeID("ustc-guanli"),
+                                            F.TreeNode().Text("国家同步辐射实验室").NodeID("ustc-fushe"),
+                                            F.TreeNode().Text("火灾科学国家重点实验室（这一项很长很长很长很长很长很长很长很长）").NodeID("ustc-huozai")
+                                        )
+                                )
+                        )
+                ),
+            F.TreeNode().Text("美国").Expanded(true).NodeID("mg").IconFont(IconFont._Plane).Icon(Icon.Cake)
+                .Nodes(
+                    F.TreeNode().Text("加利福尼亚州").NodeID("mg-jlfny")
+                        .Nodes(
+                            F.TreeNode().Text("斯坦福大学").NodeID("mg-stf"),
+                            F.TreeNode().Text("加州大学").NodeID("mg-jz")
+                        ),
+                    F.TreeNode().Text("马萨诸塞州").Expanded(true).NodeID("mg-mszs")
+                        .Nodes(
+                            F.TreeNode().Text("哈佛大学").NodeID("mg-hf"),
+                            F.TreeNode().Text("麻省理工学院").NodeID("mg-mslg")
+                        )
+                )
+        )).Listener("nodeclick", "onNodeClick").SelectedNodeID("ustc")
+
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+
+    @(F.CheckBox().ID("cbxHideHScrollbar").ShowLabel(false).Text("隐藏水平滚动条").Listener("change", "onHideHScrollbarCheckChanged"))
+
+    @(F.CheckBox().ID("cbxHideVScrollbar").ShowLabel(false).Text("隐藏垂直滚动条").Listener("change", "onHideVScrollbarCheckChanged"))
+
+    <br>
+
+    @(F.CheckBox().ID("cbxExpanderToRight").ShowLabel(false).Text("折叠图标移到右侧").Listener("change", "onExpanderToRightCheckChanged"))
+
+
+    @(F.CheckBox().ID("cbxHeaderStyle").ShowLabel(false).Text("启用标题栏样式").Listener("change", "onHeaderStyleCheckChanged"))
+
+    <br>
+    @(F.CheckBox().ID("cbxMiniMode").ShowLabel(false).Text("启用微型模式").Listener("change", "onMiniModeCheckChanged"))
+
+    <br />
+    <br />
+    注：启用微型模式时，请同时启用如下属性：
+    <ul>
+        <li>
+            MiniMode="true"
+        </li>
+        <li>
+            HideHScrollbar="true"
+        </li>
+        <li>
+            HideVScrollbar="true"
+        </li>
+        <li>
+            ExpanderToRight="true"
+        </li>
+        <li>
+            HeaderStyle="true"
+        </li>
+        <li>
+            Width="50px" （合适的宽度值即可）
+        </li>
+    </ul>
+    <br />
+}
+
+
+@section script {
+
+    <script>
+
+        function onNodeClick(event, nodeId) {
+            F('labResult').setValue('你点击了树节点：' + this.getNodeData(nodeId).text);
+        }
+
+        function onHideHScrollbarCheckChanged(event, checked) {
+            var tree1 = F.ui.Tree1;
+            tree1.hideHScrollbar = checked;
+            tree1.loadData();
+        }
+
+        function onHideVScrollbarCheckChanged(event, checked) {
+            var tree1 = F.ui.Tree1;
+            tree1.hideVScrollbar = checked;
+            tree1.loadData();
+        }
+
+        function onExpanderToRightCheckChanged(event, checked) {
+            var tree1 = F.ui.Tree1;
+            tree1.expanderToRight = checked;
+            tree1.loadData();
+        }
+
+        function onHeaderStyleCheckChanged(event, checked) {
+            var tree1 = F.ui.Tree1;
+            tree1.headerStyle = checked;
+            tree1.loadData();
+        }
+
+        function onMiniModeCheckChanged(event, checked) {
+            var tree1 = F.ui.Tree1;
+
+            tree1.miniMode = checked;
+
+            // 如果启用微型模式，则强制启用其他属性
+            if (checked) {
+                tree1.width = 50;
+                tree1.hideHScrollbar = true;
+                tree1.hideVScrollbar = true;
+                tree1.expanderToRight = true;
+                tree1.headerStyle = true;
+
+                F.ui.cbxHideHScrollbar.setValue(true);
+                F.ui.cbxHideVScrollbar.setValue(true);
+                F.ui.cbxExpanderToRight.setValue(true);
+                F.ui.cbxHeaderStyle.setValue(true);
+
+
+                F.ui.cbxHideHScrollbar.setEnabled(false);
+                F.ui.cbxHideVScrollbar.setEnabled(false);
+                F.ui.cbxExpanderToRight.setEnabled(false);
+                F.ui.cbxHeaderStyle.setEnabled(false);
+            } else {
+                tree1.width = 300;
+
+                F.ui.cbxHideHScrollbar.setEnabled(true);
+                F.ui.cbxHideVScrollbar.setEnabled(true);
+                F.ui.cbxExpanderToRight.setEnabled(true);
+                F.ui.cbxHeaderStyle.setEnabled(true);
+            }
+
+            // 重新加载树控件
+            tree1.loadData();
+        }
+
+    </script>
+}
+
+
+

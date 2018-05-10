@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "TabStrip/IFrameAddTab";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(450).ShowBorder(true).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().Title("FineUI 论坛").EnableIFrame(true).IFrameUrl("http://fineui.com/bbs/")
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("Button1").Text("打开专业版（tab1_iframe）").OnClick(Url.Action("Button1_Click")),
+                    F.Button().ID("Button2").Text("打开开源版（tab1_iframe）").OnClick(Url.Action("Button2_Click")),
+                    F.Button().ID("Button3").Text("打开论坛（tab2_iframe）").OnClick(Url.Action("Button3_Click"))
+                )
+        )
+    )
+    <br>
+    <br>
+    注：由于设置了相同的tabID，专业版示例和开源版示例在同一个选项卡中打开。
+    <br>
+
+
+}
+

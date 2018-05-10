@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Form/RadioButtonList";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelWidth(120).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("简单表单")
+        .Items(
+            F.RadioButtonList().ID("RadioButtonList1").Label("列表一")
+                .Items(
+                    F.RadioItem().Text("可选项 1").Value("value1"),
+                    F.RadioItem().Text("可选项 2").Value("value2").Selected(true),
+                    F.RadioItem().Text("可选项 3").Value("value3").Selected(true)
+                ),
+            F.Button().ID("btnUpdateList1").CssClass("marginr").Text("更新列表一").OnClick(Url.Action("btnUpdateList1_Click")),
+            F.Button().ID("btnCheckedItemsList1").Text("获取列表一的选中项").OnClick(Url.Action("btnCheckedItemsList_Click"),
+                    new Parameter("name", "列表一", ParameterMode.String),
+                    new Parameter("selected", "getRadioButtonListSelected('RadioButtonList1')")),
+            F.Label(),
+            F.RadioButtonList().ID("RadioButtonList2").Label("列表二（竖排）").ColumnNumber(3).ColumnVertical(true).DataTextField("Name").DataValueField("Id").DataSource(ViewBag.RadioButtonList2DataSource).SelectedValue(ViewBag.RadioButtonList2SelectedValue),
+            F.Button().ID("btnUpdateList2").CssClass("marginr").Text("更新列表二").OnClick(Url.Action("btnUpdateList2_Click")),
+            F.Button().ID("btnCheckedItemsList2").Text("获取列表二的选中项").OnClick(Url.Action("btnCheckedItemsList_Click"),
+                    new Parameter("name", "列表二", ParameterMode.String),
+                    new Parameter("selected", "getRadioButtonListSelected('RadioButtonList2')")),
+            F.Label(),
+            F.RadioButtonList().ID("RadioButtonList4").Label("列表四").ColumnNumber(3).ColumnVertical(false),
+            F.Button().ID("btnUpdateList4").CssClass("marginr").Text("更新列表四（可反复操作）").OnClick(Url.Action("btnUpdateList4_Click"), new Parameter("count", "F.ui.RadioButtonList4.items.length")),
+            F.Button().ID("btnCheckedItemsList4").Text("获取列表四的选中项").OnClick(Url.Action("btnCheckedItemsList_Click"),
+                    new Parameter("name", "列表四", ParameterMode.String),
+                    new Parameter("selected", "getRadioButtonListSelected('RadioButtonList4')"))
+        )
+    )
+    <br>
+    <br>
+
+    @(F.RadioButtonList().ID("RadioButtonList3").Width(700).Label("列表三").ColumnNumber(3).ColumnVertical(false)
+        .Items(
+            F.RadioItem().Text("可选项 1").Value("value1"),
+            F.RadioItem().Text("可选项 2").Value("value2"),
+            F.RadioItem().Text("可选项 3").Value("value3"),
+            F.RadioItem().Text("可选项 4").Value("value4"),
+            F.RadioItem().Text("可选项 5").Value("value5").Selected(true),
+            F.RadioItem().Text("可选项 6").Value("value6").Selected(true),
+            F.RadioItem().Text("可选项 7").Value("value7").Selected(true),
+            F.RadioItem().Text("可选项 8").Value("value8")
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnUpdateList3").CssClass("marginr").Text("更新列表三").OnClick(Url.Action("btnUpdateList3_Click")))
+
+    @(F.Button().ID("btnCheckedItemsList3").Text("获取列表三的选中项").OnClick(Url.Action("btnCheckedItemsList_Click"),
+            new Parameter("name", "列表三", ParameterMode.String),
+            new Parameter("selected", "getRadioButtonListSelected('RadioButtonList3')"))
+    )
+    <br>
+
+
+}
+
+@section script {
+
+    <script>
+
+        function getRadioButtonListSelected(cbxListID) {
+            return F.all[cbxListID].getValue();
+        }
+
+
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Layout/ColumnScrollBar";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").AutoScroll(true).ShowBorder(true).BodyPadding(10).Layout(LayoutType.Column).ShowHeader(true).Title("面板（高度变小时可能出现纵向滚动条）").IsViewPort(true)
+        .Items(
+            F.Panel().ID("Panel24").ColumnWidth("33%").ShowBorder(false).ShowHeader(false).Margin("0 5 0 0")
+                .Items(
+                    F.Panel().ID("Panel25").BodyPadding(10).ShowBorder(true).ShowHeader(true).MarginBottom(5).Content("我的面板<br><br><br><br><br><br><br><br>"),
+                    F.Panel().ID("Panel26").BodyPadding(10).ShowBorder(true).ShowHeader(true).MarginBottom(5).Content("我的面板<br><br><br><br><br><br><br><br><br>"),
+                    F.Panel().ID("Panel27").BodyPadding(10).ShowBorder(true).ShowHeader(true).Content("我的面板<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>")
+                ),
+            F.Panel().ID("Panel28").ColumnWidth("33%").ShowBorder(false).ShowHeader(false).Margin("0 5 0 0")
+                .Items(
+                    F.Panel().ID("Panel29").BodyPadding(10).ShowBorder(true).ShowHeader(true).MarginBottom(5).Content("我的面板<br><br><br><br>"),
+                    F.Panel().ID("Panel30").BodyPadding(10).ShowBorder(true).ShowHeader(true).MarginBottom(5).Content("我的面板<br><br><br><br><br><br><br>"),
+                    F.Panel().ID("Panel31").BodyPadding(10).ShowBorder(true).ShowHeader(true).Content("我的面板<br><br><br><br><br><br>")
+                ),
+            F.Panel().ID("Panel32").ColumnWidth("34%").ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().ID("Panel33").BodyPadding(10).ShowBorder(true).ShowHeader(true).MarginBottom(5).Content("我的面板<br><br><br><br><br><br>"),
+                    F.Panel().ID("Panel34").BodyPadding(10).ShowBorder(true).ShowHeader(true).MarginBottom(5).Content("我的面板<br><br><br>"),
+                    F.Panel().ID("Panel35").BodyPadding(10).ShowBorder(true).ShowHeader(true).Content("我的面板<br><br><br><br><br><br><br><br><br><br><br>")
+                )
+        )
+    )
+
+
+
+}
+

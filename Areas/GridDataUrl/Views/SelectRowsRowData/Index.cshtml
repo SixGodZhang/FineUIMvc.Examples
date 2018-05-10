@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/GridDataUrl/Controllers/GridDataUrlDataController.cs";
+    ViewBag.Title = "GridDataUrl/SelectRowsRowData";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .DataUrl(Url.Content("~/GridDataUrl/GridDataUrlData"))
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        ).SelectedRowIDArray("105", "110")
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").CssClass("marginr").Listener("click", "onButton1Click"))
+
+    @(F.Button().ID("Button2").Text("选中[陈飞]，[彭博]，[唐超]所在的行").OnClick(Url.Action("Button2_Click")))
+    <br>
+    <br>
+
+    <br />
+    <br />
+    注：表格默认选中了[康颖颖]，[徐鹏]所在的行。
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onButton1Click(event) {
+
+            var result = '<table class="result"><tr><th>ID</th><th>姓名</th><th>性别</th><th>所学专业</th></tr>';
+            $.each(F.ui.Grid1.getSelectedRows(true), function (index, item) {
+
+                var values = item.values;
+
+                result += F.formatString("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td></tr>",
+                    item.id,
+                    values.Name,
+                    values.Gender == 0 ? '女' : '男',
+                    values.Major);
+
+            });
+
+            result += '</table>';
+
+            showNotify('选中的行：<br/>' + result);
+        }
+
+    </script>
+}

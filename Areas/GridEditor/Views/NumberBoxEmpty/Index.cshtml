@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "GridEditor/NumberBoxEmpty";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Year").DataField("Year").FieldType(FieldType.Int).HeaderText("年份").ExpandUnusedSpace(true)
+                .Editor(
+                    F.NumberBox().NoDecimal(true).NoNegative(true).MinValue(2000).Required(true).MaxValue(2025)
+                ),
+            F.RenderField().Width(100).ColumnID("XueFei").DataField("XueFei").FieldType(FieldType.Int).HeaderText("学费")
+                .Editor(
+                    F.NumberBox().NoDecimal(true).NoNegative(true)
+                ),
+            F.RenderField().Width(100).ColumnID("ZhusuFei").DataField("ZhusuFei").FieldType(FieldType.Int).HeaderText("住宿费")
+                .Editor(
+                    F.NumberBox().NoDecimal(true).NoNegative(true)
+                ),
+            F.RenderField().Width(100).ColumnID("HuoshiFei").DataField("HuoshiFei").FieldType(FieldType.Int).HeaderText("伙食费")
+                .Editor(
+                    F.NumberBox().NoDecimal(true).NoNegative(true)
+                ),
+            F.RenderField().Width(100).ColumnID("ShubenFei").DataField("ShubenFei").FieldType(FieldType.Int).HeaderText("书本费")
+                .Editor(
+                    F.NumberBox().NoDecimal(true).NoNegative(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Heji").FieldType(FieldType.Int).RendererFunction("renderHeji").HeaderText("合计")
+        ).Listener("afteredit", "onGrid1AfterEdit").DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+
+    <br>
+    @(F.Label().ID("labResult"))
+
+    <br>
+    注：
+    <ul>
+        <li>
+            年份[2017]和[2018]的初始费用都为空（DBNull.Value）。
+        </li>
+        <li>
+            也可以将某个现有数字更新为空。
+        </li>
+    </ul>
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function calculateHejiValue(rowValue) {
+            var total = 0;
+
+            function addColumnValue(columnName) {
+                var columnValue = rowValue[columnName];
+                if (typeof (columnValue) === 'number') {
+                    total += columnValue;
+                }
+            }
+
+            addColumnValue('XueFei');
+            addColumnValue('HuoshiFei');
+            addColumnValue('ShubenFei');
+            addColumnValue('ZhusuFei');
+
+            return total;
+        }
+
+        // 渲染合计列
+        function renderHeji(value, params) {
+            return calculateHejiValue(params.rowValue);
+        }
+
+        function onGrid1AfterEdit(event, value, params) {
+            this.updateCellValue(params.rowId, 'Heji', calculateHejiValue(params.rowValue));
+        }
+
+    </script>
+}

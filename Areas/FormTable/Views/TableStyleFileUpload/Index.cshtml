@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "FormTable/TableStyleFileUpload";
+    var F = Html.F();
+}
+
+
+@section head {
+    <style>
+        .result img {
+            border: 1px solid #CCCCCC;
+            max-width: 550px;
+            padding: 3px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("表单").ShowHeader(true).MessageTarget(MessageTarget.Qtip)
+        .Items(
+            F.SimpleForm().ShowBorder(false).ShowHeader(false).EnableTableStyle(true)
+                .Items(
+                    F.TextBox().Label("用户名").ID("tbxUserName").EmptyText("请输入用户名").Required(true).ShowRedStar(true),
+                    F.FileUpload().ID("filePhoto").EmptyText("请选择一张照片").Label("个人头像").Required(true).ShowRedStar(true)
+                )
+        )
+    )
+
+    <br>
+
+    @(F.Button().ID("btnSubmit").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1").ValidateForms("SimpleForm1").Text("提交").MarginTop(5))
+
+    <br>
+    <br>
+
+    @(F.Label().ID("labResult").CssClass("result"))
+    <br>
+    <br>
+    注：由于浏览器安全限制，部分浏览器下只显示文件名（1.png）或者假路径（C:\fakepath\1.png）。
+
+
+}
+

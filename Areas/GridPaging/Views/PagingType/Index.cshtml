@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "GridPaging/PagingType";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).ShowHeader(true).ShowBorder(true).Title("Grid").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(10).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_PageIndexChanged"), "Grid1").ShowPagingMessage(ViewBag.ShowPagingMessage).PagingType(ViewBag.Grid1PagingType).MaxPagingNumberButton(ViewBag.MaxPagingNumberButton)
+        .Columns(
+            F.RowNumberField().Width(60).EnablePagingNumber(true),
+            F.RenderField().HeaderText("ID").DataField("Id").Width(150),
+            F.RenderField().HeaderText("Time").DataField("EntranceTime").ExpandUnusedSpace(true).FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd HH:mm:ss")
+        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+
+    @(F.CheckBox().ID("cbxShowPagingMessage").Checked(true).Text("显示分页信息").Checked(ViewBag.ShowPagingMessage).Listener("change", "OnCheckBoxChange"))
+    <br>
+    <br>
+    分页工具栏的类型：
+    <br>
+    <br>
+
+    @(F.ButtonGroup().ID("bgPagingType").EnablePressGroup(true)
+        .Items(
+            F.Button().Text("Arrow").EnablePress(true).Pressed(ViewBag.PagingType == "Arrow"),
+            F.Button().Text("NumberBox").EnablePress(true).Pressed(ViewBag.PagingType == "NumberBox"),
+            F.Button().Text("ArrowNumberBox").EnablePress(true).Pressed(ViewBag.PagingType == "ArrowNumberBox"),
+            F.Button().Text("NumberButton").EnablePress(true).Pressed(ViewBag.PagingType == "NumberButton"),
+            F.Button().Text("ArrowNumberButton").EnablePress(true).Pressed(ViewBag.PagingType == "ArrowNumberButton")
+        ).Listener("presschange", "onButtonGroupPressChange")
+    )
+    <br>
+    数字分页按钮的个数：
+    <br>
+    <br>
+
+    @(F.DropDownList().ID("ddlMaxPagingNumberButton").Width(120)
+        .Items(
+            F.ListItem().Text("5").Value("5").Selected(true),
+            F.ListItem().Text("8").Value("8"),
+            F.ListItem().Text("10").Value("10")
+        ).Enabled(ViewBag.ddlMaxPagingNumberButtonEnabled)
+        .SelectedValue(ViewBag.MaxPagingNumberButton.ToString()).Listener("change", "onDropDownListChange")
+    )
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function getPressedPaingType() {
+            var pressedPaingType = '';
+            $.each(F.ui.bgPagingType.items, function (index, item) {
+                if (item.isPressed()) {
+                    pressedPaingType = item.getText();
+                    return false; // break
+                }
+            });
+            return pressedPaingType;
+        }
+
+        function reloadPage() {
+            var pressedPaingType = getPressedPaingType();
+            window.location.href = '@Url.Content("~/GridPaging/PagingType")?type=' + pressedPaingType + '&message=' + F.ui.cbxShowPagingMessage.isChecked() + '&maxnumberbutton=' + F.ui.ddlMaxPagingNumberButton.getValue();
+        }
+
+        function OnCheckBoxChange(event, checked) {
+            reloadPage();
+        }
+
+        function onButtonGroupPressChange(event, btnObj, btnChecked) {
+            reloadPage();
+        }
+
+        function onDropDownListChange(event) {
+            reloadPage();
+        }
+
+    </script>
+}

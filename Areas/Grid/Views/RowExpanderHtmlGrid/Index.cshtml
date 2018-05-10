@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Grid/Controllers/RowExpanderGridDataController.cs";
+    ViewBag.Title = "Grid/RowExpanderHtmlGrid";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .mytable {
+            border-width: 1px;
+            border-style: solid;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-bottom-width: 0;
+            border-right-width: 0;
+        }
+
+            .mytable th,
+            .mytable td {
+                padding: 5px;
+                text-align: left;
+                border-bottom-width: 1px;
+                border-bottom-style: solid;
+                border-right-width: 1px;
+                border-right-style: solid;
+                width: 100px;
+            }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Grid().Width(850).Title("表格（嵌套表格仅用于数据展示，不适合复杂的逻辑处理）").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").IsViewPort(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100),
+            F.RenderField().ColumnID("Desc").RenderAsRowExpander(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Listener("rowexpanderexpand", "onRowExpanderExpand").Listener("rowexpandercollapse", "onRowExpanderCollapse")
+    )
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onRowExpanderExpand(event, rowId) {
+            var grid = this, rowEl = grid.getRowEl(rowId), rowData = grid.getRowData(rowId);
+
+            var tplEl = rowEl.find('.f-grid-rowexpander-details .f-grid-cell');
+            if (!tplEl.text()) {
+
+                var url = '@Url.Content("~/Grid/RowExpanderGridData")';
+                url += '?rowId=' + rowId + '&name=' + encodeURIComponent(rowData.values['Name']); // 这里可传递行中任意数据（rowData）
+
+                // 直接调用 jQuery 的 ajax 函数
+                $.ajax({
+                    dataType: 'json',
+                    cache: false,
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+                        // data: [["入学",62,72,47,55,55],["期中",69,71,70,45,53],["期末",40,55,64,64,79]]
+                        var html = [];
+                        html.push('<table class="mytable f-widget-header"><tr><th class="f-widget-header f-state-default"></th><th class="f-widget-header f-state-default">语文</th><th class="f-widget-header f-state-default">数学</th><th class="f-widget-header f-state-default">英文</th><th class="f-widget-header f-state-default">物理</th><th class="f-widget-header f-state-default">化学</th><th class="f-widget-header f-state-default">平均成绩</th></tr>');
+
+                        for (var i = 0, count = data.length; i < count; i++) {
+                            var item = data[i];
+
+                            html.push('<tr>');
+
+                            var totalScore = 0;
+
+                            html.push('<td class="f-widget-content">' + item[0] + '</td>');
+
+                            totalScore += item[1];
+                            html.push('<td class="f-widget-content">' + item[1] + '</td>');
+
+                            totalScore += item[2];
+                            html.push('<td class="f-widget-content">' + item[2] + '</td>');
+
+                            totalScore += item[3];
+                            html.push('<td class="f-widget-content">' + item[3] + '</td>');
+
+                            totalScore += item[4];
+                            html.push('<td class="f-widget-content">' + item[4] + '</td>');
+
+                            totalScore += item[5];
+                            html.push('<td class="f-widget-content">' + item[5] + '</td>');
+
+                            var avgScore = Math.round(totalScore / 5);
+                            html.push('<td class="f-widget-content">' + avgScore + '</td>');
+
+                            html.push('</tr>');
+                        }
+
+                        html.push('</table>');
+
+                        tplEl.html(html.join(''));
+
+                        rowExpandersDoLayout();
+                    }
+                });
+
+            }
+        }
+
+        function onRowExpanderCollapse(event, rowId) {
+            rowExpandersDoLayout();
+        }
+
+        // 重新布局表格（解决出现纵向滚动条时的布局问题）
+        function rowExpandersDoLayout() {
+            // 布局外部表格
+            F.ui.Grid1.doLayout();
+        }
+
+    </script>
+}

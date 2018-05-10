@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Button/Button";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Button().ID("btnChangeEnable").Text("启用后面的按钮").CssClass("marginr").OnClick(Url.Action("btnChangeEnable_Click")))
+
+    @(F.Button().ID("btnEnable").Text("禁用的按钮").Enabled(false).OnClick(Url.Action("btnEnable_Click")))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnChangePressed").Text("改变后面按钮的按下状态").CssClass("marginr").OnClick(Url.Action("btnChangePressed_Click"), new Parameter("pressed", "F.ui.btnPressed.isPressed()")))
+
+
+    @(F.Button().ID("btnPressed").Text("按下的按钮").EnablePress(true).Pressed(true))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnTooltip").Text("这个按钮有提示信息（点击改变提示信息）").ToolTip("这是按钮的提示信息").OnClick(Url.Action("btnTooltip_Click")))
+
+
+    <br />
+    <br />
+
+    @(F.Button().Text("小按钮").Size(ButtonSize.Small).CssClass("marginr"))
+
+    @(F.Button().Text("普通按钮").CssClass("marginr"))
+
+    @(F.Button().Text("中等大小按钮").Size(ButtonSize.Medium).CssClass("marginr"))
+
+    @(F.Button().Text("大按钮").Size(ButtonSize.Large).CssClass("marginr"))
+
+
+}
+

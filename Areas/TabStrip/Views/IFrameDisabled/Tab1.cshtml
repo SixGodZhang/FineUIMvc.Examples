@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "TabStrip/IFrameDisabled/Tab1";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().ID("btnEnableTabs").Text("启用后面的两个标签").Listener("click", "onEnableTabsClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnDisableTabs").Text("禁用后面的两个标签").Listener("click", "onDisableTabsClick"))
+    <br>
+
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onEnableTabsClick(event) {
+            parent.enableTabs();
+        }
+
+        function onDisableTabsClick(event) {
+            parent.disableTabs();
+        }
+
+    </script>
+
+}

@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/CheckBoxListSelectAll";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉复选框列表").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").DataControlID("CheckBoxList1").EnableMultiSelect(true).Values("js,php")
+                .PopPanel(
+                    F.SimpleForm().ID("SimpleForm2").BodyPadding(10).AutoScroll(true).ShowBorder(true).ShowHeader(false).Hidden(true)
+                        .Items(
+                            F.Label().ID("Label1").Text("请选择编程语言："),
+                            F.CheckBoxList().ID("CheckBoxList1").ColumnNumber(3)
+                                .Items(
+                                    F.CheckItem().Text("C#").Value("csharp"),
+                                    F.CheckItem().Text("JavaScript").Value("js"),
+                                    F.CheckItem().Text("JAVA").Value("java"),
+                                    F.CheckItem().Text("Ruby").Value("ruby"),
+                                    F.CheckItem().Text("PHP").Value("php"),
+                                    F.CheckItem().Text("Objective-C").Value("objc"),
+                                    F.CheckItem().Text("Python").Value("python"),
+                                    F.CheckItem().Text("Perl").Value("perl"),
+                                    F.CheckItem().Text("C++").Value("cplusplus"),
+                                    F.CheckItem().Text("Basic").Value("basic"),
+                                    F.CheckItem().Text("Go").Value("go"),
+                                    F.CheckItem().Text("Swift").Value("swift")
+                                )
+                        )
+                        .Toolbars(
+                            F.Toolbar().Position(ToolbarPosition.Top)
+                                .Items(
+                                    F.Button().ID("btnSelectAll").Text("全选").Listener("click", "onSelectAllClick"),
+                                    F.Button().ID("btnClearAll").Text("清空").Listener("click", "onClearAllClick")
+                                )
+                        )
+                ),
+            F.Button().ID("btnSelectItem6").Text("选中[php,basic]").OnClick(Url.Action("btnSelectItem6_Click")).CssClass("marginr"),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onSelectAllClick() {
+            var checkBoxList1 = F.ui.CheckBoxList1;
+            $.each(checkBoxList1.items, function (index, item) {
+                item.setValue(true);
+            });
+
+            // 将数据控件中的值同步到输入框
+            F.ui.DropDownBox1.syncToBox();
+        }
+
+
+        function onClearAllClick() {
+            var checkBoxList1 = F.ui.CheckBoxList1;
+            $.each(checkBoxList1.items, function (index, item) {
+                item.setValue(false);
+            });
+
+            // 将数据控件中的值同步到输入框
+            F.ui.DropDownBox1.syncToBox();
+        }
+
+
+    </script>
+
+}

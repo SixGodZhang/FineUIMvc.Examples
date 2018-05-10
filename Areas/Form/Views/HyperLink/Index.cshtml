@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Form/HyperLink";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.HyperLink().ID("HyperLink3").Text("新窗口打开百度首页").Target("_blank").NavigateUrl("http://www.baidu.com/"))
+    <br>
+
+    @(F.HyperLink().ID("HyperLink1").EncodeText(false).Text("新窗口打开 <span style='color:red;'>Google</span> 首页").Target("_blank").NavigateUrl("http://www.google.com/"))
+    <br>
+
+    @(F.HyperLink().ID("HyperLink2").Enabled(false).Text("点击弹出对话框").NavigateUrl("javascript:;"))
+    <br>
+
+    @(F.Button().ID("btnChangeEnable").Text("启用/禁用最后一个链接").OnClick(Url.Action("btnChangeEnable_Click"), new Parameter("enabled", "F.ui.HyperLink2.isEnabled()")))
+
+
+}
+

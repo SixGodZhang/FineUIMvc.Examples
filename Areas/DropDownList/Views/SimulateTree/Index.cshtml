@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "DropDownList/SimulateTree";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("模拟树的下拉列表").ShowHeader(true)
+        .Items(
+            F.DropDownList().Required(true).EnableSimulateTree(true).ShowRedStar(true).ID("DropDownList1").DataTextField("Name").DataValueField("Id").DataSimulateTreeLevelField("Level").DataEnableSelectField("EnableSelect").DataSource(ViewBag.ddlBoxDataSource).SelectedValue(ViewBag.ddlBoxSelectedValue),
+            F.Button().ID("btnGetSelection").Text("获取选中项").CssClass("marginr").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1"),
+            F.Button().ID("btnDataBind").Text("重新绑定数据").OnClick(Url.Action("btnDataBind_Click"), "DropDownList1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+
+
+}
+

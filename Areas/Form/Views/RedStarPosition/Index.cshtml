@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Form/RedStarPosition";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").Title("表单").ShowBorder(true).BodyPadding(10).ShowHeader(true)
+        .Items(
+            F.TextBox().ID("tbxUserName").Label("用户名").Required(true).ShowRedStar(true),
+            F.TextBox().ID("tbxPassword").Label("密码").TextMode(TextMode.Password).Required(true).ShowRedStar(true)
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("btnLogin").Text("登录").Type(ButtonType.Button).ValidateForms("SimpleForm1").ValidateTarget(Target.Top).OnClick(Url.Action("btnLogin_Click"), "SimpleForm1")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.SimpleForm().ID("SimpleForm2")
+        .Title("表单(RedStarPosition=BeforeText LabelAlign=Right)").Width(450).ShowBorder(true).BodyPadding(10).ShowHeader(true).RedStarPosition(RedStarPosition.BeforeText).LabelAlign(LabelAlign.Right)
+        .Items(
+            F.TextBox().ID("TextBox1").Label("用户名").Required(true).ShowRedStar(true),
+            F.TextBox().ID("TextBox2").Label("密码").TextMode(TextMode.Password).Required(true).ShowRedStar(true)
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar2").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("Button1").Text("登录").Type(ButtonType.Button).ValidateForms("SimpleForm2").ValidateTarget(Target.Top).OnClick(Url.Action("btnLogin_Click"), "SimpleForm2")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.SimpleForm().ID("SimpleForm3")
+        .Title("表单(RedStarPosition=AfterSeparator LabelAlign=Top)").Width(450).ShowBorder(true).BodyPadding(10).ShowHeader(true).RedStarPosition(RedStarPosition.AfterSeparator).LabelAlign(LabelAlign.Top)
+        .Items(
+            F.TextBox().ID("TextBox3").Label("用户名").Required(true).ShowRedStar(true),
+            F.TextBox().ID("TextBox4").Label("密码").TextMode(TextMode.Password).Required(true).ShowRedStar(true)
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar3").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("Button3").Text("登录").Type(ButtonType.Button).ValidateForms("SimpleForm3").ValidateTarget(Target.Top).OnClick(Url.Action("btnLogin_Click"), "SimpleForm3")
+                )
+        )
+    )
+
+
+}
+

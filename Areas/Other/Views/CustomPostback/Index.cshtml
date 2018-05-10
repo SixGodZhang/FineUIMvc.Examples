@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Other/CustomPostback";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.TextBox().ID("TextBox1").ShowLabel(false).EmptyText("输入一些文字并按 ENTER 键").Listener("enter", "onTextBoxEnter"),
+            F.TextBox().ID("TextBox2").ShowLabel(false)
+        )
+    )
+
+
+}
+
+@section script {
+
+    <script>
+
+        function onTextBoxEnter() {
+            // 触发后台事件
+            F.doPostBack('@Url.Action("TextBox1_ENTER")', {
+                text1: this.getValue()
+            });
+        }
+
+    </script>
+
+}

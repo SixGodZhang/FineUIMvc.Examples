@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/GridDataUrl/Controllers/LargeDataPagingDatabaseDataController.cs";
+    ViewBag.Title = "GridDataUrl/LargeData10000PagingDatabase";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(450).Title("表格（10,000行）").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .DataUrl(Url.Content("~/GridDataUrl/LargeDataPagingDatabaseData?total=10000")).EnableBigData(true).EnableBigDataRowTip(false).AllowPaging(true).IsDatabasePaging(true).PageSize(120)
+        .Columns(
+            F.RowNumberField().Width(50),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+    <br>
+    <br>
+    注：启用大数据，启用分页（服务端分页），每页显示 120 条记录。 
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

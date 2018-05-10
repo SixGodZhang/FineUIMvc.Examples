@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Form/TextBox";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("登录表单").ShowHeader(true)
+        .Items(
+            F.TextBox().Label("用户名").EmptyText("请输入用户名").ID("tbxUserName").Required(true).ShowRedStar(true),
+            F.TextBox().ID("tbxPassword").Label("密码").EmptyText("请输入密码").TextMode(TextMode.Password).Required(true).ShowRedStar(true),
+            F.Button().ID("btnSubmit").CssClass("marginr").OnClick(Url.Action("btnSubmit_Click"),
+                    new Parameter("userName", "F.ui.tbxUserName.getValue()"),
+                    new Parameter("password", "F.ui.tbxPassword.getValue()")
+                ).ValidateForms("SimpleForm1").Text("登录"),
+            F.Button().ID("btnReset").Text("重置").OnClientClick("F.ui.SimpleForm1.reset();")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult").ShowLabel(false))
+
+
+}
+

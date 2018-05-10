@@ -1,0 +1,505 @@
+﻿@{
+    ViewBag.Title = "Mobile/Main";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mywindow,
+        .mywindow > .f-panel-bodyct > .f-panel-body {
+            background-image: none;
+            background-color: transparent;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        #themecontainer {
+            background: none;
+            background-color: #000;
+            padding-top: 5px;
+        }
+
+            #themecontainer ul {
+                list-style-type: none;
+                margin: 10px 0 0;
+                padding: 0;
+            }
+
+                #themecontainer ul li {
+                    display: inline-block;
+                    margin: 0 0 10px 10px;
+                    padding: 0;
+                }
+
+                    #themecontainer ul li .title {
+                        text-align: center;
+                        color: #666;
+                        font-size: 12px;
+                        display: none;
+                    }
+
+                    #themecontainer ul li.hover,
+                    #themecontainer ul li.active {
+                        border-bottom-color: #fff;
+                    }
+
+                        #themecontainer ul li.hover .title,
+                        #themecontainer ul li.active .title {
+                            color: #fff;
+                            font-weight: bold;
+                        }
+
+                    #themecontainer ul li img {
+                        width: 50px;
+                    }
+
+            #themecontainer .grouptitle {
+                color: #ccc;
+                font-size: 16px;
+                border-bottom: solid 1px #333;
+                padding: 5px;
+                margin: 10px;
+                margin-top: 0;
+            }
+    </style>
+
+}
+
+
+@section body {
+
+    <div id="themecontainer">
+        <div class="grouptitle">
+            Metro
+        </div>
+        <ul>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/default.png" alt="Default" data-value="default">
+                </a>
+                <div class="title">Default</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/metro_blue.png" alt="Metro Blue" data-value="metro_blue">
+                </a>
+                <div class="title">Metro Blue</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/metro_dark_blue.png" alt="Metro Dark Blue" data-value="metro_dark_blue">
+                </a>
+                <div class="title">Metro Dark Blue</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/metro_gray.png" alt="Metro Gray" data-value="metro_gray">
+                </a>
+                <div class="title">Metro Gray</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/metro_green.png" alt="Metro Green" data-value="metro_green">
+                </a>
+                <div class="title">Metro Green</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/metro_orange.png" alt="Metro Orange" data-value="metro_orange">
+                </a>
+                <div class="title">Metro Orange</div>
+            </li>
+        </ul>
+        <div class="grouptitle">
+            jQuery UI
+        </div>
+        <ul>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/black_tie.png" alt="Black Tie" data-value="black_tie">
+                </a>
+                <div class="title">Black Tie</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/blitzer.png" alt="Blitzer" data-value="blitzer">
+                </a>
+                <div class="title">Blitzer</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/cupertino.png" alt="Cupertino" data-value="cupertino">
+                </a>
+                <div class="title">Cupertino</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/dark_hive.png" alt="Dark Hive" data-value="dark_hive">
+                </a>
+                <div class="title">Dark Hive</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/dot_luv.png" alt="Dot Luv" data-value="dot_luv">
+                </a>
+                <div class="title">Dot Luv</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/eggplant.png" alt="Eggplant" data-value="eggplant">
+                </a>
+                <div class="title">Eggplant</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/excite_bike.png" alt="Excite Bike" data-value="excite_bike">
+                </a>
+                <div class="title">Excite Bike</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/flick.png" alt="Flick" data-value="flick">
+                </a>
+                <div class="title">Flick</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/hot_sneaks.png" alt="Hot Sneaks" data-value="hot_sneaks">
+                </a>
+                <div class="title">Hot Sneaks</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/humanity.png" alt="Humanity" data-value="humanity">
+                </a>
+                <div class="title">Humanity</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/le_frog.png" alt="Le Frog" data-value="le_frog">
+                </a>
+                <div class="title">Le Frog</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/mint_choc.png" alt="Mint Choc" data-value="mint_choc">
+                </a>
+                <div class="title">Mint Choc</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/overcast.png" alt="Overcast" data-value="overcast">
+                </a>
+                <div class="title">Overcast</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/pepper_grinder.png" alt="Pepper Grinder" data-value="pepper_grinder">
+                </a>
+                <div class="title">Pepper Grinder</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/redmond.png" alt="Redmond" data-value="redmond">
+                </a>
+                <div class="title">Redmond</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/smoothness.png" alt="Smoothness" data-value="smoothness">
+                </a>
+                <div class="title">Smoothness</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/south_street.png" alt="South Street" data-value="south_street">
+                </a>
+                <div class="title">South Street</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/start.png" alt="Start" data-value="start">
+                </a>
+                <div class="title">Start</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/sunny.png" alt="Sunny" data-value="sunny">
+                </a>
+                <div class="title">Sunny</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/swanky_purse.png" alt="Swanky Purse" data-value="swanky_purse">
+                </a>
+                <div class="title">Swanky Purse</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/trontastic.png" alt="Trontastic" data-value="trontastic">
+                </a>
+                <div class="title">Trontastic</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/ui_darkness.png" alt="UI Darkness" data-value="ui_darkness">
+                </a>
+                <div class="title">UI Darkness</div>
+            </li>
+            <li class="">
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/ui_lightness.png" alt="UI Lightness" data-value="ui_lightness">
+                </a>
+                <div class="title">UI Lightness</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/vader.png" alt="Vader" data-value="vader">
+                </a>
+                <div class="title">Vader</div>
+            </li>
+        </ul>
+        <div class="grouptitle">
+            Custom
+        </div>
+        <ul>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/custom_default.png" alt="Custom Default" data-value="custom_default">
+                </a>
+                <div class="title">Custom Default</div>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <img src="../res/images/themes/small/bootstrap_pure.png" alt="Bootstrap Pure" data-value="bootstrap_pure">
+                </a>
+                <div class="title">Bootstrap Pure</div>
+            </li>
+        </ul>
+    </div>
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).IsViewPort(true).CssClass("mypanel")
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").Title("FineUIMvc 移动示例").ToolbarAlign(ToolbarAlign.Right).HeaderStyle(true)
+                .Items(
+                    F.Button().ID("Button1").Size(ButtonSize.Small).IconFont(IconFont._MoreVertical).ShowMenuIcon(false).EnableDefaultState(false)
+                        .Menu(F.Menu()
+                            .Items(
+                                F.MenuButton().Text("主题仓库").Listener("click", "onThemeSelectClick"),
+                                F.MenuSeparator(),
+                                F.MenuButton().Text("示例首页").OnClientClick("top.window.location.href='../';")
+                            )
+                        )
+                )
+        )
+        .Items(
+            F.DataList().ID("DataList1").CssClass("mydatalist")
+        )
+    )
+
+    @(F.Panel().ID("Panel2").ShowHeader(false).ShowBorder(false).IsViewPort(true).AutoScroll(true).Hidden(true).CssClass("mypanel")
+        .Toolbars(
+            F.Toolbar().ID("Toolbar2").HeaderStyle(true)
+                .Items(
+                    F.Button().Size(ButtonSize.Small).Text("后退").Listener("click", "onBacktoPanel1Click")
+                )
+        )
+        .Items(
+            F.DataList().ID("DataList2").CssClass("mydatalist")
+        )
+    )
+
+    @(F.Panel().ID("Panel3").ShowHeader(false).ShowBorder(false).IsViewPort(true).AutoScroll(true).Hidden(true).CssClass("mypanel")
+        .Toolbars(
+            F.Toolbar().ID("Toolbar3").HeaderStyle(true)
+                .Items(
+                    F.Button().Size(ButtonSize.Small).Text("后退").Listener("click", "onBacktoPanel2Click")
+                )
+        )
+        .Items(
+            F.DataList().ID("DataList3")
+        )
+    )
+
+    @(F.Window().ID("Window1").CssClass("mywindow").ShowHeader(false).ShowBorder(false).HideOnMaskClick(true).IsModal(true).BodyPadding(10).Layout(LayoutType.VBox).PercentWidth("100%").EnableDefaultCorner(false).PositionY(Position.Bottom).Hidden(true)
+        .Items(
+            F.Panel().ID("ContentPanel1").CssClass("f-corner-all").Height(340).AutoScroll(true).ShowHeader(false).ContentEl("#themecontainer")
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        @Html.Raw(ViewBag.StartupScript)
+
+        // 从二级菜单返回
+        function onBacktoPanel1Click() {
+            // 改变网址的HASH值（hashchange驱动页面变化）
+            window.location.hash = '';
+
+            // 仅在桌面版Chrome出现的问题：改变当前页的哈希值为空时，父页面的滚动条会改变
+            if (F.isChrome()) {
+                parent && parent.$('body').scrollTop(0);
+            }
+        }
+
+        // 从三级菜单返回
+        function onBacktoPanel2Click() {
+            // 改变网址的HASH值（hashchange驱动页面变化）
+            var level = decodeURIComponent(window.location.hash.substr(1));
+            var levelItems = level.split('-');
+            if (levelItems.length) {
+                window.location.hash = levelItems[0];
+            }
+
+            // 仅在桌面版Chrome出现的问题：改变当前页的哈希值为空时，父页面的滚动条会改变
+            if (F.isChrome()) {
+                parent && parent.$('body').scrollTop(0);
+            }
+        }
+
+
+        // 显示主题设置窗体
+        function onThemeSelectClick() {
+            F.ui.Window1.show();
+        }
+
+        function getMenu(level) {
+            var data;
+            if (level) {
+                var levelItems = level.split('-');
+                if (levelItems.length === 1) {
+                    data = MENUSOURCE[levelItems[0]];
+                } else {
+                    data = MENUSOURCE[levelItems[0]].children[levelItems[1]];
+                }
+            }
+            return data;
+        }
+
+        function getMenuData(level) {
+            var children, data = getMenu(level);
+            if (!data) {
+                children = MENUSOURCE;
+            } else {
+                children = data.children;
+            }
+
+            var subMenus = [];
+            $.each(children, function (index, menu) {
+                // fields: ['text', 'href', 'hrefTarget', 'arrow', 'level']
+                subMenus.push([menu.text, menu.navigateUrl, '_self', true, level ? (level + '-' + index) : index]);
+            });
+            return subMenus;
+        }
+
+
+
+        function checkHashChange() {
+            // 根据HASH值在顶层菜单和二级菜单之间切换
+            var level = decodeURIComponent(window.location.hash.substr(1));
+            var visiblePanelID = $('.mypanel:visible').attr('id');
+
+            if (!level) {
+                // 返回顶级菜单
+                F.slideRight(visiblePanelID, 'Panel1');
+            } else {
+                var levelItems = level.split('-');
+                var levelMenuText = getMenu(level).text;
+
+                if (levelItems.length === 1) {
+                    // 设置二级菜单的标题
+                    F.ui.Toolbar2.setTitle(levelMenuText);
+
+                    // 绑定二级菜单
+                    F.ui.DataList2.fields = ['text', 'href', 'hrefTarget', 'arrow', 'level'];
+                    F.ui.DataList2.loadData(getMenuData(level));
+
+                    // 转到二级菜单
+                    if (visiblePanelID === "Panel3") {
+                        F.slideRight(visiblePanelID, 'Panel2');
+                    } else {
+                        F.slideLeft(visiblePanelID, 'Panel2');
+                    }
+                } else {
+                    // 设置三级菜单的标题
+                    F.ui.Toolbar3.setTitle(levelMenuText);
+
+                    // 绑定三级菜单
+                    F.ui.DataList3.fields = ['text', 'href', 'hrefTarget', 'arrow', 'level'];
+                    F.ui.DataList3.loadData(getMenuData(level));
+
+                    // 转到三级菜单
+                    F.slideLeft(visiblePanelID, 'Panel3');
+                }
+            }
+        }
+
+
+        F.ready(function () {
+		
+			// 基础版不支持DataList
+            if (!F.ui.DataList1) {
+                return;
+            }
+
+            // 点击一级菜单和二级菜单
+            $('.mydatalist').on('click', '.f-datalist-item', function (event) {
+                var itemEl = $(this), datalist = F(itemEl.closest('.f-datalist').attr('id'));
+                var itemData = datalist.getItemData(itemEl);
+
+                // 这是一个目录，则改变网址的HASH值（hashchange驱动页面变化）
+                if (!itemData.href) {
+                    window.location.hash = '#' + encodeURIComponent(itemData.level);
+                }
+            });
+
+            // 绑定一级菜单
+            F.ui.DataList1.fields = ['text', 'href', 'hrefTarget', 'arrow', 'level'];
+            F.ui.DataList1.loadData(getMenuData(''));
+
+
+
+            // 页面第一次加载时，转到二级菜单不需要动画效果
+            F.noAnimation(function () {
+                checkHashChange();
+            });
+
+
+            // hashchange驱动页面变化
+            $(window).on('hashchange', function (event) {
+                checkHashChange();
+            });
+
+
+            // 选中某个主题
+            $('#themecontainer li').on('click', function (event) {
+                var imgNode = $(this).find('img');
+
+                var themeName = imgNode.attr('data-value');
+                F.cookie('Theme', themeName, {
+                    expires: 100  // 单位：天
+                });
+
+                var themeTitle = imgNode.attr('alt');
+                F.cookie('Theme_Title', themeTitle, {
+                    expires: 100  // 单位：天
+                });
+
+                top.window.location.reload();
+
+            });
+        });
+
+    </script>
+
+}
+

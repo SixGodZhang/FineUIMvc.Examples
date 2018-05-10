@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Grid/ExcelInput";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("语文成绩").DataField("ChineseScore").RendererFunction("renderChineseScore").Width(120)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("Button1").Text("导出为Excel文件（GET请求）").MarginRight(5).Listener("click", "onButton1Click"))
+
+    @(F.Button().ID("Button2").Text("导出为Excel文件（POST请求）").Listener("click", "onButton2Click"))
+
+
+    <!-- 隐藏表单，用于自定义POST请求 -->
+    @using (Html.BeginForm("ExportToExcel", "ExcelInput", FormMethod.Post, new { id = "myform" }))
+    {
+        
+        <input type="hidden" name="content" />
+    }
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderChineseScore(value, params) {
+            return F.formatString('<input value="{0}" class="chinese-score" style="width:100px;" type="text">', value);
+        }
+
+        // 获取用户输入值与行ID的对应关系
+        function getUserInputs() {
+            var result = {};
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+                var rowChineseScore = parseInt(rowEl.find('input.chinese-score').val(), 10);
+
+                result[rowData.id] = rowChineseScore;
+            });
+
+            return result;
+        }
+
+        // HTTP - Get （HTTP Get有长度限制，不适合传递大量数据！！！）
+        function onButton1Click(event) {
+            window.location.href = '@Url.Action("ExportToExcel")' + '?content=' + F.urlEncode(F.toJSON(getUserInputs()));
+        }
+
+        // HTTP - Post
+        function onButton2Click(event) {
+            // 自定义POST请求
+            var myform = $('#myform');
+            myform.find('[name=content]').val(F.toJSON(getUserInputs()));
+            myform[0].submit();
+        }
+
+    </script>
+}

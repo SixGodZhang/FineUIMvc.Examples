@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Grid/CheckAllRowSelectable";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).ShowHeader(true).ShowBorder(true).Title("表格").ID("Grid1").DataIDField("Id").DataTextField("Name").RowDataBoundFunction("onGrid1RowDataBound")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行（客户端）").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+
+    <br />
+    <br />
+    注：本示例禁止选择入学年份大于等于 2008 的行。
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGrid1RowDataBound(rowData) {
+            if (rowData.values.EntranceYear >= 2008) {
+                rowData.unselectable = true;
+            }
+        }
+
+    </script>
+}

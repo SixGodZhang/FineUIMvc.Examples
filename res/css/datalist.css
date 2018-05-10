@@ -1,0 +1,29 @@
+﻿.item-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.item-img {
+    width: 50px;
+    border: 0;
+    margin-right: 5px;
+    position: absolute;
+    top: 50%;
+    margin-top: -17px;
+}
+
+.item-text {
+    margin-left: 60px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.item-desc {
+    font-size: 14px;
+    margin-left: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

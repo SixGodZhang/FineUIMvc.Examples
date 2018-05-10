@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "TabStrip/TabIndexChanged";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(350).OnTabIndexChanged(Url.Action("TabStrip1_TabIndexChanged"), new Parameter("activeIndex", "F.ui.TabStrip1.getActiveTabIndex()")).ShowBorder(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().Title("标签一").BodyPadding(10).Layout(LayoutType.Fit)
+                .Items(
+                    F.SimpleForm().ID("SimpleForm1").ShowBorder(false).ShowHeader(false).Title("SimpleForm1")
+                        .Items(
+                            F.Label().ID("Label1").CssClass("highlight").Label("文本").Text("初始文本"),
+                            F.NumberBox().ID("NumberBox1").Label("数字输入框").Required(true).ShowRedStar(true),
+                            F.TextBox().ID("TextBox1").Label("文本框").Required(true).ShowRedStar(true),
+                            F.DatePicker().ID("DatePicker1").Label("日期选择器").Text("2008-05-09").Required(true).ShowRedStar(true),
+                            F.TextArea().ID("TextArea2").Label("多行文本框").Required(true).ShowRedStar(true)
+                        )
+                ),
+            F.Tab().Title("标签二").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label2").CssClass("highlight").Text("初始文本")
+                ),
+            F.Tab().Title("标签三").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label3").CssClass("highlight").Text("初始文本")
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("Button2").CssClass("marginr").ValidateForms("SimpleForm1").Text("验证第一个标签中的表单"))
+
+    @(F.Button().ID("Button3").Text("选中下一个标签").OnClick(Url.Action("Button3_Click"), new Parameter("activeIndex", "F.ui.TabStrip1.getActiveTabIndex()")))
+
+
+}
+

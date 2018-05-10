@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Layout/Table";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mytable td.f-layout-table-cell {
+            padding: 5px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel2").Height(450).ShowBorder(true).CssClass("mytable").Layout(LayoutType.Table).TableConfigColumns(3).ShowHeader(true).Title("面板（Height=450 Width=750 Layout=Table）")
+        .Items(
+            F.Panel().ID("Panel1").Title("Panel1").Width(300).Height(210).TableRowspan(2).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label1").Text("Width=300 Height=210 TableRowspan=2")
+                ),
+            F.Panel().ID("Panel3").Title("Panel2").Width(430).Height(100).TableColspan(2).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label2").Text("Width=430 Height=100 TableColspan=2")
+                ),
+            F.Panel().ID("Panel4").Title("Panel3").Width(200).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").Text("Width=200 Height=100")
+                ),
+            F.Panel().ID("Panel5").Title("Panel4").Width(220).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label4").Text("Width=220 Height=100")
+                ),
+            F.Panel().ID("Panel6").Title("Panel5").Width(300).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label5").Text("Width=300 Height=100")
+                ),
+            F.Panel().ID("Panel7").Title("Panel6").Width(200).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label6").Text("Width=200 Height=100")
+                ),
+            F.Panel().ID("Panel8").Title("Panel6").Width(220).Height(100).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label7").Text("Width=220 Height=100")
+                )
+        )
+    )
+
+
+}
+

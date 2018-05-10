@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "GridLockColumn/SaveToDB";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").AllowColumnLocking(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100).EnableLock(true).Locked(true),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100).EnableLock(true),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100).EnableLock(true),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").Width(300).EnableLock(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100).EnableLock(true)
+        ).Listener("columnlock", "onGridColumnLock").Listener("columnunlock", "onGridColumnUnlock")
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面（保持列的锁定状态）").Listener("click", "window.location.reload();"))
+
+
+    @{
+        Grid grid1 = F.GetControl<Grid>("Grid1");
+
+        List<string> lockedColumns = ViewBag.LockedColumns as List<string>;
+        if (lockedColumns.Count > 0)
+        {
+            foreach (GridColumn column in grid1.Columns)
+            {
+                RenderBaseField field = column as RenderBaseField;
+                if (field == null)
+                {
+                    continue;
+                }
+
+                if (lockedColumns.Contains(field.ColumnID) || lockedColumns.Contains(field.DataField))
+                {
+                    field.Locked = true;
+                }
+
+            }
+        }
+    }
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGridColumnLock(event, columnId) {
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_ColumnLockUnlock")', {
+                type: 'lock',
+                columnId: columnId
+            });
+        }
+
+        function onGridColumnUnlock(event, columnId) {
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_ColumnLockUnlock")', {
+                type: 'unlock',
+                columnId: columnId
+            });
+        }
+
+    </script>
+}

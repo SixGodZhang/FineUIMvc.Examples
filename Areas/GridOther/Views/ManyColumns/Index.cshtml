@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "GridOther/ManyColumns";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-grid-row .f-grid-cell-inner {
+            white-space: normal;
+            word-break: break-all;
+        }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（23列，36行，行高不同）").DataIDField("Id").DataTextField("Name").IsViewPort(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").Width(150),
+            F.RenderField().HeaderText("个人简介").DataField("Desc").Width(500),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().Width(300).DataField("GUID").HeaderText("GUID"),
+            F.RenderField().Width(200).HeaderText("爱好").DataField("Hobby").RendererFunction("renderHobby"),
+            F.RenderField().Width(100).DataField("EntranceDate").HeaderText("入学时间"),
+            F.RenderField().Width(100).DataField("ChineseScore").HeaderText("语文成绩"),
+            F.RenderField().Width(100).DataField("MathScore").HeaderText("数学成绩"),
+            F.RenderField().Width(100).DataField("TotalScore").HeaderText("总成绩"),
+            F.RenderField().Width(100).DataField("ShenGao").HeaderText("身高"),
+            F.RenderField().Width(100).DataField("TiZhong").HeaderText("体重"),
+            F.RenderField().Width(100).DataField("XueYaDi").HeaderText("血压（低）"),
+            F.RenderField().Width(100).DataField("XueYaGao").HeaderText("血压（高）"),
+            F.RenderField().Width(100).DataField("ShiLiZuo").HeaderText("视力（左）"),
+            F.RenderField().Width(100).DataField("ShiLiYou").HeaderText("视力（右）"),
+            F.RenderField().Width(120).DataField("ShiLiZuoJiaoZhen").HeaderText("矫正视力（左）"),
+            F.RenderField().Width(120).DataField("ShiLiYouJiaoZhen").HeaderText("矫正视力（右）")
+        ).DataSource(ViewBag.Grid1DataSource)
+        
+    )
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderHobby(value, params) {
+            var result = [];
+
+            // Hobby：reading,basketball,travel,movie,music
+            // 爱好：读书, 篮球, 旅游, 电影, 音乐
+            var hobbies = value.split(',');
+
+            $.each(hobbies, function (index, hobby) {
+                if (hobby == "reading") {
+                    result.push("读书");
+                }
+                else if (hobby == "basketball") {
+                    result.push("篮球");
+                }
+                else if (hobby == "travel") {
+                    result.push("旅游");
+                }
+                else if (hobby == "movie") {
+                    result.push("电影");
+                }
+                else if (hobby == "music") {
+                    result.push("音乐");
+                }
+            });
+
+            return result.join(',');
+        }
+
+    </script>
+}

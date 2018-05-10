@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Message/Prompt";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").Title("创建输入对话框").LabelWidth(150).BodyPadding(10)
+        .Items(
+            F.GroupPanel().ID("GroupPanel2").Layout(LayoutType.Anchor).Title("常用属性")
+                .Items(
+                    F.TextBox().ID("tbxMessage").Required(true).ShowRedStar(true).Label("消息提示").Text("请输入你的住址？"),
+                    F.TextBox().ID("tbxDefaultValue").Label("输入框缺省值").Text("这是缺省地址"),
+                    F.TextBox().ID("tbxTitle").Label("对话框标题").Text("请输入"),
+                    F.CheckBox().ID("cbxEnableClose").Checked(true).Label("是否可关闭"),
+                    F.CheckBox().ID("cbxRequired").Checked(false).Label("是否必填项"),
+                    F.CheckBox().ID("cbxIsMultiLine").Checked(true).Listener("change", "onMultiLineChange").Label("是否多行输入框"),
+                    F.NumberBox().ID("nbMultiLineHeight").NoDecimal(true).NoNegative(true).Label("多行输入框高度").MinValue(80).MaxValue(300).Text("100"),
+                    F.CheckBox().ID("cbxIsPassword").Checked(false).Label("是否密码输入框").Hidden(true),
+                    F.RadioButtonList().ID("rblMessageBoxIcon").Label("消息图标").ColumnNumber(3)
+                        .Items(
+                            F.RadioItem().Value("None").Text("无图标").Selected(true),
+                            F.RadioItem().Value("Information").Text("消息"),
+                            F.RadioItem().Value("Warning").Text("警告"),
+                            F.RadioItem().Value("Question").Text("问题"),
+                            F.RadioItem().Value("Error").Text("错误"),
+                            F.RadioItem().Value("Success").Text("成功")
+                        )
+                ),
+            F.GroupPanel().ID("GroupPanel1").Layout(LayoutType.Anchor).Title("其它属性")
+                .Items(
+                    F.TextBox().ID("tbxID").Label("对话框ID"),
+                    F.NumberBox().ID("nbWidth").NoDecimal(true).NoNegative(true).Label("对话框宽度").MinValue(200).MaxValue(900),
+                    F.NumberBox().ID("nbMinWidth").NoDecimal(true).NoNegative(true).Label("对话框最小宽度"),
+                    F.NumberBox().ID("nbMaxWidth").NoDecimal(true).NoNegative(true).Label("对话框最大宽度"),
+                    F.RadioButtonList().ID("rblTarget").Label("弹出位置").ColumnNumber(3)
+                        .Items(
+                            F.RadioItem().Value("Self").Text("当前页面").Selected(true),
+                            F.RadioItem().Value("Parent").Text("父页面"),
+                            F.RadioItem().Value("Top").Text("顶层页面")
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().Text("点击弹出输入对话框").ID("btnSubmit").ValidateForms("SimpleForm1").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+                )
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function promptOKCallback(message) {
+            message = message.replace(/\r\n/ig, '\n').replace(/\r/ig, '\n').replace(/\n/ig, '<br/>');
+            F.notify("你输入的住址是：" + message);
+        }
+
+
+        function onMultiLineChange(event) {
+            var checked = this.getValue();
+
+            F.ui.nbMultiLineHeight.setHidden(!checked);
+            F.ui.cbxIsPassword.setHidden(!checked);
+        }
+
+    </script>
+
+}

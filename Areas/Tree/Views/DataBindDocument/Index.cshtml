@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Tree/Content/website.xml";
+    ViewBag.Title = "Tree/DataBindDocument";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件（绑定到 XmlDocument）").DataSource(ViewBag.Tree1DataSource))
+    <br>
+
+    @(F.Button().ID("btnClear").Text("清空树").CssClass("marginr").OnClick(Url.Action("btnClear_Click")))
+
+    @(F.Button().ID("btnReBind").Text("重新绑定树").CssClass("marginr").OnClick(Url.Action("btnReBind_Click")))
+
+
+}
+

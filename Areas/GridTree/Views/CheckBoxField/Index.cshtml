@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "GridTree/CheckBoxField";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-grid-cell.hidethis .f-grid-checkbox {
+            display: none;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("树表格").DataIDField("Id").DataTextField("Name").EnableTree(true).TreeColumn("Name").DataIDField("Id").DataParentIDField("ParentId")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().ColumnID("Name").ExpandUnusedSpace(true).DataField("Name").HeaderText("名称"),
+            F.RenderField().Width(100).DataField("Type").HeaderText("类型"),
+            F.RenderField().Width(100).DataField("Size").HeaderText("大小"),
+            F.RenderCheckField().ColumnID("FollowFolder").Width(80).RenderAsStaticField(false).HeaderText("关注目录").RendererFunction("renderFollowFolder"),
+            F.RenderField().Width(150).DataField("ModifyDate").HeaderText("修改日期").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd")
+        )
+        .DataSource(DataSourceUtil.GetTreeDataTable())
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+    @(F.Button().ID("Button2").Text("关注的目录列表").OnClick(Url.Action("Button2_Click")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderFollowFolder(value, params) {
+            var rowData = params.rowData;
+
+            // 类型
+            var type = rowData.values.Type;
+            if (type !== '文件夹') {
+                params.tdCls = 'hidethis';
+            }
+
+            return value;
+        }
+
+    </script>
+}

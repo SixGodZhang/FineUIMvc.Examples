@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Grid/GridIFrameReload/IFrameWindow";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Form().BodyPadding(10).AutoScroll(true).ShowHeader(false).ShowBorder(false).ID("SimpleForm1").IsViewPort(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().Icon(Icon.SystemClose).Text("关闭").ID("btnHide").Listener("click", "F.activeWindow.hide();"),
+                    F.Button().OnClick(Url.Action("btnUpdateParentGrid_Click")).Icon(Icon.SystemSave).Text("更新父页面表格").ID("btnUpdateParentGrid")
+                )
+        )
+        .Rows(
+            F.FormRow()
+                .Items(
+                    F.Label().CssClass("highlight").Text(Request.QueryString["name"]).Label("申请人").ID("labUserName"),
+                    F.Label().Text("0551-1234567").Label("电话").ID("Label3")
+                ),
+            F.FormRow()
+                .Items(
+                    F.NumberBox().ShowRedStar(true).Required(true).Label("数量").NoNegative(true).NoDecimal(true).ID("NumberBox1"),
+                    F.DatePicker().Text("2008-05-09").Label("申请日期").Text("2008-05-09").ShowRedStar(true).Required(true).ID("DatePicker1")
+                ),
+            F.FormRow()
+                .Items(
+                    F.TextArea().ShowRedStar(true).Required(true).Label("描述").Height(80).ID("TextArea2")
+                ),
+            F.FormRow()
+                .Items(
+                    F.HtmlEditor().Height(200).Label("详细描述")
+                        .BasePath(Url.Content("~/res/third-party/umeditor/")).Editor(Editor.UMEditor).ID("HtmlEditor1")
+                )
+        )
+    )
+
+
+
+
+}
+

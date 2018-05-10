@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "GridOther/TwoGrid";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.RegionPanel().ID("RegionPanel1").ShowBorder(false).Margin(5).IsViewPort(true)
+        .Regions(
+            F.Region().ID("Region1").ShowBorder(false).ShowHeader(false).RegionPosition(Position.Left).BodyPadding("0 5 0 0").Width(200).Layout(LayoutType.Fit)
+                .Items(
+                    F.Grid().ID("Grid2").ShowBorder(true).ShowHeader(true).Title("表格（班级）").DataIDField("Id").DataTextField("Name").EnableMultiSelect(false).OnRowSelect(Url.Action("Grid2_RowSelect"), "Grid1",
+                            new Parameter("selectedRowId", "this.getSelectedRow()")).ShowGridHeader(false)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().ExpandUnusedSpace(true).DataField("Name").HeaderText("姓名")
+                        ).DataSource(ViewBag.Grid2DataSource).SelectedRowID(ViewBag.Grid2SelectedRowID)
+                ),
+            F.Region().ID("Region2").ShowBorder(false).ShowHeader(false).RegionPosition(Position.Center).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch)
+                .Items(
+                    F.Panel().ShowHeader(false).BodyPadding(10).ShowBorder(true).CssStyle("border-bottom:none;")
+                        .Items(
+                            F.Label().ID("Label4").Text("注：通过 CssStyle=border-bottom:none; 样式去除本面板的底部边框"),
+                            F.Label().ID("labelClassDesc").Text(ViewBag.SelectedClassDesc)
+                        ),
+                    F.Grid().ID("Grid1").BoxFlex(1).ShowBorder(true).ShowHeader(true).Title("表格（学生）").DataIDField("Id").DataTextField("Name")
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+                            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+                        ).DataSource(ViewBag.Grid1DataSource)
+                )
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

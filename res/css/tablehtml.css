@@ -1,0 +1,52 @@
+﻿.tablehtml {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+    .tablehtml td {
+        border-width: 1px;
+        border-style: solid;
+        padding: 0;
+    }
+
+        .tablehtml td.label .redstar {
+            color: red;
+        }
+
+        .tablehtml td > div {
+            display: block;
+            vertical-align: top;
+        }
+
+    .tablehtml .f-field {
+        width: 100%;
+        margin-bottom: 0 !important;
+    }
+
+    .tablehtml .f-field-textbox,
+    .tablehtml .f-field-label {
+        border-radius: 0;
+        margin: 0;
+        border-width: 0;
+        padding: 7px 6px;
+    }
+
+    .tablehtml .f-field-checkbox-icon {
+        margin-left: 6px;
+    }
+
+    .tablehtml .f-field-body-checkboxlabel {
+        margin-left: 26px;
+    }
+
+
+
+    .tablehtml td.label {
+        width: 100px;
+        text-align: right;
+    }
+
+    .tablehtml td.content {
+        width: 200px;
+    }

@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Toolbar/ToolbarImagesFixedWidth";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").IFrameName("main").EnableIFrame(true).Height(250).Title("面板").ID("Panel1")
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Top)
+                .Items(
+                    F.Image().Icon(Icon.ArrowRight).ImageWidth(16).ID("Image1"),
+                    F.LinkButton().OnClientClick("alert('Button1');").Text("按钮一").ID("Button1"),
+                    F.Image().Icon(Icon.World).ImageWidth(16).ID("Image2"),
+                    F.LinkButton().OnClientClick("alert('Button2');").Text("按钮二").ID("Button2"),
+                    F.Image().Icon(Icon.Cake).ImageWidth(16).ID("Image3"),
+                    F.LinkButton().OnClientClick("alert('Button3');").Text("按钮三").ID("Button3")
+                )
+        )
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>由于页面布局时图片尚未加载，所以会造成布局错乱</li>
+        <li>可以为 Image 控件设置固定宽度来解决</li>
+    </ul>
+
+
+
+}
+

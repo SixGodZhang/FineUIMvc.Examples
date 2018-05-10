@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "GridPaging/PageItemsRowExpander";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).Height(350).ShowHeader(true).ShowBorder(true).Title("表格（内存分页）").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(5).ExpandAllRowExpanders(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().DataField("Desc").RenderAsRowExpander(true).RendererFunction("renderExpander")
+        )
+        .PageItems(
+            F.ToolbarSeparator(),
+            F.Button().Text("显示隐藏描述信息").EnablePress(true).Pressed(true).ID("btnShowRowExpanders").OnClick(Url.Action("btnShowRowExpanders_Click"),
+                    new Parameter("expanded", "F.ui.Grid1.rowExpander.expanded"))
+        )
+        .DataSource(DataSourceUtil.GetDataTable2())
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

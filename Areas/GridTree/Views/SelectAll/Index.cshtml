@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "GridTree/SelectAll";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("树表格").DataIDField("Id").DataTextField("Name").EnableTree(true).TreeColumn("Name").DataIDField("Id").DataParentIDField("ParentId").EnableCheckBoxSelect(true).KeepCurrentSelection(true)
+        .Columns(
+            F.RowNumberField().EnableTreeNumber(true),
+            F.RenderField().ColumnID("Name").ExpandUnusedSpace(true).DataField("Name").HeaderText("名称"),
+            F.RenderField().Width(100).DataField("Type").HeaderText("类型"),
+            F.RenderField().Width(100).DataField("Size").HeaderText("大小"),
+            F.RenderField().Width(150).DataField("ModifyDate").HeaderText("修改日期").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd")
+        )
+        .DataSource(DataSourceUtil.GetTreeDataTable()).RowDataBoundFunction("onGrid1RowDataBound").Listener("rowselect", "onGridRowSelect").Listener("rowdeselect", "onGridRowDeselect")
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+    <br />
+    <br />
+    注：
+    <ul>
+        <li>本树表格默认展开 [basic] 和 [res] 两个目录</li>
+        <li>注意表格属性：EnableCheckBoxSelect="true" KeepCurrentSelection="true"</li>
+        <li>表格客户端函数 selectRows 的第二个参数，用来指示是否保持现有选中项</li>
+    </ul>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGrid1RowDataBound(rowData) {
+            var rowId = rowData.id;
+
+            // 默认展开的节点
+            if (rowId === '50' || rowId === '60') {
+                rowData.expanded = true;
+            }
+        }
+
+
+        // 递归遍历节点 rowData 的所有子节点
+        function resolveRowChildren(rowData, callback) {
+            var children = rowData.children;
+            if (children && children.length) {
+                for (var i = 0, count = children.length; i < count; i++) {
+                    var item = children[i];
+                    callback.apply(item);
+                    resolveRowChildren(item, callback);
+                }
+            }
+        }
+
+        function onGridRowSelect(event, rowId) {
+            var grid = this, rowData = grid.getRowData(rowId);
+
+            var rowIds = [];
+            resolveRowChildren(rowData, function () {
+                rowIds.push(this.id);
+            });
+
+            // 本过程中不触发事件
+            F.noEvent(function () {
+                // 第二个参数true：保持现有选中项
+                grid.selectRows(rowIds, true);
+            });
+        }
+
+        function onGridRowDeselect(event, rowId) {
+            var grid = this, rowData = grid.getRowData(rowId);
+
+            var rowIds = [];
+            resolveRowChildren(rowData, function () {
+                rowIds.push(this.id);
+            });
+
+            // 本过程中不触发事件
+            F.noEvent(function () {
+                // 第二个参数true：保持现有选中项
+                grid.deselectRows(rowIds);
+            });
+        }
+
+    </script>
+}

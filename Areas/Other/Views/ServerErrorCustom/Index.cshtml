@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Other/ServerErrorCustom";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().ID("Button5").OnClick(Url.Action("Button5_Click")).Text("服务器异常（500）"))
+    <br>
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+        F.beforeAjaxError(function (data) {
+            var errormsg = data;
+
+            // data: <html><head><title>...</title></head><body>...</body></html>
+            var result = /<title>([^<]+)<\/title>/ig.exec(data);
+            if (result.length === 2) {
+                errormsg = result[1];
+            }
+
+            F.alert("<strong>这是自定义错误处理！</strong><br/><br/>服务器返回的错误：" + errormsg);
+
+            // 需要显式的返回 false，来阻止默认的错误处理
+            return false;
+        });
+
+    </script>
+
+}

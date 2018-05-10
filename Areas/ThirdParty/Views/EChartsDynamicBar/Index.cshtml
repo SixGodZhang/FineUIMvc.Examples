@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.SourceFiles = "/Areas/ThirdParty/Views/EChartsDynamicBar/IFrame.cshtml";
+    ViewBag.Title = "ThirdParty/EChartsDynamicBar";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").Title("当前生产销售情况").IsViewPort(true).ShowBorder(true).Margin(10).ShowHeader(false).EnableIFrame(true).IFrameUrl(Url.Content("~/ThirdParty/EChartsDynamicBar/IFrame"))
+        .Toolbars(
+            F.Toolbar().ID("Toolbar2")
+                .Items(
+                    F.RadioButtonList().ID("rblChartType").Label("选择图表类型").Width(280)
+                        .Items(
+                            F.RadioItem().Text("销售").Value("sales").Selected(true),
+                            F.RadioItem().Text("产量").Value("output")
+                        ).Listener("change", "onChartTypeChange")
+                )
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onChartTypeChange(event) {
+
+            var chartType = this.getValue();
+            var newUrl = F.baseUrl + 'ThirdParty/EChartsDynamicBar/IFrame?type=' + encodeURIComponent(chartType);
+
+            F.ui.Panel1.setIFrameUrl(newUrl);
+        }
+
+    </script>
+
+}

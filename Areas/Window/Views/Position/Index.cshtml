@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Window/Position";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+    body {
+        background: url(@Url.Content("~/res/images/bg/small/3.jpg")) !important;
+    }
+    </style>
+
+
+}
+
+@section body {
+
+
+    <div style="height: 1200px;">
+    </div>
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Top).PositionX(Position.Left).Height(80).Width(200).ID("Window1").Content("DependsViewPortSize=false PositionX=Left PositionY=Top"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Center).PositionX(Position.Left).Height(80).Width(200).ID("Window2").Content("DependsViewPortSize=false PositionX=Left PositionY=Center"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Bottom).PositionX(Position.Left).Height(80).Width(200).ID("Window3").Content("DependsViewPortSize=false PositionX=Left PositionY=Bottom"))
+
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Top).PositionX(Position.Center).Height(80).Width(200).ID("Window4").Content("DependsViewPortSize=false PositionX=Center PositionY=Top"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Center).PositionX(Position.Center).Height(80).Width(200).ID("Window5").Content("DependsViewPortSize=false PositionX=Center PositionY=Center"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Bottom).PositionX(Position.Center).Height(80).Width(200).ID("Window6").Content("DependsViewPortSize=false PositionX=Center PositionY=Bottom"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Top).PositionX(Position.Right).Height(80).Width(200).ID("Window7").Content("DependsViewPortSize=false PositionX=Right PositionY=Top"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Center).PositionX(Position.Right).Height(80).Width(200).ID("Window8").Content("DependsViewPortSize=false PositionX=Right PositionY=Center"))
+
+
+    @(F.Window().ShowHeader(false).BodyPadding(10).AutoScroll(true).IsModal(false).DependsViewPortSize(false).PositionY(Position.Bottom).PositionX(Position.Right).Height(80).Width(200).ID("Window9").Content("DependsViewPortSize=false PositionX=Right PositionY=Bottom"))
+
+
+    <br>
+
+}
+

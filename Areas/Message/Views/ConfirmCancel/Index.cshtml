@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Message/ConfirmCancel";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().Text("操作一（ConfirmText）").ID("btnOperation1").ConfirmText("确认执行操作一？").ConfirmTarget(Target.Top).OnClick(Url.Action("btnOperation1_Click")))
+    <br>
+    <br>
+
+    @(F.Button().Text("操作二（OnClientClick）").ID("btnOperation2").Listener("click", "onOperation2Click"))
+    <br>
+    <br>
+
+    @(F.Button().Text("操作三（OnClientClick，点击取消按钮也回发）").ID("btnOperation3").Listener("click", "onOperation3Click"))
+
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onOperation2Click(event) {
+            F.confirm({
+                message: '确认执行操作二？',
+                messageIcon: 'question',
+                ok: function () {
+                    // 触发后台事件
+                    F.doPostBack('@Url.Action("btnOperation2_Click")');
+                }
+            });
+        }
+
+        function onOperation3Click(event) {
+            F.confirm({
+                message: '确认执行操作二？',
+                messageIcon: 'question',
+                ok: function () {
+                    // 触发后台事件
+                    F.doPostBack('@Url.Action("btnOperation3_Click")', {
+                        opType: 'ok'
+                    });
+                },
+                cancel: function () {
+                    // 触发后台事件
+                    F.doPostBack('@Url.Action("btnOperation3_Click")', {
+                        opType: 'cancel'
+                    });
+                }
+            });
+        }
+
+    </script>
+}

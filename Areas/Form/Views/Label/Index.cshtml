@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Form/Label";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .customlabel span {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Label().ID("Label1").Text("普通的 Label 标签，会自动编码字符串（比如：<strong></strong>）"))
+    <br>
+
+    @(F.Label().ID("Label4").EncodeText(false).Text("<a href='http://www.ustc.edu.cn/' target='_blank'>中国科学技术大学（Label 标签生成的链接）</a>"))
+    <br>
+
+    @(F.Label().ID("Label2").EncodeText(false).CssClass("customlabel").Text("修改文本的样式（CssClass）"))
+    <br>
+
+    @(F.Label().ID("Label3").Enabled(true).EncodeText(false).Text("<span style='color:red;font-weight:bold;'>修改文本的样式（内嵌HTML）</span>"))
+    <br>
+
+    @(F.Button().ID("btnChangeEnable").Text("启用/禁用最后一个标签").OnClick(Url.Action("btnChangeEnable_Click"), new Parameter("enabled", "F.ui.Label3.isEnabled()")))
+
+}
+

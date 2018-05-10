@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Grid/Grid";
+    var F = Html.F();
+}
+
+@model System.Data.DataTable
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格（动态创建列）").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").Columns(ViewBag.Grid1Columns).DataSource(Model))
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

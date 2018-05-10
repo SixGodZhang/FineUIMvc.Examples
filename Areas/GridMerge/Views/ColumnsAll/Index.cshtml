@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "GridMerge/ColumnsAll";
+    var F = Html.F();
+}
+
+
+@using System.Data;
+
+@section body {
+
+    @{
+        DataTable source = DataSourceUtil.GetDataTable();
+
+        foreach (DataRow row in source.Rows)
+        {
+            DateTime logTime = (DateTime)row["LogTime"];
+            row["LogTime"] = new DateTime(logTime.Year, logTime.Month, logTime.Day);
+        }
+    }
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableColumnLines(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("ID").DataField("ID").Width(80),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        ).Listener("dataload", "onGridDataLoad").DataSource(source)
+    )
+    <br>
+    <br>
+
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+        function onGridDataLoad(event) {
+            this.mergeColumns();
+        }
+    </script>
+
+}

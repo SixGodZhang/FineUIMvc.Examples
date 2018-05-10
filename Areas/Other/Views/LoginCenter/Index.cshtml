@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Other/LoginCenter";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        /* margin 属性不能设置到 #SimpleForm1，因为 SimpleForm1 的宽度设置包含了 margin */
+        #SimpleForm1_wrapper {
+            margin: 100px auto 0 auto;
+            width: 350px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    用户名：admin
+    <br>
+    密码：admin
+    <br>
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>
+            通过CSS设置登陆表单居中显示（CSS属性不能直接设置到 SimpleForm1，因为其 Width 已经包含了 margin ）。
+        </li>
+        <li>
+            设置表单属性 CssClass="f-shadow"，增加其边框阴影。
+        </li>
+    </ul>
+
+
+    @(F.SimpleForm().ID("SimpleForm1").ShowBorder(true).BodyPadding(10).CssClass("f-shadow").ShowHeader(true).Title("登陆表单").Width(350)
+        .Items(
+            F.TextBox().ID("tbxUserName").Label("用户名").Required(true).ShowRedStar(true),
+            F.TextBox().ID("tbxPassword").Label("密码").TextMode(TextMode.Password).Required(true).ShowRedStar(true)
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Center).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("btnLogin").Text("登录").Type(ButtonType.Submit).ValidateForms("SimpleForm1").ValidateTarget(Target.Top).OnClick(Url.Action("btnLogin_Click"), "SimpleForm1"),
+                    F.Button().Type(ButtonType.Reset).ID("btnReset").Text("重置")
+                )
+        )
+    )
+
+
+
+}
+

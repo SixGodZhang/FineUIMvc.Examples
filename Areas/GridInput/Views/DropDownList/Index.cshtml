@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "GridInput/DropDownList";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("获取用户输入的分组值").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("inputs", "getUserInputs()")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderGender(value, params) {
+            var selectedHtml = ' selected="selected" ';
+            var manHtml = F.formatString('<option {0}value="男">男</option>', value === 1 ? selectedHtml : '');
+            var womanHtml = F.formatString('<option {0}value="女">女</option>', value !== 1 ? selectedHtml : '');
+            return F.formatString('<select class="myselect">{0}{1}</select>', manHtml, womanHtml);
+        }
+
+        var inputselector = 'select.myselect';
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                result.push([rowData.id, rowData.text, rowEl.find(inputselector).val()]);
+            });
+
+            return F.toJSON(result);
+        }
+
+    </script>
+}

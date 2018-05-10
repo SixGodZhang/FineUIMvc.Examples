@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Window/Side";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        body {
+            background: url(@Url.Content("~/res/images/bg/small/3.jpg")) !important;
+        }
+    </style>
+
+
+}
+
+
+@section body {
+
+    @(F.Window().Hidden(true).EnableDefaultCorner(false).ShowHeader(false).BodyPadding(10).AutoScroll(true).HideOnMaskClick(true).IsModal(true).PercentHeight("100%").Width(200).PositionX(Position.Left).ID("Window1").Content("PositionX=Left Width=200px PercentHeight=100% IsModal=true HideOnMaskClick=true"))
+
+
+    @(F.Window().Hidden(true).EnableDefaultCorner(false).ShowHeader(false).BodyPadding(10).AutoScroll(true).HideOnMaskClick(true).IsModal(true).PercentHeight("100%").Width(200).PositionX(Position.Right).ID("Window2").Content("PositionX=Right Width=200px PercentHeight=100% IsModal=true HideOnMaskClick=true"))
+
+
+    @(F.Window().Hidden(true).EnableDefaultCorner(false).ShowHeader(false).BodyPadding(10).AutoScroll(true).HideOnMaskClick(true).IsModal(true).PercentWidth("100%").Height(100).PositionY(Position.Top).ID("Window3").Content("PositionY=Top Height=100px PercentWidth=100% IsModal=true HideOnMaskClick=true"))
+
+
+
+    @(F.Window().Hidden(true).EnableDefaultCorner(false).ShowHeader(false).BodyPadding(10).AutoScroll(true).HideOnMaskClick(true).IsModal(true).PercentWidth("100%").Height(100).PositionY(Position.Bottom).ID("Window4").Content("PositionY=Bottom Height=100 PercentWidth=100% IsModal=true HideOnMaskClick=true"))
+
+
+    @(F.Window().IsModal(false).ShowHeader(false).BodyPadding(10).AutoScroll(true).PositionY(Position.Center).PositionX(Position.Center).BoxConfigChildMargin("0 0 5 0").Layout(LayoutType.VBox).Width(300).ID("Window5")
+        .Items(
+            F.Button().Text("左侧窗体").ID("Button1").Listener("click", "F.ui.Window1.show();"),
+            F.Button().Text("右侧窗体").ID("Button2").Listener("click", "F.ui.Window2.show();"),
+            F.Button().Text("顶部窗体").ID("Button3").Listener("click", "F.ui.Window3.show();"),
+            F.Button().Margin(0).Text("底部窗体").ID("Button4").Listener("click", "F.ui.Window4.show();")
+        )
+    )
+
+    <br>
+
+
+}
+

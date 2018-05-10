@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeNodeHyperLinkHash";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .lefttree {
+            border-top-width: 0;
+            border-left-width: 0;
+            border-bottom-width: 0;
+        }
+    </style>
+
+
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("RegionPanel1").Layout(LayoutType.Region).Height(450).ShowHeader(true).Title("左右区域布局").ShowBorder(true)
+        .Items(
+            F.Tree().ID("Tree1").RegionSplit(false).RegionPosition(Position.Left).Width(200).CssClass("lefttree").ShowHeader(false).ShowBorder(true).EnableSingleClickExpand(true)
+                .Nodes(
+                    F.TreeNode().Text("基本用法")
+                        .Nodes(
+                            F.TreeNode().Text("你好 FineUI").NavigateUrl("~/Basic/Hello"),
+                            F.TreeNode().Text("登陆页面").NavigateUrl("~/Basic/Login")
+                        ),
+                    F.TreeNode().Text("表单控件")
+                        .Nodes(
+                            F.TreeNode().Text("简单按钮").NavigateUrl("~/Button/Button"),
+                            F.TreeNode().Text("文本输入框").NavigateUrl("~/Form/TextBox")
+                        )
+                ),
+            F.Panel().ID("Panel1").ShowHeader(false).EnableIFrame(true).ShowBorder(false).RegionPosition(Position.Center)
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面").Listener("click", "onRefreshClick"))
+    <br />
+    <br />
+    注：刷新页面后，能够保持当前选中的树节点。
+
+}
+
+
+
+@section script {
+
+
+    <script>
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+        F.ready(function () {
+
+            var tree1 = F.ui.Tree1;
+            var panel1 = F.ui.Panel1;
+
+            // 树节点的点击事件
+            tree1.on('nodeclick', function (event, nodeId) {
+
+                // 点击树节点的数据
+                var nodeData = tree1.getNodeData(nodeId);
+
+                // 不管当前节点是否子节点，只要有 href 属性，都需要打开一个新Tab
+                if (nodeData.href) {
+
+                    // 修改地址栏
+                    window.location.hash = '#' + nodeData.href;
+
+                    // 在主区域内打开链接
+                    panel1.setIFrameUrl(nodeData.href);
+
+                    // 阻止默认的点击行为（比如超链接）
+                    event.preventDefault();
+                }
+            });
+
+
+
+            // 页面第一次加载时，根据URL地址在主窗口加载页面
+            var HASH = window.location.hash.substr(1);
+            if (HASH) {
+                // 遍历树节点
+                tree1.resolveNode(function (node) {
+
+                    // 找到节点
+                    if (node.href === HASH) {
+
+                        // 展开节点所在的路径
+                        tree1.expandNodePath(node);
+
+                        // 选中节点
+                        tree1.selectNode(node);
+
+                        // 在主区域内打开链接
+                        panel1.setIFrameUrl(node.href);
+
+                        return false; // break
+                    }
+
+                });
+
+            }
+
+
+        });
+
+
+    </script>
+
+}

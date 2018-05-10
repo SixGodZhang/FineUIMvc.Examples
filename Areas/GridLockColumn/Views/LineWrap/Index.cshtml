@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "GridLockColumn/LineWrap";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-grid-row .f-grid-cell-inner {
+            white-space: normal;
+            word-break: break-all;
+        }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(400).Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").AllowColumnLocking(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100).EnableLock(true).Locked(true),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100).EnableLock(true),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100).EnableLock(true),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").Width(120).EnableLock(true),
+            F.RenderField().DataField("Desc").HeaderText("个人简介").RendererFunction("renderExpander").Width(400)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

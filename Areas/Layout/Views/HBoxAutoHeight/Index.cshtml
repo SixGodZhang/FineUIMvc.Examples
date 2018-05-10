@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Layout/HBoxAutoHeight";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel5").ShowBorder(true).Layout(LayoutType.HBox).AutoScroll(true).ShowHeader(true).Title("面板（Layout=HBox BoxConfigChildMargin=0 5 0 0 BodyPadding=5 AutoScroll=true）").BoxConfigChildMargin("0 5 0 0").BodyPadding(10)
+        .Items(
+            F.Panel().ID("Panel1").Title("面板1").Width(600).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label1").Text("Width=600")
+                ),
+            F.Panel().ID("Panel2").Title("面板2").BoxFlex(1).MinWidth(600).Margin(0).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").EncodeText(false).Text("BoxFlex=1<br>Margin=0<br>MinWidth=600<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>bottom line")
+                )
+        )
+    )
+
+
+}
+

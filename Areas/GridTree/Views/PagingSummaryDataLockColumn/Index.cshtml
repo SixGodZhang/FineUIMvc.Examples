@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "GridTree/PagingSummaryDataLockColumn";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-grid-row-summary .f-grid-cell-inner {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("树表格").Height(400).DataIDField("Id").DataTextField("Name").EnableTree(true).TreeColumn("Name").DataIDField("Id").DataParentIDField("ParentId").AllowPaging(true).IsDatabasePaging(true).PageSize(2).OnPageIndexChanged(Url.Action("Grid1_PageIndexChanged"), "Grid1").EnableSummary(true).SummaryPosition(SummaryPosition.Bottom).AllowColumnLocking(true).EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField().EnableTreeNumber(true),
+            F.RenderField().ColumnID("Name").ExpandUnusedSpace(true).DataField("Name").HeaderText("名称").EnableLock(true),
+            F.RenderField().Width(100).DataField("Type").HeaderText("类型").EnableLock(true),
+            F.RenderField().Width(150).DataField("Size").HeaderText("大小").EnableLock(true),
+            F.RenderField().Width(150).DataField("ModifyDate").HeaderText("修改日期").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").EnableLock(true)
+        )
+        .PageItems(
+            F.ToolbarSeparator(),
+            F.Button().ID("btnExpandAll").Text("展开全部").Listener("click", "onExpandAllClick"),
+            F.Button().ID("btnCollapseAll").Text("折叠全部").Listener("click", "onCollapseAllClick")
+        ).SummaryData(ViewBag.Grid1SummaryData).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+    <br />
+    <br />
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onExpandAllClick(event) {
+            F.ui.Grid1.expandAll();
+        }
+
+
+        function onCollapseAllClick(event) {
+            F.ui.Grid1.collapseAll();
+        }
+
+    </script>
+}

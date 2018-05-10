@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "DropDownList/NoForceSelectionEmpty";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉列表（不强制选择，初始值，下拉选项为空）").ShowHeader(true)
+        .Items(
+            F.DropDownList().ID("DropDownList1").EnableEdit(true).AutoSelectFirstItem(false).ForceSelection(false).Text("初始自定义值"),
+            F.Button().ID("btnRebindData").Text("重新绑定数据").OnClick(Url.Action("btnRebindData_Click"), new Parameter("dataLength", "F.ui.DropDownList1.data.length")).CssClass("marginr"),
+            F.Button().ID("btnSetText").Text("更新为[用户输入值]").OnClick(Url.Action("btnSetText_Click")).CssClass("marginr"),
+            F.Button().ID("btnGetSelection").Text("获取此下拉列表的选中项").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+    下拉列表的属性设置为：
+    <ul>
+        <li>AutoSelectFirstItem="false"：初始不强制选中第一项</li>
+        <li>EnableEdit="true"：可以手工编辑</li>
+        <li>ForceSelection="false"：不强制选择</li>
+    </ul>
+
+
+}
+

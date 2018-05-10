@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "TabStrip/AddTab";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(450).ShowBorder(true).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().Title("FineUI 论坛").EnableIFrame(true).IFrameUrl("http://fineui.com/bbs/")
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnAddTab1").CssClass("marginr").Text("专业版（客户端代码）").Listener("click", "onAddTab1Click"))
+
+    @(F.Button().ID("btnAddTab2").CssClass("marginr").Text("开源版（客户端代码）").Listener("click", "onAddTab2Click"))
+
+    @(F.Button().ID("btnRemoveTab1").CssClass("marginr").Text("删除专业版（客户端代码）").Listener("click", "onRemoveTab1Click"))
+
+    @(F.Button().ID("btnRemoveTab2").CssClass("marginr").Text("删除开源版（客户端代码）").Listener("click", "onRemoveTab2Click"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnAddTab3").CssClass("marginr").Text("专业版示例（服务端代码）").OnClick(Url.Action("btnAddTab3_Click")))
+
+    @(F.Button().ID("btnAddTab4").CssClass("marginr").Text("开源版版示例（服务端代码）").OnClick(Url.Action("btnAddTab4_Click")))
+
+    @(F.Button().ID("btnRemoveTab3").CssClass("marginr").Text("删除专业版示例（服务端代码）").OnClick(Url.Action("btnRemoveTab3_Click")))
+
+    @(F.Button().ID("btnRemoveTab4").CssClass("marginr").Text("删除开源版版示例（服务端代码）").OnClick(Url.Action("btnRemoveTab4_Click")))
+    <br>
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onAddTab1Click(event) {
+            F.ui.TabStrip1.addTab({
+                id: 'dynamic_tab1',
+                iframe: true,
+                iframeUrl: 'http://fineui.com/version_pro/',
+                title: '专业版',
+                closable: true,
+                icon: '@Url.Content("~/res/icon/application.png")'
+            });
+        }
+
+        function onAddTab2Click(event) {
+            F.ui.TabStrip1.addTab({
+                id: 'dynamic_tab2',
+                iframe: true,
+                iframeUrl: 'http://fineui.com/version/',
+                title: '开源版',
+                closable: true,
+                icon: '@Url.Content("~/res/icon/application_add.png")'
+            });
+
+        }
+
+        function onRemoveTab1Click(event) {
+            F.ui.TabStrip1.removeTab('dynamic_tab1');
+        }
+
+        function onRemoveTab2Click(event) {
+            F.ui.TabStrip1.removeTab('dynamic_tab2');
+        }
+
+    </script>
+}

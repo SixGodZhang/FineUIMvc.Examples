@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "FormLayout/LayoutPanel";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding("5 5 0 5").LabelAlign(LabelAlign.Left).Title("表单")
+        .Rows(
+            F.FormRow().ID("FormRow5")
+                .Items(
+                    F.TextBox().ID("TextBox1").Label("文本一"),
+                    F.Button().ID("Button4").CssClass("btn-in-form").Text("按钮一")
+                ),
+            F.FormRow().ID("FormRow6")
+                .Items(
+                    F.TextBox().ID("TextBox2").Label("文本二"),
+                    F.Button().ID("Button3").CssClass("btn-in-form").Text("按钮二")
+                ),
+            F.FormRow().ID("FormRow7")
+                .Items(
+                    F.TextBox().ID("TextBox3").Label("文本三"),
+                    F.Button().ID("Button1").CssClass("btn-in-form").Text("按钮三")
+                ),
+            F.FormRow().ID("FormRow8")
+                .Items(
+                    F.TextBox().ID("TextBox4").Label("文本四"),
+                    F.Button().ID("Button2").CssClass("btn-in-form").Text("按钮四")
+                )
+        )
+    )
+    <br>
+    <br />
+    注：因为表单字段默认有 5px 的底部外边距，所以设置表单面板的 BodyPadding="5 5 0 5"。
+
+
+}
+

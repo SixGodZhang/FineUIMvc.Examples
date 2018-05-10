@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "DataModel/Tree";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件")
+        .Nodes(
+            F.TreeNode().Text("中国").EnableCheckBox(true).Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").EnableCheckBox(true).Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").EnableCheckBox(true).NodeID("zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").EnableCheckBox(true).NodeID("Suiping"),
+                                    F.TreeNode().Text("西平县").EnableCheckBox(true).NodeID("Xiping")
+                                ),
+                            F.TreeNode().Text("漯河市").EnableCheckBox(true).NodeID("luohe")
+                        ),
+                    F.TreeNode().EnableCheckBox(true).Text("安徽省").Expanded(true).NodeID("Anhui")
+                        .Nodes(
+                            F.TreeNode().EnableCheckBox(true).Text("合肥市").NodeID("Hefei"),
+                            F.TreeNode().EnableCheckBox(true).Text("黄山市").NodeID("Huangshan")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnGetCheckedValues").Text("获取选中的项").OnClick(Url.Action("btnGetCheckedValues_Click"), new Parameter("checkedNodes", "getCheckedNodes()")))
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+
+
+@section script {
+
+    <script>
+        function getCheckedNodes() {
+            var result = [];
+
+            var checkedNodes = F.ui.Tree1.getCheckedNodes(true);
+            if (checkedNodes.length) {
+                $.each(checkedNodes, function (index, node) {
+                    result.push({
+                        NodeId: node.id,
+                        NodeText: node.text
+                    });
+                });
+            }
+
+            return F.toJSON(result);
+        }
+    </script>
+
+}

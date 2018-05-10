@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Window/ImageResize";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        #mylogo {
+            position: absolute;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Window().BodyPadding(10).AutoScroll(true).IsModal(false).EnableResize(true).EnableMaximize(true).EnableClose(false).Title("窗体（观察图片随着窗体大小的变化）").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window2")
+        .Content("<img id=\"mylogo\" src=\"" + Url.Content("~/res/images/logo/logo3.png") + "\" alt=\"Logo\">").Listener("resize", "onWindowResize").Listener("render", "onWindowResize")
+    )
+
+
+}
+
+@section script {
+
+    <script>
+
+        // 保持图片的长宽比
+        var LOGO_WIDTH = 127, LOGO_HEIGHT = 81;
+
+        // resize，render
+        function onWindowResize() {
+            var bodyWidth = this.bodyEl.width();
+            var bodyHeight = this.bodyEl.height();
+
+            var logoWidth = bodyWidth;
+            var logoHeight = Math.floor(bodyWidth * LOGO_HEIGHT / LOGO_WIDTH);
+            if (logoHeight > bodyHeight) {
+                logoHeight = bodyHeight;
+                logoWidth = Math.floor(bodyHeight * LOGO_WIDTH / LOGO_HEIGHT);
+            }
+
+            $('#mylogo').css({
+                top: Math.floor((bodyHeight - logoHeight) / 2),
+                left: Math.floor((bodyWidth - logoWidth) / 2),
+                width: logoWidth,
+                height: logoHeight
+            });
+
+        }
+
+    </script>
+
+}

@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "IPMAC";
+    var F = Html.F();
+}
+
+@section body {
+
+    @{
+        var ipmac = F.PageManager.Source.GetRequestIPMAC();
+    }
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").LabelWidth(50).BodyPadding(10).Title("服务器的 IP+MAC 地址")
+        .Items(
+            F.TextBox().Label("IP").ID("tbxIP").Readonly(true).Text(ipmac[0]),
+            F.TextBox().Label("MAC").ID("tbxMAC").Readonly(true).Text(ipmac[1])
+        )
+    )
+
+    详情：<a href="http://fineui.com/mvc/lic.html">http://fineui.com/mvc/lic.html</a>
+
+}
+

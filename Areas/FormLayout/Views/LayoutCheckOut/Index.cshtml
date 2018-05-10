@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "FormLayout/LayoutCheckOut";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Title("账单信息").IsModal(false).EnableClose(false).EnableResize(true).Width(650).BodyPadding(10).AutoScroll(true)
+        .Items(
+            F.Form().ID("Form1").LabelAlign(LabelAlign.Right).MessageTarget(MessageTarget.Qtip).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.GroupPanel().ID("GroupPanel1").Layout(LayoutType.Anchor).Title("联系人信息")
+                        .Items(
+                            F.Panel().ID("Panel2").Layout(LayoutType.HBox).ShowHeader(false).ShowBorder(false)
+                                .Items(
+                                    F.Label().ID("Label1").ShowRedStar(true).Label("姓名"),
+                                    F.TextBox().ID("TextBox2").ShowLabel(false).CssClass("marginr").Required(true).ShowRedStar(true).BoxFlex(2),
+                                    F.TextBox().ID("TextBox4").ShowLabel(false).Required(true).ShowRedStar(true).BoxFlex(3)
+                                ),
+                            F.Panel().ID("Panel1").Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.Stretch).ShowHeader(false).ShowBorder(false)
+                                .Items(
+                                    F.TextBox().ID("TextBox1").Required(true).ShowRedStar(true).Label("电子邮箱").RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址").BoxFlex(1),
+                                    F.TextBox().ID("TextBox6").Label("电话号码").Width(200).Required(true).ShowRedStar(true)
+                                )
+                        ),
+                    F.GroupPanel().ID("GroupPanel2").Layout(LayoutType.Anchor).Title("联系人地址")
+                        .Items(
+                            F.TextBox().ID("TextBox7").Label("详细地址").Required(true).ShowRedStar(true),
+                            F.Panel().ID("Panel4").Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.Stretch).ShowHeader(false).ShowBorder(false)
+                                .Items(
+                                    F.TextBox().ID("TextBox9").Label("省").BoxFlex(1).Required(true).ShowRedStar(true),
+                                    F.TextBox().ID("TextBox5").Label("市").BoxFlex(1).LabelWidth(50).Required(true).ShowRedStar(true),
+                                    F.TextBox().ID("TextBox8").Label("邮政编码").Width(200).Required(true).ShowRedStar(true)
+                                )
+                        ),
+                    F.GroupPanel().ID("GroupPanel3").Layout(LayoutType.Anchor).Title("账单地址")
+                        .Items(
+                            F.CheckBox().Checked(true).ID("cbxSameAsContactAddress").OnCheckedChanged(Url.Action("cbxSameAsContactAddress_CheckedChanged"), new Parameter("isChecked", "this.getValue()")).Text("和联系人地址相同"),
+                            F.TextBox().ID("tbxBillingAddress").Enabled(false).Label("详细地址").Required(true).ShowRedStar(true),
+                            F.Panel().ID("Panel3").Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.Stretch).ShowHeader(false).ShowBorder(false)
+                                .Items(
+                                    F.TextBox().ID("tbxBillingProvince").Enabled(false).Label("省").BoxFlex(1).Required(true).ShowRedStar(true),
+                                    F.TextBox().ID("tbxBillingCity").Enabled(false).Label("市").BoxFlex(1).LabelWidth(50).Required(true).ShowRedStar(true),
+                                    F.TextBox().ID("tbxBillingPostCode").Enabled(false).Label("邮政编码").Width(200).Required(true).ShowRedStar(true)
+                                )
+                        ),
+                    F.GroupPanel().ID("GroupPanel4").Layout(LayoutType.Anchor).Title("付款方式")
+                        .Items(
+                            F.RadioButtonList().ID("RadioButtonList1").ColumnNumber(5).ShowLabel(false)
+                                .Items(
+                                    F.RadioItem().Text("银联").Value("yinlian").Selected(true),
+                                    F.RadioItem().Text("VISA").Value("visa"),
+                                    F.RadioItem().Text("MasteCard").Value("mastercard")
+                                ),
+                            F.TextBox().ID("TextBox3").Label("卡上的名字").Required(true).ShowRedStar(true),
+                            F.Panel().ID("Panel5").Layout(LayoutType.HBox).BoxConfigAlign(BoxLayoutAlign.Stretch).ShowHeader(false).ShowBorder(false)
+                                .Items(
+                                    F.TextBox().ID("TextBox14").Label("卡号").BoxFlex(1).Required(true).ShowRedStar(true),
+                                    F.DropDownList().ID("DropDownList1").Label("过期时间").Width(180).CssClass("marginr").Required(true).ShowRedStar(true)
+                                        .Items(
+                                            F.ListItem().Text("一月").Value("1"),
+                                            F.ListItem().Text("二月").Value("2"),
+                                            F.ListItem().Text("三月").Value("3"),
+                                            F.ListItem().Text("四月").Value("4"),
+                                            F.ListItem().Text("五月").Value("5"),
+                                            F.ListItem().Text("六月").Value("6"),
+                                            F.ListItem().Text("七月").Value("7"),
+                                            F.ListItem().Text("八月").Value("8"),
+                                            F.ListItem().Text("九月").Value("9"),
+                                            F.ListItem().Text("十月").Value("10"),
+                                            F.ListItem().Text("十一月").Value("11"),
+                                            F.ListItem().Text("十二月").Value("12")
+                                        ),
+                                    F.NumberBox().ID("TextBox16").ShowLabel(false).NoDecimal(true).NoNegative(true).Text("2014").Width(80).Required(true).ShowRedStar(true)
+                                )
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("Button1").IconFont(IconFont._Save).Text("提交账单").ValidateForms("Form1").ValidateMessageBox(false)
+                )
+        )
+    )
+    <br>
+    <br>
+
+
+}
+

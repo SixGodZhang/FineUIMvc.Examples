@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "GridEditor/RenderFunction";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名")
+                .Editor(
+                    F.TextBox().ID("tbxName").Required(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别")
+                .Editor(
+                    F.DropDownList().ID("ddlGender").Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("1"),
+                            F.ListItem().Text("女").Value("0")
+                        )
+                ),
+            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份")
+                .Editor(
+                    F.NumberBox().ID("nbxEntranceYear").NoDecimal(true).NoNegative(true).MinValue(2000).MaxValue(2025)
+                ),
+            F.RenderField().Width(120).ColumnID("EntranceDate").DataField("EntranceDate").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("入学日期")
+                .Editor(
+                    F.DatePicker().ID("dpEntranceDate").Required(true)
+                ),
+            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业")
+                .Editor(
+                    F.DropDownList().ID("ddlMajor").Required(true)
+                        .Items(
+                            F.ListItem().Text("材料科学与工程系").Value("材料科学与工程系"),
+                            F.ListItem().Text("化学系").Value("化学系"),
+                            F.ListItem().Text("数学系").Value("数学系"),
+                            F.ListItem().Text("物理系").Value("物理系"),
+                            F.ListItem().Text("自动化系").Value("自动化系")
+                        )
+                )
+        ).DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+
+    <br>
+    @(F.Label().ID("labResult"))
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderGender(value) {
+            return F.ui.ddlGender.getTextByValue(value);
+        }
+
+        function renderMajor(value) {
+            return F.ui.ddlMajor.getTextByValue(value);
+        }
+
+    </script>
+}
+

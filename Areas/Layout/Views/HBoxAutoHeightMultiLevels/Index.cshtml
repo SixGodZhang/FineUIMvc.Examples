@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Layout/HBoxAutoHeightMultiLevels";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel5").ShowBorder(true).Layout(LayoutType.HBox).AutoScroll(true).BodyPadding(10).ShowHeader(true).Title("面板（Layout=HBox BodyPadding=5 AutoScroll=true）")
+        .Items(
+            F.Panel().ID("Panel1").Title("面板1").BoxFlex(1).MarginRight(5).BodyPadding(10).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox)
+                .Items(
+                    F.TextBox().Label("姓名").ShowRedStar(true).Required(true),
+                    F.DropDownList().Label("性别").ShowRedStar(true).Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("男").Selected(true),
+                            F.ListItem().Text("女").Value("女")
+                        ),
+                    F.TextArea().Label("个人简介").MarginBottom(0).BoxFlex(1)
+                ),
+            F.Panel().ID("Panel2").Title("面板2").BoxFlex(1).BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").EncodeText(false).Text("BoxFlex=1<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>bottom line")
+                )
+        )
+    )
+
+
+}
+

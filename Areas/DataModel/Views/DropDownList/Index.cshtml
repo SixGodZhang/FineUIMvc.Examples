@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/DataModel/Models/DropDownListModel.cs";
+    ViewBag.Title = "DataModel/DropDownList";
+    var F = Html.F();
+}
+
+@model FineUIMvc.Examples.Areas.DataModel.Models.DropDownListModel
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelWidth(120).ShowBorder(true).ShowHeader(true).Title("简单表单")
+        .Items(
+            F.DropDownListFor(m => m.DropDownList1)
+                .Items(Model.DropDownList1Items.ToArray()),
+            F.DropDownListFor(m => m.DropDownList2)
+                .Items(Model.DropDownList2Items.ToArray()).EnableMultiSelect(true),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").CssClass("marginr").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1"),
+            F.Button().ID("btnReset").Text("重置表单").OnClientClick("F.ui.SimpleForm1.reset();")
+        )
+    )
+
+}
+

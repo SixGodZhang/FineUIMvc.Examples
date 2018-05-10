@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "SourceFile";
+    var F = Html.F();
+}
+
+@section head {
+
+    <link href="~/res/google-code-prettify/prettify.css" rel="stylesheet" />
+    <style type="text/css">
+        body {
+            margin: 0;
+            font-size: 13px;
+            background-color: White;
+            background: none !important;
+            background-color: #fff !important;
+        }
+
+        pre.prettyprint {
+            border: none;
+            margin: 0;
+            /*padding: 10px 5px 5px 15px;*/
+            color: #666;
+            font-family: Consolas, Courier New, monospace;
+            -webkit-font-smoothing: subpixel-antialiased;
+        }
+
+        li.L0, li.L1, li.L2, li.L3, li.L4,
+        li.L5, li.L6, li.L7, li.L8, li.L9 {
+            list-style-type: decimal !important;
+            background-color: #fff;
+        }
+    </style>
+
+}
+
+@functions {
+
+    private bool UnderRootPath(string fileName)
+    {
+        string filePath = Server.MapPath(fileName);
+        string rootPath = Server.MapPath("~/");
+
+        return filePath.StartsWith(rootPath);
+    }
+
+    private string GetBasePath(string fileName)
+    {
+        string filePath = Server.MapPath(fileName);
+        string rootPath = Server.MapPath("~/");
+
+        string basePath = filePath.Substring(rootPath.Length);
+        int slashIndex = basePath.IndexOf("\\");
+        if (slashIndex >= 0)
+        {
+            basePath = basePath.Substring(0, slashIndex);
+        }
+
+        return basePath;
+    }
+
+    private string GetFileType(string fileName)
+    {
+        string fileType = String.Empty;
+
+        int lastDotIndex = fileName.ToLower().LastIndexOf(".");
+        if (lastDotIndex >= 0)
+        {
+            fileType = fileName.Substring(lastDotIndex + 1);
+        }
+
+        return fileType;
+    }
+
+    private string GetOutputHTML(string file)
+    {
+        if (String.IsNullOrEmpty(file))
+        {
+            return "Error!";
+        }
+
+        if (file.StartsWith("http://") || file.StartsWith("https://"))
+        {
+            return String.Format("<br/><br/><a href=\"{0}\" target=\"_blank\">在新窗口打开</a>", file);
+        }
+
+        // 不是网站根目录下的文件
+        if (!UnderRootPath(file))
+        {
+            return "Error!";
+        }
+
+        // 不允许下载文件的目录
+        string basePath = GetBasePath(file);
+        List<string> disallowPaths = new List<string> { "bin", "obj", "upload", "Properties", "App_Data" };
+        if (disallowPaths.Contains(basePath))
+        {
+            return "Error!";
+        }
+
+
+        // 只能下载指定类型文件
+        string fileType = GetFileType(file);
+        List<string> allowFileTypes = new List<string> { "cs", "cshtml", "xml", "css", "js" };
+        if (!allowFileTypes.Contains(fileType))
+        {
+            return "Error!";
+        }
+
+        // 读取文件内容
+        string content = File.ReadAllText(Server.MapPath(file), System.Text.Encoding.UTF8);
+        return "<pre class=\"prettyprint\">" + HttpUtility.HtmlEncode(content) + "</pre>"; // linenums
+    }
+
+}
+
+
+@section body {
+
+    @{
+        string outputHTML = GetOutputHTML(Request.QueryString["file"]);
+    }
+
+    @Html.Raw(outputHTML)
+
+}
+
+@section script {
+
+    <script src="~/res/google-code-prettify/prettify.js"></script>
+    <script src="~/res/google-code-prettify/lang-basic.js"></script>
+
+    <script>
+
+        F.ready(function () {
+
+            prettyPrint();
+
+        });
+
+    </script>
+}

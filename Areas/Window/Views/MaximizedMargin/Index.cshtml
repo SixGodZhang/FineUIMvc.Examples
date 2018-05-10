@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Window/MaximizedMargin";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-window.f-window-maximized {
+            margin: 50px;
+            border-width: 1px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Button().Text("显示窗体").ID("btnShowWindow").Listener("click", "F.ui.Window1.show();"))
+    <br>
+    <br>
+
+    @(F.Window().Maximized(true).BodyPadding(10).AutoScroll(true).IsModal(true).EnableResize(true).EnableMaximize(true).Title("窗体（最大化时外边距为 50px）").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window1").ContentEl("#content1"))
+    <br>
+
+
+}
+

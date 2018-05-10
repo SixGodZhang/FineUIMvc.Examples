@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Toolbar/ToolbarMulti";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    <div id="content1">
+        <p>
+            <a href="http://tech.163.com/special/jobsdead/" style="font-size: 18px" target="_blank"><b>乔布斯</b></a>
+        </p>
+        <p>
+            乔布斯于1955年2月24日出生，苹果创始人之一。今年8月苹果超越埃克森美孚成为全球最大市值企业，截止上季度持有现金达到762亿美金，甚至超过了美国政府国库存款。
+        </p>
+        <p>
+            遗憾的是，苹果的取得巨大成功还是无法给乔布斯一个健康的身体，乔布斯2003年被发现患有胰脏癌，随后又查出肝癌，危在旦夕的乔布斯在经历了8年的抗癌斗争、3次病休、若干次手术后，于2011年8月25日正式宣布从CEO位置辞职。2011年10月6日，乔布斯在苹果发布iPhone 4S后的第二天与世长辞。
+        </p>
+    </div>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").AutoScroll(true).Title("面板").Height(400).BodyPadding(10).ShowBorder(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().Text("第一行工具栏中的按钮，靠左显示").ID("Button6")
+                ),
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Center).ID("Toolbar1")
+                .Items(
+                    F.Button().Text("第二行工具栏中的按钮，居中显示")
+                ),
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).ID("Toolbar2")
+                .Items(
+                    F.Button().Text("第三行工具栏中的按钮，靠右显示").ID("Button1")
+                ),
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom).ID("Toolbar3")
+                .Items(
+                    F.Button().Text("第一行底部工具栏中的按钮").ID("Button2"),
+                    F.ToolbarSeparator(),
+                    F.Button().Text("按钮二").ID("Button4")
+                ),
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Center).Position(ToolbarPosition.Bottom).ID("Toolbar4")
+                .Items(
+                    F.Button().Text("第二行底部工具栏中的按钮，居中显示").ID("Button3")
+                ),
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom).ID("Toolbar5")
+                .Items(
+                    F.Button().Text("第三行底部工具栏中的按钮，左右显示").ID("Button7"),
+                    F.ToolbarFill().ID("ToolbarFill1"),
+                    F.Button().Text("第三行底部工具栏中的按钮，左右显示").ID("Button5")
+                )
+        ).ContentEl("#content1")
+    )
+
+
+}
+

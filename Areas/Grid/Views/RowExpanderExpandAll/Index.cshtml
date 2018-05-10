@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Grid/RowExpanderExpandAll";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(500).Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").ExpandAllRowExpanders(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100),
+            F.RenderField().DataField("Desc").RenderAsRowExpander(true).RendererFunction("renderExpander")
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Attribute("data-source-key", "source1")
+        
+    )
+    <br>
+    <br>
+
+    @(F.Button().Listener("click", "F.ui.Grid1.rowExpander.toggleVisible();").Text("显示/隐藏行扩展列").ID("Button3"))
+    <br>
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button1_Click"), 
+            new Parameter("fields", "F.ui.Grid1.fields"),
+            new Parameter("source", "F.ui.Grid1.getAttr('data-source-key')")).CssClass("marginr").Text("重新绑定表格").ID("Button1")
+    )
+
+    @(F.Button().Listener("click", "F.ui.Grid1.expandRowExpanders();").Text("展开全部的行扩展列").CssClass("marginr").ID("btnExpandRowExpanders"))
+
+    @(F.Button().Listener("click", "F.ui.Grid1.collapseRowExpanders();").Text("折叠全部的行扩展列").ID("btnCollapseRowExpanders"))
+    <br>
+    <br>
+    注：通过一个简单的属性，来控制是否展开所有行扩展列（即使在重新绑定数据后，依然能够保持所有扩展列的展开状态）。
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

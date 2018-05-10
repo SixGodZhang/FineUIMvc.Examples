@@ -1,0 +1,26 @@
+The license agreements for each component in this folder are:
+
+1. jQueryUI: MIT
+	http://jqueryui.com/about/
+
+2. My97DatePicker: Custom
+	http://www.my97.net/dp/license.asp
+
+3. UMEditor: MIT
+	http://ueditor.baidu.com/website/index.html
+
+4. UEditor: MIT
+	http://ueditor.baidu.com/website/index.html
+
+5. CKEditor: GPL, LGPL, MPL
+	http://ckeditor.com/about
+
+6. TinyMCE: LGPL
+	http://www.tinymce.com/
+	
+7. Spectrum: Custom
+	https://github.com/bgrins/spectrum
+
+8. ECharts: BSD 3-Clause License
+	http://echarts.baidu.com/
+

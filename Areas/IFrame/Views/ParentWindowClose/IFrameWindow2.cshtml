@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "IFrame/ParentWindowClose/IFrameWindow2";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    页面三：IFrame/ParentWindowClose/IFrameWindow2
+    <br>
+
+    @(F.Button().ID("Button1").Text("关闭本窗体，回发父页面和父页面的父页面").OnClick(Url.Action("IFrameWindow2_Button1_Click")))
+
+
+}
+

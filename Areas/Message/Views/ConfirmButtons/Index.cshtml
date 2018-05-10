@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Message/ConfirmButtons";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().Text("操作一（自定义对话框按钮文本）").ID("btnOperation1").Listener("click", "onOperation1Click"))
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onOperation1Click() {
+
+            new F.MessageBox({
+                message: '您即将直接退出，如果您修改了相关信息，请先保存！',
+                title: '确认退出',
+                buttons: [{
+                    buttonId: 'ok',
+                    text: '直接退出'
+                }, {
+                    buttonId: 'cancel',
+                    text: '不退出'
+                }],
+                handler: function (event, buttonId) {
+                    if (buttonId === 'ok') {
+                        F.doPostBack('@Url.Action("ConfirmOK")');
+                    } else {
+                        F.doPostBack('@Url.Action("ConfirmCancel")');
+                    }
+                }
+            });
+
+        }
+
+    </script>
+}

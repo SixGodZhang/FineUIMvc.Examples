@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Panel/Tools";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").IconUrl(Url.Content("~/res/images/16/8.png")).BodyPadding(10).Height(350).Title("面板").ID("Panel1")
+        .Items(
+            F.Label().Text("面板内容")
+        )
+        .Tools(
+            F.Tool().ToolTip("设置").IconFont(IconFont._Gear).Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("设置").IconFont(IconFont._Wrench).ID("Tool13").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("下载").IconFont(IconFont._Download).ID("Tool1").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("上传").IconFont(IconFont._Upload).ID("Tool3").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("打印").IconFont(IconFont._Print).ID("Tool2").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("保存").IconFont(IconFont._Save).ID("Tool4").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("新增").IconFont(IconFont._Plus).ID("Tool18").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("编辑").IconFont(IconFont._Pencil).ID("Tool10").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("删除").IconFont(IconFont._Minus).ID("Tool5").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("删除").IconFont(IconFont._Trash).ID("Tool14").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("删除").IconFont(IconFont._Close).ID("Tool15").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("登陆").IconFont(IconFont._SignIn).ID("Tool6").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("退出").IconFont(IconFont._PowerOff).ID("Tool11").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("帮助").IconFont(IconFont._Question).ID("Tool9").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("详细").IconFont(IconFont._Info).ID("Tool20").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("搜索").IconFont(IconFont._Search).ID("Tool12").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("授权").IconFont(IconFont._Key).ID("Tool17").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("用户").IconFont(IconFont._User).ID("Tool7").Listener("click", "onToolIconClick"),
+            F.Tool().ToolTip("分组").IconFont(IconFont._Group).ID("Tool19").Listener("click", "onToolIconClick")
+        )
+    )
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button2_Click"), new Parameter("collapsed", "F.ui.Panel1.collapsed")).Text("检查面板的折叠状态").CssClass("marginr").ID("Button2"))
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onToolIconClick(event) {
+            // 当前点击的图标字体
+            var iconFont = this.iconFont;
+
+            F.notify({
+                message: '你点击了标题栏工具图标：' + iconFont,
+                messageIconFont: iconFont,
+                displayMilliseconds: 3000,
+                positionX: 'center',
+                positionY: 'center'
+            });
+        }
+
+    </script>
+
+}
+

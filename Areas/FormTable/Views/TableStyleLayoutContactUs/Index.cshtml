@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "FormTable/TableStyleLayoutContactUs";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Title("联系我们").IsModal(false).EnableClose(false).EnableResize(true).Width(550).AutoScroll(true).BodyPadding(10)
+        .Items(
+            F.Form().ID("Form1").ShowBorder(false).ShowHeader(false).EnableTableStyle(true).MessageTarget(MessageTarget.Qtip)
+                .Items(
+                    F.Panel().ID("Panel2").Layout(LayoutType.Column).ShowHeader(false).ShowBorder(false)
+                        .Items(
+                            F.TextBox().ID("TextBox2").Label("姓").Margin("0 5 0 0").Required(true).ShowRedStar(true).ColumnWidth("50%"),
+                            F.TextBox().ID("TextBox4").Label("名").Required(true).ShowRedStar(true).ColumnWidth("50%")
+                        ),
+                    F.TextBox().ID("TextBox1").Required(true).ShowRedStar(true).Label("电子邮箱").RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址"),
+                    F.TextBox().ID("TextBox3").Required(true).ShowRedStar(true).Label("主题"),
+                    F.TextArea().ID("TextArea1").Height(120).Required(true).ShowRedStar(true).Label("消息正文")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("Button1").Text("发送").IconFont(IconFont._Send).ValidateForms("Form1")
+                )
+        )
+    )
+
+
+}
+

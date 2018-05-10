@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/GridDataUrl/Controllers/LargeDataDataController.cs";
+    ViewBag.Title = "GridDataUrl/LargeData10000Location";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(450).Title("表格（10,000行）").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .DataUrl(Url.Content("~/GridDataUrl/LargeDataData?total=10000&type=simple")).EnableBigData(true)
+        .Columns(
+            F.RowNumberField().Width(50),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Label().Text("转到行："),
+                    F.NumberBox().ID("nbRowNumber").MinValue(1).MaxValue(10000).Text("1000").Increment(100).EnableCommas(true),
+                    F.Button().Text("Go").Listener("click", "onGotoRow"),
+                    F.ToolbarFill(),
+                    F.Label().ID("labCurrentPosition")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 转到行
+        function onGotoRow() {
+            // scrollToRow的参数是行索引，而 nbRowNumber 取得的是行序号
+            F.ui.Grid1.scrollToRow(F.ui.nbRowNumber.getValue() - 1);
+        }
+
+    </script>
+}

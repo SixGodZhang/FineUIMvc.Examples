@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Grid/Summary";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-grid-row-summary .f-grid-cell-inner {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).Height(350).ShowHeader(true).ShowBorder(true).Title("表格").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(5).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_PageIndexChanged"), "Grid1").EnableSummary(true).SummaryPosition(SummaryPosition.Flow)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("学费").DataField("Fee").Width(80),
+            F.RenderField().HeaderText("捐赠金额").DataField("Donate").Width(80)
+        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource).SummaryData(ViewBag.Grid1SummaryData)
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

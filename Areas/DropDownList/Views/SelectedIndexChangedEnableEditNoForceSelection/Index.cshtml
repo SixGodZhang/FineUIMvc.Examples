@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "DropDownList/SelectedIndexChangedEnableEditNoForceSelection";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("简单下拉列表（选中项改变事件，可编辑，不强制选择）").ShowHeader(true)
+        .Items(
+            F.DropDownList().ID("DropDownList1").EnableEdit(true).ForceSelection(false).OnSelectedIndexChanged(Url.Action("DropDownList1_SelectedIndexChanged"), "DropDownList1")
+                .Items(
+                    F.ListItem().Text("可选项1").Value("Value1"),
+                    F.ListItem().Text("可选项2（不可选择）").Value("Value2").EnableSelect(false),
+                    F.ListItem().Text("可选项3（不可选择）").Value("Value3").EnableSelect(false),
+                    F.ListItem().Text("可选项4").Value("Value4"),
+                    F.ListItem().Text("可选项5").Value("Value5"),
+                    F.ListItem().Text("可选项6").Value("Value6"),
+                    F.ListItem().Text("可选择项7").Value("Value7"),
+                    F.ListItem().Text("可选择项8").Value("Value8"),
+                    F.ListItem().Text("普通型1 < L > 1.5").Value("普通型1 < L > 1.5")
+                ),
+            F.Button().ID("btnSelectItem6").Text("选中[可选项6]").OnClick(Url.Action("btnSelectItem6_Click")).CssClass("marginr"),
+            F.Button().ID("btnGetSelection").Text("获取此下拉列表的选中项").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1")
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br />
+    <br />
+    测试用例：
+    <ul>
+        <li>
+            初始文本：可选项1；在文本输入框依次删除：1，项；<strong class="highlight">不会</strong>触发回发事件
+        </li>
+        <li>
+            初始文本：可选项1；在文本输入框依次删除：1，项；然后在页面上点击一下，使得文本框失去焦点；显示文本：可选；触发回发事件（<strong class="highlight">用户输入值：可选</strong>）
+        </li>
+        <li>
+            初始文本：可选项1；在文本输入框依次删除：1，项；然后再依次输入：项，5；按回车键；显示文本：可选项5；触发回发事件（<strong class="highlight">选中项：可选项5（值：Value5）</strong>）
+        </li>
+        <li>
+            初始文本：可选项1；在文本输入框依次删除：1，项；然后再依次输入：项，5；然后在页面上点击一下，使得文本框失去焦点；显示文本：可选项5；触发回发事件（<strong class="highlight">用户输入值：可选项5</strong>）
+        </li>
+        <li>
+            初始文本：可选项1；点击触发图标，显示下拉列表；点击：可选项5；显示文本：可选项5；触发回发事件
+        </li>
+        <li>
+            初始文本：可选项1；点击按钮：选中[可选项6]；显示文本：可选项6；<strong class="highlight">不会</strong>触发回发事件
+        </li>
+    </ul>
+
+
+
+
+
+}
+

@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonWidthHeight";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().ID("btnIcon1").Text("图标在左侧").Width(150).Height(60).Icon(Icon.Email).CssClass("marginr"))
+
+    @(F.Button().ID("btnIcon2").Text("图标在右侧").Width(150).Height(60).IconAlign(IconAlign.Right).Icon(Icon.Star))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnIcon3").Text("图标在上面").Width(150).Height(60).IconAlign(IconAlign.Top).Icon(Icon.Email).CssClass("marginr"))
+
+    @(F.Button().ID("btnIcon4").Text("图标在下面").Width(150).Height(60).IconAlign(IconAlign.Bottom).Icon(Icon.Star))
+    <br>
+    <br>
+    只有图片的按钮：
+    <br>
+    <br>
+
+    @(F.Button().ID("Button1").IconUrl(Url.Content("~/res/images/16/1.png")).Width(50).Height(40).CssClass("marginr"))
+
+    @(F.Button().ID("Button2").IconUrl(Url.Content("~/res/images/16/8.png")).Width(50).Height(40))
+    <br>
+    <br>
+    大按钮：
+    <br>
+    <br>
+
+    @(F.Button().ID("Button3").Size(ButtonSize.Large).Text("图标在左侧").Width(150).Height(80).Icon(Icon.Email).CssClass("marginr"))
+
+    @(F.Button().ID("Button4").Size(ButtonSize.Large).Text("图标在右侧").Width(150).Height(80).IconAlign(IconAlign.Right).Icon(Icon.Star))
+    <br>
+    <br>
+
+    @(F.Button().ID("Button5").Size(ButtonSize.Large).Text("图标在上面").Width(150).Height(80).IconAlign(IconAlign.Top).Icon(Icon.Email).CssClass("marginr"))
+
+    @(F.Button().ID("Button6").Size(ButtonSize.Large).Text("图标在下面").Width(150).Height(80).IconAlign(IconAlign.Bottom).Icon(Icon.Star))
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+
+    @(F.Button().ID("Button7").Text("图标在左侧").Width(150).Height(60).IconFont(IconFont._Home).CssClass("marginr"))
+
+    @(F.Button().ID("Button8").Text("图标在右侧").Width(150).Height(60).IconAlign(IconAlign.Right).IconFont(IconFont._Car))
+    <br>
+    <br>
+
+    @(F.Button().ID("Button9").Text("图标在上面").Width(150).Height(60).IconAlign(IconAlign.Top).IconFont(IconFont._Camera).CssClass("marginr"))
+
+    @(F.Button().ID("Button10").Text("图标在下面").Width(150).Height(60).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone))
+    <br>
+    <br>
+    只有图片的按钮：
+    <br>
+    <br>
+
+    @(F.Button().ID("Button11").IconFont(IconFont._Android).Width(50).Height(40).CssClass("marginr"))
+
+    @(F.Button().ID("Button12").IconFont(IconFont._Apple).Width(50).Height(40).CssClass("marginr"))
+    <br>
+    <br>
+    大按钮：
+    <br>
+    <br>
+
+    @(F.Button().ID("Button15").Size(ButtonSize.Large).Text("图标在左侧").Width(150).Height(80).IconFont(IconFont._Home).CssClass("marginr"))
+
+    @(F.Button().ID("Button16").Size(ButtonSize.Large).Text("图标在右侧").Width(150).Height(80).IconAlign(IconAlign.Right).IconFont(IconFont._Car))
+    <br>
+    <br>
+
+    @(F.Button().ID("Button17").Size(ButtonSize.Large).Text("图标在上面").Width(150).Height(80).IconAlign(IconAlign.Top).IconFont(IconFont._Camera).CssClass("marginr"))
+
+    @(F.Button().ID("Button18").Size(ButtonSize.Large).Text("图标在下面").Width(150).Height(80).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone))
+    <br>
+    <br>
+
+}

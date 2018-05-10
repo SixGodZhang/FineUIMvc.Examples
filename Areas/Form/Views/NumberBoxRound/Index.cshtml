@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Form/NumberBoxRound";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Top).Title("简单表单").LabelWidth(120)
+        .Items(
+            F.NumberBox().Label("小数（两位精度，初始值：1.2367）").ID("NumberBox1").Text("1.2367").Required(true).ShowRedStar(true),
+            F.NumberBox().Label("小数（两位精度，禁用四舍五入，初始值：1.2367）").ID("NumberBox2").Text("1.2367").EnableRound(false).Required(true).ShowRedStar(true),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+

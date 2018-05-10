@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Toolbar/ToolbarLayout";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    <div id="content1">
+        <p>
+            <a href="http://tech.163.com/special/jobsdead/" style="font-size: 18px" target="_blank"><b>乔布斯</b></a>
+        </p>
+        <p>
+            乔布斯于1955年2月24日出生，苹果创始人之一。今年8月苹果超越埃克森美孚成为全球最大市值企业，截止上季度持有现金达到762亿美金，甚至超过了美国政府国库存款。
+        </p>
+        <p>
+            遗憾的是，苹果的取得巨大成功还是无法给乔布斯一个健康的身体，乔布斯2003年被发现患有胰脏癌，随后又查出肝癌，危在旦夕的乔布斯在经历了8年的抗癌斗争、3次病休、若干次手术后，于2011年8月25日正式宣布从CEO位置辞职。2011年10月6日，乔布斯在苹果发布iPhone 4S后的第二天与世长辞。
+        </p>
+    </div>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").BodyPadding(10).ShowBorder(true).ID("Panel1")
+        .Toolbars(
+            F.Toolbar().Layout(LayoutType.HBox)
+                .Items(
+                    F.Button().MarginRight(5).BoxFlex(1).Text("按钮一").ID("Button1"),
+                    F.Button().BoxFlex(1).Text("按钮二").ID("Button2")
+                ),
+            F.Toolbar().Layout(LayoutType.Fit)
+                .Items(
+                    F.ButtonGroup().Layout(LayoutType.HBox)
+                        .Items(
+                            F.Button().BoxFlex(1).Text("按钮三").ID("Button5"),
+                            F.Button().BoxFlex(1).Text("按钮四").ID("Button7"),
+                            F.Button().BoxFlex(1).Text("按钮五").ID("Button9")
+                        )
+                ),
+            F.Toolbar().Layout(LayoutType.HBox)
+                .Items(
+                    F.ButtonGroup().MarginRight(10)
+                        .Items(
+                            F.Button().Text("按钮三").ID("Button3"),
+                            F.Button().Text("按钮四").ID("Button4"),
+                            F.Button().Text("按钮五").ID("Button6")
+                        ),
+                    F.CheckBoxList().BoxFlex(1).ID("CheckBoxList3")
+                        .Items(
+                            F.CheckItem().Value("value1").Text("可选项 1"),
+                            F.CheckItem().Selected(true).Value("value2").Text("可选项 2"),
+                            F.CheckItem().Selected(true).Value("value3").Text("可选项 3")
+                        )
+                ),
+            F.Toolbar().Layout(LayoutType.HBox)
+                .Items(
+                    F.ButtonGroup().MarginRight(10).Layout(LayoutType.HBox).Width(300)
+                        .Items(
+                            F.Button().BoxFlex(1).Text("按钮六").ID("Button8"),
+                            F.Button().BoxFlex(1).Text("按钮七").ID("Button10"),
+                            F.Button().BoxFlex(1).Text("按钮八").ID("Button11")
+                        ),
+                    F.CheckBoxList().BoxFlex(1).ID("CheckBoxList2")
+                        .Items(
+                            F.CheckItem().Value("value1").Text("可选项 1"),
+                            F.CheckItem().Selected(true).Value("value2").Text("可选项 2"),
+                            F.CheckItem().Selected(true).Value("value3").Text("可选项 3")
+                        )
+                ),
+            F.Toolbar().Layout(LayoutType.HBox).ID("Toolbar1")
+                .Items(
+                    F.TextBox().MarginRight(5).Width(100).EmptyText("文本输入框").ID("TextBox2"),
+                    F.TextBox().MarginRight(10).Width(100).EmptyText("文本输入框").ID("TextBox1"),
+                    F.CheckBoxList().BoxFlex(1).ID("CheckBoxList1")
+                        .Items(
+                            F.CheckItem().Value("value1").Text("可选项 1"),
+                            F.CheckItem().Selected(true).Value("value2").Text("可选项 2"),
+                            F.CheckItem().Selected(true).Value("value3").Text("可选项 3")
+                        )
+                )
+        ).ContentEl("#content1")
+
+    )
+
+
+
+
+
+
+
+}
+

@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Toolbar/Menu";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").Height(300).BodyPadding(10).ShowBorder(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.ToolbarText().Text("内联菜单"),
+                    F.ToolbarSeparator(),
+                    F.Button().Text("中国科学技术大学")
+                        .Menu(F.Menu()
+                            .Items(
+                                F.MenuHyperLink().Text("化学与材料科学学院").NavigateUrl("http://scms.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink1"),
+                                F.MenuHyperLink().Text("管理学院").NavigateUrl("http://business.ustc.edu.cn/zh_CN/").Target("_blank").ID("MenuHyperLink2")
+                                    .Menu(F.Menu()
+                                        .Items(
+                                            F.MenuHyperLink().Text("工商管理系").NavigateUrl("http://is.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink3"),
+                                            F.MenuHyperLink().Text("统计与金融系").NavigateUrl("http://stat.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink4")
+                                        )
+                                    )
+                            )
+                        )
+                )
+        )
+    )
+
+
+
+}
+

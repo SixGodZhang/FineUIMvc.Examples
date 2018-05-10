@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Message/AlertDownloadHide";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Width(650).Height(300).Icon(Icon.TagBlue).Title("窗体").EnableMaximize(true).EnableResize(true).IsModal(false).BodyPadding(10)
+        .Items(
+            F.Button().Text("操作（先弹出提示框，点击确定后先关闭弹出窗体，然后下载文件）").ID("btnOperation").OnClick(Url.Action("btnOperation_Click"))
+        )
+    )
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function confirmOKCallback() {
+            window.location.href = '@Url.Action("DownloadTextFile")';
+        }
+
+        function confirmCancelCallback() {
+            // 触发后台事件
+            F.doPostBack('@Url.Action("ConfirmCancel")');
+        }
+
+    </script>
+
+}

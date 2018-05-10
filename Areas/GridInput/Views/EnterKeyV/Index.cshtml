@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "GridInput/EnterKeyV";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("语文").DataField("ChineseScore").RendererFunction("renderChineseScore").Width(100),
+            F.RenderField().HeaderText("数学").DataField("MathScore").RendererFunction("renderMathScore").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>Tab/Enter遍历文本框时，先遍历一列的文本框，然后再遍历下一列的文本框</li>
+    </ul>
+
+    @(F.Button().Text("获取用户输入的分组值").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("inputs", "getUserInputs()")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderChineseScore(value, params) {
+            return F.formatString('<input class="myinput" value="{0}" style="width:80px;" type="text">', value);
+        }
+
+        function renderMathScore(value, params) {
+            return F.formatString('<input class="myinput" value="{0}" style="width:80px;" type="text">', value);
+        }
+
+        var inputselector = 'input.myinput';
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                var inputValues = [];
+                rowEl.find(inputselector).each(function () {
+                    inputValues.push($(this).val());
+                });
+
+                result.push([rowData.id, rowData.text, inputValues]);
+            });
+
+            return F.toJSON(result);
+        }
+
+        function registerEnterEvent() {
+            var grid = F.ui.Grid1;
+
+            grid.el.on('keydown', inputselector, function (event) {
+                if (event.keyCode === F.KEY.ENTER || event.keyCode === F.KEY.TAB) {
+                    var row = $(this).closest('.f-grid-row');
+
+                    var inputs = row.find(inputselector);
+                    // 一行中有多少个输入框
+                    var inputCount = inputs.length;
+                    // 当前输入框在本行中的序号（用来标示那一列）
+                    var inputIndex = inputs.index(this);
+
+                    // 查找下一行
+                    var nextRow = row.next();
+                    if (nextRow.length) {
+                        // 选中下一行同列的的输入框
+                        nextRow.find(inputselector).eq(inputIndex).select();
+                    } else {
+                        // 如果本行是最后一行，则选择下一列第一行的输入框
+                        inputIndex++;
+                        if (inputIndex >= inputCount) {
+                            inputIndex = 0;
+                        }
+                        row.prevAll(':last').find(inputselector).eq(inputIndex).select();
+                    }
+
+                    // 阻止 Enter 或者 Tab 的默认行为
+                    event.preventDefault();
+                }
+            });
+
+            grid.el.on('click', inputselector, function (event) {
+                $(this).select();
+            });
+        }
+
+
+        F.ready(function () {
+            registerEnterEvent();
+        });
+
+
+    </script>
+}

@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Grid/WidthForcefit";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Margin(5)
+        .Title("表格（ForceFit=true，各列宽度自适应）(改变页面大小来观察每列宽度的变化)").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").IsViewPort(true).ForceFit(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").Width(200),
+            F.RenderField().HeaderText("个人简介").DataField("Desc").Width(600)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

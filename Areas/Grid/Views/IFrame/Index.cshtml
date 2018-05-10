@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.SourceFiles = "/Grid/IFrameWindow";
+    ViewBag.Title = "Grid/IFrame";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("窗口列").Width(80).RendererFunction("renderWindowField1"),
+            F.RenderField().HeaderText("窗口列").Width(80).RendererFunction("renderWindowField2"),
+            F.RenderField().HeaderText("窗口列").Width(80).RendererFunction("renderWindowField3")
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Listener("rowdblclick", "onGridRowDblClick")
+    )
+    <br>
+    <br>
+    注：双击行同样可以弹出编辑窗体。 
+
+
+    @(F.Window().Hidden(true).Height(450).Width(850).IsModal(true).OnClose(Url.Action("Window1_Close")).Target(Target.Top).EnableResize(true).EnableMaximize(true).EnableIFrame(true).Title("审批").ID("Window1"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+    function renderWindowField1(value, params) {
+        return '<a href="javascript:;" class="mywindowfield">编辑</a>';
+    }
+
+    function renderWindowField2(value, params) {
+        return '<a href="javascript:;" class="mywindowfield"><i class="f-icon f-icon-edit f-grid-cell-iconfont"></i></a>';
+    }
+
+    function renderWindowField3(value, params) {
+        return '<a href="javascript:;" class="mywindowfield"><img class="f-grid-cell-icon" src="@Url.Content("~/res/icon/pencil.png")"></a>';
+    }
+
+    // 打开窗体
+    function openWindow(rowData) {
+
+        // /Grid/IFrameWindow?id=104&name=刘国
+        var iframeWindowUrl = '@Url.Content("~/Grid/IFrameWindow")';
+        var iframeUrl = iframeWindowUrl + '?id=' + rowData.id + '&name=' + encodeURIComponent(rowData.text);
+
+        // 显示窗体
+        F.ui.Window1.show(iframeUrl, '详细信息 - ' + rowData.text);
+    }
+
+    // 双击行
+    function onGridRowDblClick(event, rowId) {
+        openWindow(F.ui.Grid1.getRowData(rowId));
+    }
+
+
+
+    F.ready(function () {
+
+        var grid = F.ui.Grid1;
+
+        // 点击表格行中的编辑按钮
+        grid.el.on('click', 'a.mywindowfield', function (event) {
+            var rowEl = $(this).closest('.f-grid-row');
+            var rowData = grid.getRowData(rowEl);
+
+            openWindow(rowData);
+        });
+
+    });
+
+
+    </script>
+}

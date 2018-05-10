@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "GridLockColumn/GroupField";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").Title("表格").AllowColumnLocking(true).AllowSorting(true).EnableCheckBoxSelect(true).DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().EnableLock(true).Locked(true).Width(120).SortField("Name").DataField("Name").HeaderText("姓名<br>（换行）"),
+            F.RenderField().EnableLock(true).Width(80).SortField("Gender").HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender"),
+            F.GroupField().EnableLock(true).HeaderText("考试成绩").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.RenderField().EnableLock(true).Width(100).DataField("ChineseScore").SortField("ChineseScore").HeaderText("语文成绩"),
+                    F.RenderField().EnableLock(true).Width(100).DataField("MathScore").SortField("MathScore").HeaderText("数学成绩"),
+                    F.RenderField().EnableLock(true).Width(100).DataField("TotalScore").SortField("TotalScore").HeaderText("总成绩")
+                ),
+            F.RenderField().EnableLock(true).Width(100).SortField("EntranceYear").DataField("EntranceYear").HeaderText("入学年份"),
+            F.RenderCheckField().EnableLock(true).Width(80).SortField("AtSchool").RenderAsStaticField(true).DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().EnableLock(true).Width(200).SortField("Major").DataField("Major").HeaderText("所学专业")
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+        
+    )
+
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

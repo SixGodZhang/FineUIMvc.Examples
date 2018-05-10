@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Panel/ToolsCustomExpand";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").IconUrl(Url.Content("~/res/images/16/8.png")).BodyPadding(10).Height(350).Title("面板").ID("Panel1")
+        .Items(
+            F.Label().Text("面板内容")
+        )
+        .Tools(
+            F.Tool().Text("保存").ToolTip("保存").IconFont(IconFont._Save).ID("Tool4").Listener("click", "onToolIconClick"),
+            F.Tool().Text("新增").ToolTip("新增").IconFont(IconFont._Plus).ID("Tool18").Listener("click", "onToolIconClick"),
+            F.Tool().Text("编辑").ToolTip("编辑").IconFont(IconFont._Pencil).ID("Tool10").Listener("click", "onToolIconClick"),
+            F.Tool().Text("删除").ToolTip("删除").IconFont(IconFont._Minus).ID("Tool5").Listener("click", "onToolIconClick"),
+            F.Tool().Text("折叠").ToolTip("折叠").IconFont(IconFont._RoundMinus).ID("Tool1").Listener("click", "onToolIconClick")
+        )
+    )
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button2_Click"), new Parameter("collapsed", "F.ui.Panel1.collapsed")).Text("检查面板的折叠状态").CssClass("marginr").ID("Button2"))
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onToolIconClick(event) {
+            // 当前点击的图标字体
+            var iconFont = this.iconFont;
+            var text = this.text;
+
+            F.notify({
+                message: '你点击了标题栏工具图标：' + text,
+                messageIconFont: iconFont,
+                displayMilliseconds: 3000,
+                positionX: 'center',
+                positionY: 'center'
+            });
+
+            // 展开，折叠
+            var panel1 = F.ui.Panel1;
+            if (iconFont === 'f-iconfont-round-minus') {
+
+                this.setIconFont('f-iconfont-round-plus');
+                this.setText('展开');
+                this.setTooltip('展开');
+                panel1.collapse();
+
+            } else if (iconFont === 'f-iconfont-round-plus') {
+
+                this.setIconFont('f-iconfont-round-minus');
+                this.setText('折叠');
+                this.setTooltip('折叠');
+                panel1.expand();
+
+            }
+        }
+
+    </script>
+
+}
+

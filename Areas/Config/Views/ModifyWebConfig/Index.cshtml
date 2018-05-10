@@ -1,0 +1,209 @@
+﻿@{
+    ViewBag.Title = "Config/ModifyWebConfig";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style type="text/css">
+        ol li,
+        ul li {
+            margin-bottom: 5px;
+        }
+
+        pre {
+            border: none;
+            margin: 0;
+            padding: 10px 5px;
+            font-family: Consolas, Courier New, monospace;
+        }
+    </style>
+}
+
+@section body {
+
+    <div>
+        在开发项目之前请配置好 Web.config：
+    </div>
+    <ol>
+        <li>
+            <strong>设置 configuration 配置节：</strong>
+            <br />
+            <pre>
+    &lt;configSections&gt;
+        &lt;section name="FineUIMvc" type="FineUIMvc.ConfigSection, FineUIMvc"/&gt;
+    &lt;/configSections&gt;
+    &lt;!-- 可用的配置项（这里列的都是默认值）:
+            Theme="Default" 
+            Language="zh_CN" 
+            DebugMode="false"
+            FormMessageTarget="Qtip" 
+            FormOffsetRight="0" 
+            FormLabelWidth="100" 
+            FormLabelSeparator="：" 
+            FormLabelAlign="Left" 
+            FormRedStarPosition="AfterText"  
+            EnableAjax="true" 
+            AjaxTimeout="120" 
+            EnableAjaxLoading="true" 
+            AjaxLoadingType="Default" 
+            AjaxLoadingText="" 
+            ShowAjaxLoadingMaskText=false
+            AjaxLoadingMaskText="" 
+            CustomTheme="" 
+            IconBasePath="~/res/icon" 
+            CustomThemeBasePath="~/res/themes" 
+            JSBasePath="~/res/js"
+            IEEdge="true"  
+            EnableShim="false"  
+            DisplayMode="Normal"
+            MobileAdaption="true"
+            EnableAnimation="false"
+            LoadingImageNumber="1"
+    --&gt;
+    &lt;FineUIMvc DebugMode="false" /&gt;
+            </pre>
+            FineUIMvc 配置节中的参数：
+            <br />
+            <ul>
+                <li>
+                    Theme: 样式主题，内置 30 种主题（其中 6 种 Metro 主题，24 种 jQueryUI 官方主题，默认值：Default）
+                    <ul style="padding-top: 8px;">
+                        <li>
+                            Metro 主题：Default, Metro_Blue, Metro_Dark_Blue, Metro_Gray, Metro_Green, Metro_Orange
+                        </li>
+                        <li>
+                            jQueryUI 主题：
+                            <br />
+                            <div style="padding-left: 75px;">
+                                Black_Tie, Blitzer, Cupertino, Dark_Hive, Dot_Luv, Eggplant,
+                                <br />
+                                Excite_Bike, Flick, Hot_Sneaks, Humanity, Le_Frog, Mint_Choc,
+                                <br />
+                                Overcast, Pepper_Grinder, Redmond, Smoothness, South_Street, Start,
+                                <br />
+                                Sunny, Swanky_Purse, Trontastic, UI_Darkness, UI_Lightness, Vader
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li>CustomTheme: 自定义样式主题（custom_default/bootstrap_pure）</li>
+                <li>Language: 控件语言（en/zh_CN/zh_TW，默认值：zh_CN）</li>
+                <li>FormMessageTarget: 表单字段错误提示信息的显示位置（Title/Side/Qtip，默认值：Side）</li>
+                <li>FormLabelWidth: 表单字段标签的宽度（默认值：100px）</li>
+                <li>FormLabelAlign: 表单字段标签的位置（Left/Right/Top，默认值：Left）</li>
+                <li>FormRedStarPosition: 表单字段红色星号的位置（AfterText/BeforeText/AfterSeparator，默认值：AfterText）</li>
+                <li>FormLabelSeparator: 表单字段标签与内容的分隔符（默认值："："）</li>
+                <li>EnableAjax: 是否启用AJAX（默认值：true）</li>
+                <li>AjaxTimeout: Ajax超时时间（单位：秒，默认值：120s）</li>
+                <li>DebugMode: 是否开发模式，启用时格式化页面输出的JavaScript代码，便于调试（默认值：false）</li>
+                <li>EnableAjaxLoading: 是否启用Ajax提示（默认值：true）</li>
+                <li>AjaxLoadingType: Ajax提示类型，默认在页面顶部显示黄色提示框（Default/Mask，默认值：Default）</li>
+                <li>EnableShim: 是否启用遮罩层，防止ActiveX、Flash等对象覆盖弹出窗体（默认值：false）</li>
+                <li>DisplayMode: 显示模式（Normal/Compact/Large/LargeSpace，默认值：Normal）</li>
+                <li>MobileAdaption: 是否启用移动浏览器自适应（默认值：false）</li>
+                <li>EnableAnimation: 是否启用动画（Chrome，Firefox，Edge，Safari浏览器支持动画）（默认值：false）</li>
+                <li>LoadingImageNumber: 页面加载动画图片的序号（从 1 到 30，默认值：1）</li>
+            </ul>
+            <br />
+            <br />
+            <div style="margin-bottom: 5px;">
+                注：移动端（Android,iOS）网站需要启用如下属性：
+            </div>
+            <ul>
+                <li>DisplayMode=DisplayMode.Large</li>
+                <li>MobileAdaption="true"</li>
+            </ul>
+            <br />
+            在 Web.config 中设置如下：
+            <br />
+            &lt;FineUIMvc DisplayMode="Large" MobileAdaption="true" EnableAnimation="true" /&gt;
+            <br />
+            <br />
+        </li>
+        <li>
+            <strong>设置 system.web 配置节：</strong>
+            <pre>
+&lt;system.web&gt;
+    &lt;httpModules&gt;
+      &lt;add name="FineUIMvcScriptModule" type="FineUIMvc.ScriptModule, FineUIMvc"/&gt;
+    &lt;/httpModules&gt;
+    &lt;httpHandlers&gt;
+      &lt;add verb="GET" path="res.axd" type="FineUIMvc.ResourceHandler, FineUIMvc" validate="false"/&gt;
+    &lt;/httpHandlers&gt;
+&lt;system.web&gt;
+        </pre>
+        </li>
+        <li>
+            <strong>在 Global.asax.cs 中配置自定义模型绑定：</strong>
+<pre>
+protected void Application_Start()
+{
+    AreaRegistration.RegisterAllAreas();
+    RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+    ModelBinders.Binders.Add(typeof(JArray), new JArrayModelBinder());
+    ModelBinders.Binders.Add(typeof(JObject), new JObjectModelBinder());
+}
+        </pre>
+        </li>
+        <li><strong>完成。</strong></li>
+    </ol>
+    <br />
+    <hr />
+    <br />
+    <div style="font-weight: bold;">
+        常见问题：
+    </div>
+    <ul>
+        <li>
+            <strong>IIS集成模式（VS2013、VS2015的默认设置）</strong>
+            <br />
+            <br />
+            IIS集成模式：需要将 httpModules 和 httpHandlers 从 system.web 中删除，并添加到 system.webServer 中，如下所示：
+            <pre>
+&lt;system.webServer&gt;
+    &lt;modules&gt;
+        &lt;add name="FineUIMvcScriptModule" type="FineUIMvc.ScriptModule, FineUIMvc"/&gt;
+    &lt;/modules&gt;
+    &lt;handlers&gt;
+        &lt;add name="FineUIMvcResourceHandler" verb="GET" path="res.axd" type="FineUIMvc.ResourceHandler, FineUIMvc"/&gt;
+    &lt;/handlers&gt;
+&lt;/system.webServer&gt;
+                </pre>
+            你也可以直接将官网示例源代码中的 Web.config_for_VS2013 改名为 Web.config 使用。
+            <br />
+            <br />
+        </li>
+        
+        <li>
+            <strong>
+                使用 Visual Studio 的 NuGet 下载最新的 JSON 库
+            </strong>
+            <br />
+            <br />
+            Newtonsoft.Json.dll 在不同的 .Net 版本有不同的 DLL，建议您使用 Visual Studio 的 NuGet 工具下载最新的 JSON 库：
+            <br />
+            <br />
+            <img src="~/res/images/json.net.1.png" alt="Json.NET" />
+            <br />
+            <br />
+            <img src="~/res/images/json.net.2.png" alt="Json.NET" />
+            <br />
+            <br />
+            注：使用 NuGet 安装时，VS 会自动修改 Web.config 文件并增加相关信息，无需手工配置！
+        </li>
+    </ul>
+
+    <hr />
+    <br />
+    <div style="font-weight: bold; color: Red;">
+        更多常见问题：<a href="http://fineui.com/bbs/forum.php?mod=viewthread&tid=655" target="_blank">http://fineui.com/bbs/forum.php?mod=viewthread&tid=655</a>
+    </div>
+    <br />
+    <br />
+    <br />
+
+
+}
+

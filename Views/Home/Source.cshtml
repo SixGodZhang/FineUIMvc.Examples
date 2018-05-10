@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "Source";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        iframe {
+            padding: 0px;
+            margin: 0px;
+        }
+    </style>
+}
+
+
+@functions{
+
+    private string GetShortFileName(string fileName)
+    {
+        int index = fileName.LastIndexOf("/");
+
+        if (index >= 0)
+        {
+            return fileName.Substring(index + 1);
+        }
+
+        return fileName;
+    }
+
+
+    private string GetIconUrl(string url)
+    {
+        string suffix = url.Substring(url.LastIndexOf('.') + 1);
+        return Url.Content("~/res/images/filetype/vs_" + suffix + ".png");
+    }
+
+}
+
+
+@section body {
+
+    @(F.TabStrip().TabPosition(TabPosition.Top).ShowBorder(false).ID("TabStrip1").IsViewPort(true))
+
+    @{
+        string files = Request.QueryString["files"];
+
+        if (String.IsNullOrEmpty(files))
+        {
+            return;
+        }
+
+        if (!String.IsNullOrEmpty(files))
+        {
+            string[] fileNames = files.Split(';');
+
+            for (int i = 0; i < fileNames.Length; i++)
+            {
+                string fileName = fileNames[i].Trim();
+                if (String.IsNullOrEmpty(fileName))
+                {
+                    continue;
+                }
+
+
+                // /demo_mvc/Mobile/?file=Mobile/Main
+                string MOBILE_PREFIX = "/Mobile/?file=";
+                if (fileName.Contains(MOBILE_PREFIX))
+                {
+                    var mobilePrefixIndex = fileName.IndexOf(MOBILE_PREFIX);
+                    fileName = fileName.Substring(mobilePrefixIndex + MOBILE_PREFIX.Length);
+                }
+
+                // 处理编辑页面，类似 /demo_pro/grid/grid_newtab_window.aspx?id=101&name=张三
+                int lastQuestionMaskPosition = fileName.IndexOf("?");
+                if (lastQuestionMaskPosition >= 0)
+                {
+                    fileName = fileName.Substring(0, lastQuestionMaskPosition);
+                }
+
+
+
+                var TabStrip1 = F.GetControl<TabStrip>("TabStrip1");
+                Tab tab;
+
+
+                if (fileName.EndsWith(".xml") || fileName.EndsWith(".cs") || fileName.EndsWith(".cshtml") ||
+                    fileName.EndsWith(".js") || fileName.EndsWith(".css"))
+                {
+                    string filePath = Url.Content(fileName);
+                    string fileUrl = Url.Content("~/Home/SourceFile?file=" + filePath);
+
+                    tab = new Tab();
+                    tab.Title = GetShortFileName(fileName);
+                    tab.TitleToolTip = filePath;
+                    tab.EnableIFrame = true;
+                    tab.IFrameUrl = fileUrl;
+                    tab.IconUrl = GetIconUrl(fileUrl);
+                    TabStrip1.Tabs.Add(tab);
+                }
+                else
+                {
+                    // /Toolbar/MenuDynamic
+                    // /GridOther/NewTab/Window
+                    string[] fileNameParts = fileName.Trim('/').Split('/');
+                    if (fileNameParts.Length >= 2)
+                    {
+                        string areaName = fileNameParts[0];
+                        string controllerName = fileNameParts[1];
+                        string viewName = "Index";
+                        if (fileNameParts.Length > 2)
+                        {
+                            viewName = fileNameParts[2];
+                        }
+
+
+                        // 容错处理
+                        if (controllerName.Contains("."))
+                        {
+                            continue;
+                        }
+
+                        string viewFilePath = String.Empty;
+                        if (areaName == "Mobile")
+                        {
+                            viewFilePath = Url.Content(String.Format("~/Views/{0}/{1}.cshtml", areaName, controllerName));
+                        }
+                        else
+                        {
+                            viewFilePath = Url.Content(String.Format("~/Areas/{0}/Views/{1}/{2}.cshtml", areaName, controllerName, viewName));
+                        }
+                        string viewUrl = Url.Content("~/Home/SourceFile?file=" + viewFilePath);
+
+                        tab = new Tab();
+                        tab.Title = String.Format("{0}.cshtml", viewName);
+                        tab.TitleToolTip = viewFilePath;
+                        tab.EnableIFrame = true;
+                        tab.IFrameUrl = viewUrl;
+                        tab.IconUrl = GetIconUrl(viewUrl);
+                        TabStrip1.Tabs.Add(tab);
+
+
+                        string controllerFilePath = String.Empty;
+                        if (areaName == "Mobile")
+                        {
+                            controllerFilePath = Url.Content(String.Format("~/Controllers/{0}Controller.cs", areaName));
+                        }
+                        else
+                        {
+                            controllerFilePath = Url.Content(String.Format("~/Areas/{0}/Controllers/{1}Controller.cs", areaName, controllerName));
+                        }
+                        string controllerUrl = Url.Content("~/Home/SourceFile?file=" + controllerFilePath);
+
+                        tab = new Tab();
+                        tab.Title = String.Format("{0}Controller.cs", controllerName);
+                        tab.TitleToolTip = controllerFilePath;
+                        tab.EnableIFrame = true;
+                        tab.IFrameUrl = controllerUrl;
+                        tab.IconUrl = GetIconUrl(controllerUrl);
+                        TabStrip1.Tabs.Add(tab);
+                    }
+                }
+            }
+        }
+
+    }
+}

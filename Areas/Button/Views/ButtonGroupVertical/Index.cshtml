@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonGroupVertical";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).AutoScroll(true).Layout(LayoutType.VBox).BoxConfigChildMargin("0 0 10 0").IsViewPort(true).BodyPadding(10)
+        .Items(
+            F.ButtonGroup().Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.StretchMax).Vertical(true)
+                .Items(
+                    F.Button().Text("图标在左侧").Icon(Icon.Email),
+                    F.Button().Text("图标在右侧").IconAlign(IconAlign.Right).Icon(Icon.Star),
+                    F.Button().Text("图标在左侧").IconFont(IconFont._Home),
+                    F.Button().Text("图标在右侧").IconAlign(IconAlign.Right).IconFont(IconFont._Car)
+                ),
+           F.ButtonGroup().Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.StretchMax).Vertical(true)
+                .Items(
+                    F.Button().Text("图标在上面").IconAlign(IconAlign.Top).Icon(Icon.Email),
+                    F.Button().Text("图标在下面").IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                    F.Button().Text("图标在上面").IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                    F.Button().Text("图标在下面").IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                ),
+            F.Label().Text("只有图片的按钮："),
+            F.ButtonGroup().Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.StretchMax).Vertical(true)
+                .Items(
+                    F.Button().IconUrl(Url.Content("~/res/images/16/1.png")),
+                    F.Button().IconUrl(Url.Content("~/res/images/16/8.png")),
+                    F.Button().IconFont(IconFont._Android),
+                    F.Button().IconFont(IconFont._Apple),
+                    F.Button().IconFont(IconFont._Car),
+                    F.Button().IconFont(IconFont._Card)
+                ),
+            F.Label().Text("Size（Large）："),
+            F.ButtonGroup().Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.StretchMax).Vertical(true)
+                .Items(
+                    F.Button().Text("图标在上面").Size(ButtonSize.Large).IconAlign(IconAlign.Top).Icon(Icon.Email),
+                    F.Button().Text("图标在下面").Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).Icon(Icon.Star),
+                    F.Button().Text("图标在上面").Size(ButtonSize.Large).IconAlign(IconAlign.Top).IconFont(IconFont._Camera),
+                    F.Button().Text("图标在下面").Size(ButtonSize.Large).IconAlign(IconAlign.Bottom).IconFont(IconFont._Phone)
+                )
+            )
+    )
+
+}
+

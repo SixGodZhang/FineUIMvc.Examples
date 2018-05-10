@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Tree/Content/website_iconfont.xml";
+    ViewBag.Title = "Tree/DataBindDocumentIconFont";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件（绑定到 XmlDocument）").DataSource(ViewBag.Tree1DataSource))
+    <br>
+
+
+}
+

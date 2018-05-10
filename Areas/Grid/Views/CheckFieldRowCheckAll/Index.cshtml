@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Grid/CheckFieldRowCheckAll";
+    var F = Html.F();
+}
+
+@section body {
+
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("btnSelectRows").Text("全选选中行").Listener("click", "onSelectRows"),
+                    F.Button().ID("btnUnselectRows").Text("取消选中行").Listener("click", "onUnselectRows")
+                )
+        )
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderCheckField().HeaderText("是否在校2").ColumnID("AtSchool2").DataField("AtSchool").RenderAsStaticField(false).Width(100),
+            F.RenderCheckField().HeaderText("是否在校3").ColumnID("AtSchool3").DataField("AtSchool").RenderAsStaticField(false).Width(100),
+            F.RenderCheckField().HeaderText("是否在校4").ColumnID("AtSchool4").DataField("AtSchool").RenderAsStaticField(false).Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中行复选框的状态").ID("Button2").Listener("click", "notifyCheckFieldStatus();"))
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onSelectRows(event) {
+            var selectedRows = $('.f-grid-row-selected');
+            if (selectedRows.length) {
+                selectedRows.find('.f-grid-checkbox').addClass('f-checked');
+            } else {
+                F.alert("请至少选择一项！");
+            }
+        }
+
+        function onUnselectRows(event) {
+            var selectedRows = $('.f-grid-row-selected');
+            if (selectedRows.length) {
+                selectedRows.find('.f-grid-checkbox').removeClass('f-checked');
+            } else {
+                F.alert("请至少选择一项！");
+            }
+        }
+
+        function notifyCheckFieldStatus(event) {
+            var grid1 = F.ui.Grid1;
+
+            var rowEls = grid1.getSelectedRowEls();
+            if (!rowEls.length) {
+                F.alert('没有选中项！');
+                return;
+            }
+
+            var result = ['<table class="result">'];
+            result.push('<tr>');
+            result.push('<th>ID</th>');
+            result.push('<th>姓名</th>');
+            result.push('<th>是否在校2</th>');
+            result.push('<th>是否在校3</th>');
+            result.push('<th>是否在校4</th>');
+            result.push('</tr>');
+            rowEls.each(function () {
+                var cnode = $(this);
+                var rowData = grid1.getRowData(cnode);
+                var isChecked2 = cnode.find('.f-grid-cell-AtSchool2 .f-grid-checkbox').hasClass('f-checked');
+                var isChecked3 = cnode.find('.f-grid-cell-AtSchool3 .f-grid-checkbox').hasClass('f-checked');
+                var isChecked4 = cnode.find('.f-grid-cell-AtSchool4 .f-grid-checkbox').hasClass('f-checked');
+
+                result.push('<tr>');
+                result.push('<td>' + rowData.id + '</td>');
+                result.push('<td>' + rowData.text + '</td>');
+                result.push('<td>' + (isChecked2 ? '在校' : '不在校') + '</td>');
+                result.push('<td>' + (isChecked3 ? '在校' : '不在校') + '</td>');
+                result.push('<td>' + (isChecked4 ? '在校' : '不在校') + '</td>');
+                result.push('</tr>');
+            });
+            result.push('</table>');
+
+            F.notify({
+                message: result.join(''),
+                target: '_top',
+                header: false,
+                messageIcon: '',
+                positionX: 'center',
+                positionY: 'top'
+            });
+        }
+
+    </script>
+}

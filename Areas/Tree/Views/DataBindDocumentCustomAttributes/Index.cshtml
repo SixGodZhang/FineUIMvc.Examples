@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Tree/Content/website.xml";
+    ViewBag.Title = "Tree/DataBindDocumentCustomAttributes";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .f-tree-node[data-highlight=true] .f-tree-cell-text {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件（点击树节点回发）").OnNodeClick(Url.Action("Tree1_NodeClick"), new Parameter("nodeInfo", "getNodeInfo(arguments[1])"))
+        .Nodes((TreeNode[])ViewBag.Tree1Nodes)
+    )
+
+    @(F.Label().ID("labResult"))
+
+    <br>
+    <br>
+    注：从 XmlDocument 手工创建节点列表，并将 Xml 节点属性 Highlight 转化为树节点的 Attributes 属性。
+
+}
+
+
+@section script {
+
+    <script>
+
+        function getNodeInfo(nodeId) {
+            var nodeData = F.ui.Tree1.getNodeData(nodeId);
+
+            return {
+                id: nodeId,
+                text: nodeData.text,
+                highlight: nodeData.attrs && nodeData.attrs['data-highlight']
+            };
+        }
+
+    </script>
+
+}

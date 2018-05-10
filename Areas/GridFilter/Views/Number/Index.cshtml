@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "GridFilter/Number";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").AllowFilters(true).OnFilterChanged(Url.Action("Grid1_FilterChanged"), "Grid1")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100).EnableFilter(true)
+                .Filter(F.GridFilter().EnableMultiFilter(true)
+                    .Operator(
+                        F.DropDownList().ID("DropDownList2")
+                            .Items(
+                                F.ListItem().Text("大于").Value("greater").Selected(true),
+                                F.ListItem().Text("小于").Value("less"),
+                                F.ListItem().Text("等于").Value("equal")
+                            )
+                    )
+                    .Field(
+                        F.NumberBox().ID("NumberBox1").NoDecimal(true).NoNegative(true).Required(true).MinValue(1995)
+                    )
+                ),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100).EnableFilter(true)
+                .Filter(F.GridFilter().EnableMultiFilter(true).ShowMatcher(true)
+                    .Operator(
+                        F.DropDownList().ID("DropDownList3")
+                            .Items(
+                                F.ListItem().Text("大于").Value("greater").Selected(true),
+                                F.ListItem().Text("小于").Value("less"),
+                                F.ListItem().Text("等于").Value("equal")
+                            )
+                    )
+                    .Field(
+                        F.DatePicker().Required(true).ID("DatePicker1")
+                    )
+                )
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+
+    @(F.Label().ID("labResult"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

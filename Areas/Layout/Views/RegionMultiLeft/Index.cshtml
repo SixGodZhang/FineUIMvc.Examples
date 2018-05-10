@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Layout/RegionMultiLeft";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Region).IsViewPort(true)
+        .Items(
+            F.Panel().ID("panelLeftRegion").RegionPosition(Position.Left).RegionSplit(true).Width(200).Title("左侧面板").ShowBorder(true).ShowHeader(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label2").Text("左侧面板的内容")
+                ),
+            F.Panel().ID("panel2").RegionPosition(Position.Left).RegionSplit(true).Width(200).Title("左侧面板").ShowBorder(true).ShowHeader(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label6").Text("左侧面板的内容")
+                ),
+            F.Panel().ID("panel3").RegionPosition(Position.Left).RegionSplit(true).Width(200).Title("左侧面板").ShowBorder(true).ShowHeader(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label7").Text("左侧面板的内容")
+                ),
+            F.Panel().ID("panelCenterRegion").RegionPosition(Position.Center).Title("中间面板").ShowBorder(true).ShowHeader(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label3").Text("中间面板的内容")
+                )
+        )
+    )
+
+}
+

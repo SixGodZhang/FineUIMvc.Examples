@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/GridDataUrl/Controllers/GridDataUrlDataController.cs";
+    ViewBag.Title = "GridDataUrl/RowStyle";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style type="text/css">
+        .f-grid-row.color1,
+        .f-grid-row.color1 .f-icon,
+        .f-grid-row.color1 a {
+            background-color: #0094ff;
+            color: #fff;
+        }
+
+        .f-grid-row.color3,
+        .f-grid-row.color3 .f-icon,
+        .f-grid-row.color3 a {
+            background-color: #b200ff;
+            color: #fff;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .DataUrl(Url.Content("~/GridDataUrl/GridDataUrlData"))
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        ).RowDataBoundFunction("grid1RowDataBound")
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 行渲染函数
+        function grid1RowDataBound(rowData) {
+            var entranceYear = rowData.values['EntranceYear'];
+
+            if (entranceYear >= 2002 && entranceYear <= 2004) {
+                rowData.cls = 'color1';
+            } else if (entranceYear > 2008) {
+                rowData.cls = 'color3';
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Layout/InlineBlock";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mypanel {
+            display: inline-block !important;
+            margin-right: 5px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(true).BodyPadding(10).ShowHeader(true).Title("面板").AutoScroll(true).IsViewPort(true)
+        .Items(
+            F.Panel().ID("Panel2").Title("面板1").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel3").Title("面板2").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel4").Title("面板3").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel5").Title("面板4").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel6").Title("面板5").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel7").Title("面板6").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel8").Title("面板7").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel9").Title("面板8").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel10").Title("面板9").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true),
+            F.Panel().ID("Panel11").Title("面板10").CssClass("mypanel").Width(300).Height(200).BodyPadding(10).ShowBorder(true)
+        )
+    )
+
+
+
+}
+

@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "GridInput/ArrowKey";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("语文").DataField("ChineseScore").RendererFunction("renderChineseScore").Width(100),
+            F.RenderField().HeaderText("数学").DataField("MathScore").RendererFunction("renderMathScore").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>上下左右键遍历文本框</li>
+    </ul>
+
+    @(F.Button().Text("获取用户输入的分组值").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("inputs", "getUserInputs()")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderChineseScore(value, params) {
+            return F.formatString('<input class="myinput group1" value="{0}" style="width:80px;" type="text">', value);
+        }
+
+        function renderMathScore(value, params) {
+            return F.formatString('<input class="myinput group2" value="{0}" style="width:80px;" type="text">', value);
+        }
+
+        var inputselector = 'input.myinput';
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                var inputValues = [];
+                rowEl.find(inputselector).each(function () {
+                    inputValues.push($(this).val());
+                });
+
+                result.push([rowData.id, rowData.text, inputValues]);
+            });
+
+            return F.toJSON(result);
+        }
+
+        function registerEnterEvent() {
+            var grid = F.ui.Grid1;
+
+            grid.el.on('keydown', inputselector, function (event) {
+                var inputEl = $(this);
+
+                // 约定优于配置：group1, group2, group3
+                var inputRegex = /group(\d+)/.exec(inputEl.attr('class'));
+                if (!inputRegex || !inputRegex.length) {
+                    return;
+                }
+                var inputCls = inputRegex[0];
+                var inputNum = parseInt(inputRegex[1], 10);
+
+
+                var row = $(this).closest('.f-grid-row');
+                switch (event.keyCode) {
+                    case F.KEY.UP:
+                        var prevRow = row.prev();
+                        if (prevRow.length) {
+                            prevRow.find('.' + inputCls).select();
+                        }
+                        event.preventDefault();
+                        break;
+                    case F.KEY.DOWN:
+                        var nextRow = row.next();
+                        if (nextRow.length) {
+                            nextRow.find('.' + inputCls).select();
+                        }
+                        event.preventDefault();
+                        break;
+                    case F.KEY.LEFT:
+                        inputNum--;
+                        if (inputNum >= 1) {
+                            row.find('.group' + inputNum).select();
+                        }
+                        event.preventDefault();
+                        break;
+                    case F.KEY.RIGHT:
+                        inputNum++;
+                        if (inputNum <= 2) {
+                            row.find('.group' + inputNum).select();
+                        }
+                        event.preventDefault();
+                        break;
+                }
+
+                // 阻止 Enter 或者 Tab 的默认行为
+                event.preventDefault();
+            });
+
+            grid.el.on('click', inputselector, function (event) {
+                $(this).select();
+            });
+        }
+
+
+        F.ready(function () {
+            registerEnterEvent();
+        });
+
+
+    </script>
+}

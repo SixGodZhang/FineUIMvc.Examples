@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Grid/GroupFieldComplex";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格").DataIDField("Id")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().DataField("Year").Width(80).HeaderText("统计年份"),
+            F.GroupField().HeaderText("安徽省").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.RenderField().Width(80).DataField("HSData").HeaderText("黄山市"),
+                    F.GroupField().HeaderText("合肥市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().Width(80).DataField("HFData").HeaderText("总数据"),
+                            F.GroupField().HeaderText("其中").TextAlign(TextAlign.Center)
+                                .Columns(
+                                    F.RenderField().Width(80).DataField("HF_SHData").HeaderText("蜀山区"),
+                                    F.RenderField().Width(80).DataField("HF_BHData").HeaderText("滨湖区")
+                                )
+                        )
+                ),
+            F.GroupField().HeaderText("河南省").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.RenderField().Width(80).DataField("LHData").HeaderText("漯河市"),
+                    F.GroupField().HeaderText("驻马店市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().Width(80).DataField("ZMDData").HeaderText("总数据"),
+                            F.GroupField().HeaderText("其中").TextAlign(TextAlign.Center)
+                                .Columns(
+                                    F.RenderField().Width(80).DataField("ZMD_SPData").HeaderText("遂平县"),
+                                    F.RenderField().Width(80).DataField("ZMD_XPData").HeaderText("西平县")
+                                )
+                        )
+                ),
+            F.RenderField().ExpandUnusedSpace(true).TextAlign(TextAlign.Center).DataField("LogTime").HeaderText("记录时间")
+        ).DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+    <br>
+
+
+}
+

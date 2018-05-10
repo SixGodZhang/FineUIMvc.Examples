@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/DataModel/Models/User.cs";
+    ViewBag.Title = "DataModel/LoginModel";
+    var F = Html.F();
+}
+
+@model FineUIMvc.Examples.Areas.DataModel.Models.User
+
+
+@section body {
+
+    <div>
+        用户名：admin
+        <br>
+        密码：admin888
+        <br>
+        <br>
+        <br>
+        注意：在任意输入框内按回车键都会触发表单的提交（相当于点击【登陆】按钮）。
+    </div>
+
+    @(F.Window().Width(350).WindowPosition(WindowPosition.GoldenSection).EnableClose(false).IsModal(false).Title("登录表单").ID("Window1")
+        .Items(
+            F.SimpleForm().ShowHeader(false).BodyPadding(10).ShowBorder(false).ID("SimpleForm1")
+                .Items(
+                    F.TextBoxFor(m => m.UserName),
+                    F.TextBoxFor(m => m.Password)
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().OnClick(Url.Action("btnLogin_Click"), "SimpleForm1").ValidateTarget(Target.Top).ValidateForms("SimpleForm1").Type(ButtonType.Submit).Text("登录").ID("btnLogin"),
+                    F.Button().Type(ButtonType.Reset).Text("重置").ID("btnReset")
+                )
+        )
+    )
+    <br>
+
+
+}
+

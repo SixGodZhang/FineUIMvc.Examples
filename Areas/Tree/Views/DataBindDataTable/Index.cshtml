@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Tree/DataBindDataTable";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件（DataSet->Relations）")
+        .Nodes((TreeNode[])ViewBag.Tree1Nodes)
+    )
+
+
+}
+

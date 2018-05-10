@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Panel/Collapse";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").OnExpand(Url.Action("Panel1_CollapseExpand"), new Parameter("collapsed", "F.ui.Panel1.collapsed")).OnCollapse(Url.Action("Panel1_CollapseExpand"), new Parameter("collapsed", "F.ui.Panel1.collapsed")).IconUrl(Url.Content("~/res/images/16/8.png")).BodyPadding(10).Title("面板一").ID("Panel1")
+        .Items(
+            F.Panel().OnExpand(Url.Action("Panel2_CollapseExpand"), new Parameter("collapsed", "F.ui.Panel2.collapsed")).OnCollapse(Url.Action("Panel2_CollapseExpand"), new Parameter("collapsed", "F.ui.Panel2.collapsed")).ShowHeader(true).BodyPadding(10).Height(200).ShowBorder(true).Title("面板二").ID("Panel2").Content("展开折叠这两个面板。")
+        )
+    )
+    <br>
+
+
+}
+

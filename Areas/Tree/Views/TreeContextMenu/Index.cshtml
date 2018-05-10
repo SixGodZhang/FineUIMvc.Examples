@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeContextMenu";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件（右键菜单）").EnableSingleClickExpand(false)
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省")
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").NodeID("zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").Leaf(false).NodeID("suiping")
+                                        .Nodes(
+                                            F.TreeNode().Text("槐树乡").Leaf(false).NodeID("huaishu")
+                                                .Nodes(
+                                                    F.TreeNode().Text("陈庄村").NodeID("chenzhuang")
+                                                ),
+                                            F.TreeNode().Text("嵖岈山乡").NodeID("chayashanxiang")
+                                        ),
+                                    F.TreeNode().Text("西平县").Leaf(false).NodeID("xiping")
+                                        .Nodes(
+                                            F.TreeNode().Text("芦庙乡").NodeID("lumiaoxiang"),
+                                            F.TreeNode().Text("杨庄乡").NodeID("yangzhuangxiang")
+                                        )
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").Expanded(true).NodeID("hefei")
+                                .Nodes(
+                                    F.TreeNode().Text("金色池塘小区").NodeID("golden"),
+                                    F.TreeNode().Text("中国科学技术大学").NodeID("ustc")
+                                )
+                        )
+                )
+        ).Listener("beforenodecontextmenu", "onTreeNodeContextMenu")
+    )
+
+    @(F.Menu().ID("Menu1")
+        .Items(
+            F.MenuButton().ID("btnExpandNode").Text("展开全部").Listener("click", "onExpandNode"),
+            F.MenuButton().ID("btnCollapseNode").Text("折叠全部").Listener("click", "onCollapseNode")
+        ).Listener("show", "onMenuShow")
+    )
+
+    <br />
+    注：在叶子节点上点击右键，则弹出菜单的菜单项都是禁用状态。
+
+
+}
+
+
+@section script {
+
+
+    <script>
+
+        // 保存当前菜单对应的树节点ID
+        var currentNodeId;
+
+        // 返回false，来阻止浏览器右键菜单
+        function onTreeNodeContextMenu(event, nodeId) {
+            currentNodeId = nodeId;
+            F.ui.Menu1.show();
+            return false;
+        }
+
+        // 设置所有菜单项的禁用状态
+        function setMenuItemsDisabled(disabled) {
+            var menu = F.ui.Menu1;
+            $.each(menu.items, function (index, item) {
+                item.setDisabled(disabled);
+            });
+        }
+
+        // 显示菜单后，检查是否禁用菜单项
+        function onMenuShow() {
+            if (currentNodeId) {
+                var tree = F.ui.Tree1;
+                var nodeData = tree.getNodeData(currentNodeId);
+                if (nodeData.leaf) {
+                    setMenuItemsDisabled(true);
+                } else {
+                    setMenuItemsDisabled(false);
+                }
+            }
+        }
+
+        function onExpandNode() {
+            if (currentNodeId) {
+                F.ui.Tree1.expandNode(currentNodeId, true);
+            }
+        }
+
+        function onCollapseNode() {
+            if (currentNodeId) {
+                F.ui.Tree1.collapseNode(currentNodeId, true);
+            }
+        }
+
+    </script>
+
+}

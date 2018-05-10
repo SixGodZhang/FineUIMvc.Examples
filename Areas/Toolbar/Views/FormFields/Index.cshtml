@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Toolbar/FormFields";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格").Height(350).DataIDField("Id").DataTextField("Name")
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.DatePicker().Width(250).Required(true).DateFormatString("yyyy-MM-dd").LabelWidth(120).LabelAlign(LabelAlign.Right).Label("销毁统计时间段").EmptyText("请选择开始日期").ID("dpStartDate").EnableEdit(false),
+                    F.DatePicker().ID("dpEndDate").Width(130).Required(true).Readonly(false).CompareControl("dpStartDate").DateFormatString("yyyy-MM-dd").CompareOperator(Operator.GreaterThan).CompareMessage("结束日期应该大于开始日期").EmptyText("请选择结束日期").ShowLabel(false).Label("销毁统计时间段").EnableEdit(false),
+                    F.Button().ID("btnClearDate").Text("重置起止时间").OnClick(Url.Action("btnClearDate_Click")),
+                    F.ToolbarSeparator(),
+                    F.Button().ID("btnSearch").Text("查询").ValidateForms("Toolbar1").OnClick(Url.Action("btnSearch_Click"), "Grid1")
+                )
+        )
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+    )
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

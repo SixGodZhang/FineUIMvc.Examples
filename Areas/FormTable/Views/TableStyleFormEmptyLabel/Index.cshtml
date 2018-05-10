@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "FormTable/TableStyleFormEmptyLabel";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").ID("Form1").ShowBorder(false).ShowHeader(false).EnableTableStyle(true).MessageTarget(MessageTarget.Qtip)
+        .Rows(
+            F.FormRow()
+                .Items(
+                    F.Label().ID("Label3").Label("电话").Text("0551-1234567"),
+                    F.Label().ID("Label16").Label("申请人").Text("admin")
+                ),
+            F.FormRow()
+                .Items(
+                    F.Label().ID("Label4").Label("编号").Text("200804170006"),
+                    F.Label()
+                ),
+            F.FormRow()
+                .Items(
+                    F.DropDownList().ID("DropDownList3").Label("审批人").ForceSelection(false).Required(true).ShowRedStar(true).EmptyText("请选择审批人").AutoSelectFirstItem(false)
+                        .Items(
+                            F.ListItem().Text("老大甲").Value("0"),
+                            F.ListItem().Text("老大乙").Value("1"),
+                            F.ListItem().Text("老大丙").Value("2")
+                        )
+                ),
+            F.FormRow()
+                .Items(
+                    F.NumberBox().ID("NumberBox1").Label("申请数量").NoDecimal(true).NoNegative(true).MaxValue(1000).Required(true).ShowRedStar(true)
+                ),
+            F.FormRow()
+                .Items(
+                    F.TextArea().ID("TextArea1").Label("描述").ShowRedStar(true).Required(true)
+                )
+        )
+    )
+
+    @(F.Button().ID("btnSubmitForm1").Text("验证此表单并提交").CssClass("marginr").OnClick(Url.Action("btnSubmitForm_Click"), "Form1").ValidateForms("Form1").MarginTop(5))
+    <br>
+    <br>
+
+    @(F.Form().ID("Form2").Width(600).ShowBorder(false).ShowHeader(false).Layout(LayoutType.HBox).EnableTableStyle(true).MessageTarget(MessageTarget.Qtip)
+        .Items(
+            F.Panel().ShowBorder(false).ShowHeader(false).BoxFlex(1).Layout(LayoutType.VBox)
+                .Items(
+                    F.TextBox().Required(true).Label("国家"),
+                    F.TextBox().Required(true).Label("邮编")
+                ),
+            F.Panel().ShowBorder(false).ShowHeader(false).BoxFlex(1).Layout(LayoutType.VBox)
+                .Items(
+                    F.TextBox().Required(true).Label("省份"),
+                    F.TextBox().Required(true).Label("城市")
+                ),
+            F.Panel().ShowBorder(false).ShowHeader(false).BoxFlex(1).Layout(LayoutType.VBox)
+                .Items(
+                    F.TextBox().Required(true).Label("地址"),
+                    F.Label()
+                )
+        )
+    )
+
+    @(F.Button().ID("Button2").Text("验证此表单并提交").CssClass("marginr").OnClick(Url.Action("btnSubmitForm_Click"), "Form2").ValidateForms("Form2").MarginTop(5))
+
+
+}
+

@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Toolbar/MenuIcon";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").Height(300).BodyPadding(10).ShowBorder(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.ToolbarText().Text("内联菜单"),
+                    F.ToolbarSeparator(),
+                    F.Button().Text("中国科学技术大学")
+                        .Menu(F.Menu()
+                            .Items(
+                                F.MenuHyperLink().Text("化学与材料科学学院").NavigateUrl("http://scms.ustc.edu.cn/").Target("_blank").Icon(Icon.Accept).ID("MenuHyperLink1"),
+                                F.MenuHyperLink().Text("管理学院").NavigateUrl("http://business.ustc.edu.cn/zh_CN/").Target("_blank").Icon(Icon.Accept).ID("MenuHyperLink2")
+                                    .Menu(F.Menu()
+                                        .Items(
+                                            F.MenuHyperLink().Text("工商管理系").NavigateUrl("http://is.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink3"),
+                                            F.MenuHyperLink().Text("统计与金融系").NavigateUrl("http://stat.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink4")
+                                        )
+                                    )
+                            )
+                        )
+                )
+        )
+        .Items(
+            F.Button().Text("删除[化学与材料科学学院]菜单项的图标").CssClass("marginr").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("icon", "F.ui.MenuHyperLink1.icon")),
+            F.Button().Text("修改[管理学院]菜单项的图标").ID("Button2").OnClick(Url.Action("Button2_Click"), new Parameter("icon", "F.ui.MenuHyperLink2.icon"))
+        )
+    )
+
+
+
+}
+

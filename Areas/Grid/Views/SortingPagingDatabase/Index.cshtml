@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Grid/SortingPagingDatabase";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).ShowHeader(true).ShowBorder(true).Title("表格").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(5).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_PageIndexChangedOrSort"), "Grid1").AllowSorting(true).SortField(ViewBag.Grid1SortField).SortDirection(ViewBag.Grid1SortDirection).OnSort(Url.Action("Grid1_PageIndexChangedOrSort"), "Grid1")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").SortField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").SortField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").SortField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").SortField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

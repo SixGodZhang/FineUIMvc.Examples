@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.SourceFiles = "/Grid/IFrameWindow";
+    ViewBag.Title = "IFrame/ButtonIFrame";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().ID("Button1").Text("在本页面弹出IFrame窗体").Listener("click", "F.ui.Window1.show('" + Url.Content("~/Grid/IFrameWindow") + "', '弹出窗口一');"))
+    <br>
+    <br>
+
+    @(F.Button().ID("Button2").Text("在父页面弹出IFrame窗体").Listener("click", "F.ui.Window2.show('" + Url.Content("~/Grid/IFrameWindow") + "', '弹出窗口二');"))
+    <br>
+    <br>
+
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>
+            点击窗体一的右上角关闭图标时，只是简单的隐藏窗体；
+        </li>
+        <li>
+            点击窗体二的右上角关闭图标时，会触发 OnClose 事件。
+        </li>
+    </ul>
+
+    @(F.Window().ID("Window1").IconUrl(Url.Content("~/res/images/16/10.png")).WindowPosition(WindowPosition.Center).IsModal(true).Title("窗体一").EnableMaximize(true).EnableResize(true).Target(Target.Self).EnableIFrame(true).Height(550).Width(850).OnClose(Url.Action("Window1_Close")).Hidden(true))
+
+    @(F.Window().ID("Window2").IconUrl(Url.Content("~/res/images/16/11.png")).IsModal(true).Target(Target.Parent).EnableMaximize(true).EnableResize(true).OnClose(Url.Action("Window2_Close")).Title("窗体二").CloseAction(CloseAction.HidePostBack).EnableIFrame(true).Height(550).Width(850).Hidden(true))
+
+
+}
+

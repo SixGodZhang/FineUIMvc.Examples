@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "GridOther/HideColumn";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80).Hidden(true).EnableColumnHide(false),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+
+    <br>
+    <br>
+    @(F.Button().ID("Button3").Text("显示/隐藏性别列").CssClass("marginr").OnClick(Url.Action("Button3_Click"), 
+            new Parameter("genderHidden", "F.ui.Grid1.getColumn('Gender').hidden"))
+    )
+
+    @(F.Button().ID("Button4").Text("获得隐藏列列表").Listener("click", "onButton4Click"))
+
+    <br>
+    <br>
+    注：性别列设置了EnableColumnHide=false，所以不能通过标题栏菜单隐藏，但仍然可以通过后台代码隐藏。
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onButton4Click() {
+            var grid1 = F.ui.Grid1;
+
+            var result = [];
+            grid1.resolveColumn(function (column) {
+                if (column.hidden) {
+                    result.push(column.text);
+                }
+            });
+            
+            if (result.length) {
+                F.notify({
+                    message: '隐藏列：' + result.join(', '),
+                    positionX: 'center',
+                    positionY: 'center'
+                });
+            } else {
+                F.alert('没有隐藏列！');
+            }
+        }
+
+    </script>
+}

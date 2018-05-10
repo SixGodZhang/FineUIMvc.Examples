@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/IFrame/Views/Window/IFrameWindow.cshtml";
+    ViewBag.Title = "IFrame/Window";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().ID("Button1").Text("弹出窗体").Listener("click", "F.ui.Window1.show();"))
+
+    @(F.Window().ID("Window1").EnableIFrame(true).IFrameUrl(Url.Content("~/IFrame/Window/IFrameWindow")).Target(Target.Top).EnableMaximize(true).EnableResize(true).Height(450).Width(800).Title("窗体一").Hidden(true))
+    <br>
+
+    页面加载时间：@DateTime.Now.ToLongTimeString()
+
+
+}
+

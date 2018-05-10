@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Layout/VBoxForm";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").ID("Panel1").Title("表单（Layout=VBox）").Height(400).LabelAlign(LabelAlign.Right).BodyPadding(10).ShowBorder(true).ShowHeader(true).Layout(LayoutType.VBox)
+        .Items(
+            F.TextBox().ID("TextBox1").Label("姓名").ShowRedStar(true).Required(true),
+            F.DropDownList().ID("DropDownList1").Label("性别").ShowRedStar(true).Required(true)
+                .Items(
+                    F.ListItem().Text("男").Value("男").Selected(true),
+                    F.ListItem().Text("女").Value("女")
+                ),
+            F.TextArea().ID("TextArea1").MarginBottom(0).Label("个人简介").BoxFlex(1)
+        )
+    )
+    <br>
+    <br>
+    注：设置[个人简介]的 MarginBottom=0，来去除底部外边距。
+
+
+
+}
+

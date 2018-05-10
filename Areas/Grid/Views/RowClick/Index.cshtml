@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Grid/RowClick";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        ).Listener("rowclick", "onGrid1RowClick")
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGrid1RowClick(event, rowId) {
+            var grid1 = F.ui.Grid1;
+            var rowData = grid1.getRowData(rowId);
+            var column = grid1.getColumn(grid1.getSelectedCell()[1]);
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_RowClick")', {
+                rowId: rowData.id,
+                rowText: rowData.text,
+                rowIndex: rowData.index,
+                columnText: column.text
+            });
+
+        }
+
+    </script>
+}

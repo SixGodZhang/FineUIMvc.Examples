@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/Toolbar/Content/menu.xml";
+    ViewBag.Title = "Toolbar/MenuDynamic";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").Height(300).BodyPadding(10).ShowBorder(true)
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Top).ID("Toolbar1")
+                .Items((ControlBase[])ViewBag.ToolbarItems)
+        )
+    )
+
+
+
+
+
+
+}
+

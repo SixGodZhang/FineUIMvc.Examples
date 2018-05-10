@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/GridUpdateValue";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉表格").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下拉表格中选择").MatchFieldWidth(false).Value("105").EnableMultiSelect(false)
+                .PopPanel(
+                    F.Grid().ID("Grid1").ShowBorder(true).ShowHeader(false).DataIDField("Id").DataTextField("Name").Width(550).Height(300).EnableMultiSelect(false).Hidden(true)
+                        .Columns(
+                            F.RenderField().Width(100).DataField("Name").HeaderText("姓名"),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(100),
+                            F.RenderField().ExpandUnusedSpace(true).DataField("Major").HeaderText("所学专业")
+                        )
+                        .DataSource(DataSourceUtil.GetDataTable())
+                ),
+            F.Button().ID("btnUpdateValue").CssClass("marginr").Text("更新下拉框的值为[张三石]").OnClick(Url.Action("btnUpdateValue_Click")),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").CssClass("marginr").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1"),
+            F.Button().ID("btnReset").Text("重置表单").Listener("click", "F.ui.SimpleForm1.reset();")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

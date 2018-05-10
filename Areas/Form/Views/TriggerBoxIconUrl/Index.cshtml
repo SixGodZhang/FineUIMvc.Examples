@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Form/TriggerBoxIconUrl";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("表单").ShowHeader(true)
+        .Items(
+            F.TriggerBox().ID("TriggerBox1").Label("TriggerBox").TriggerIconUrl("~/res/icon/application_edit.png").Listener("triggerclick", "F.ui.Window1.show();").EmptyText("打开弹出窗口"),
+            F.TwinTriggerBox().ID("TwinTriggerBox1").Label("TwinTriggerBox").OnTrigger1Click(Url.Action("TwinTriggerBox1_Trigger1Click")).OnTrigger2Click(Url.Action("TwinTriggerBox1_Trigger2Click"), new Parameter("text", "F.ui.TwinTriggerBox1.getValue()")).ShowTrigger1(false).EmptyText("搜索用户名").Trigger1IconUrl("~/res/icon/bullet_cross.png").Trigger2IconUrl("~/res/icon/zoom.png")
+        )
+    )
+
+
+    @(F.Window().ID("Window1").Title("弹出窗口").BodyPadding(10).IsModal(true).Hidden(true).Target(Target.Top).Width(450).Height(300)
+        .Items(
+            F.Button().ID("btnCloseWindow").Text("关闭当前窗口").OnClick(Url.Action("btnCloseWindow_Click"))
+        )
+    )
+
+
+}
+

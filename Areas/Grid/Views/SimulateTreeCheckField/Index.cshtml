@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Grid/SimulateTreeCheckField";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true).EnableSimulateTree(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("地区").DataField("Name").DataSimulateTreeLevelField("TreeLevel").ExpandUnusedSpace(true),
+            F.GroupField().HeaderTextAlign(TextAlign.Center).HeaderText("这是多表头")
+                .Columns(
+                    F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(100),
+                    F.RenderCheckField().HeaderText("复选框列").DataField("IsChecked").RenderAsStaticField(false).Width(100)
+                )
+        ).RowDataBoundFunction("onGrid1RowDataBound").DataSource(ViewBag.Grid1DataSource)
+
+
+    )
+    <br />
+    <br />
+    注：
+    <ul>
+        <li>初始选中 安徽省 合肥市 黄山市 的复选框列；</li>
+        <li>选中（或取消）父级的复选框，会同时选中（或取消）所有的子级复选框。</li>
+    </ul>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGrid1RowDataBound(rowData) {
+            var rowId = rowData.id;
+
+            // 默认展开的节点
+            if (rowId === '105' || rowId === '106' || rowId === '107') {
+                rowData.values.IsChecked = true;
+            }
+        }
+
+
+        var checkboxSelector = '.f-grid-cell-IsChecked .f-grid-checkbox';
+
+        F.ready(function () {
+
+            var grid = F.ui.Grid1;
+
+            function getRowLevel(rowEl) {
+                var rowData = grid.getRowData(rowEl);
+                // 当前行的层级
+                return $(rowData.values.Name).filter('.f-smtree-icon').length;
+            }
+
+            grid.el.on('click', checkboxSelector, function (event) {
+                var rowEl = $(this).closest('.f-grid-row');
+                var rowLevel = getRowLevel(rowEl);
+                var rowChecked = rowEl.find(checkboxSelector).hasClass('f-checked');
+
+                var nextRowEl = rowEl;
+                while ((nextRowEl = nextRowEl.next()).length) {
+                    if (getRowLevel(nextRowEl) > rowLevel) {
+                        var checkboxEl = nextRowEl.find(checkboxSelector);
+                        rowChecked ? checkboxEl.addClass('f-checked') : checkboxEl.removeClass('f-checked');
+                    } else {
+                        break;
+                    }
+                }
+            });
+
+        });
+
+
+    </script>
+}

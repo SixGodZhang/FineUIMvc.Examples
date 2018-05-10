@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Window/Form";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().IsModal(false).Layout(LayoutType.Fit).BodyPadding(10).EnableResize(true).EnableMaximize(true).Title("窗体").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window1")
+        .Items(
+            F.Form().Title("表单 1").ShowHeader(false).ShowBorder(false).LabelWidth(100).ID("Form2").BodyPadding(10)
+                .Rows(
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.Label().Text("标签的值").Label("标签").ID("Label1"),
+                            F.CheckBox().Label("复选框").Text("复选框").ID("CheckBox1")
+                        ),
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.DropDownList().AutoSelectFirstItem(false).ShowRedStar(true).Required(true).Label("下拉列表").ID("DropDownList1")
+                                .Items(
+                                    F.ListItem().Value("Value1").Text("可选项1"),
+                                    F.ListItem().EnableSelect(false).Value("Value2").Text("可选项2（不可选择）"),
+                                    F.ListItem().EnableSelect(false).Value("Value3").Text("可选项3（不可选择）"),
+                                    F.ListItem().Value("Value4").Text("可选项4"),
+                                    F.ListItem().Value("Value5").Text("可选项5"),
+                                    F.ListItem().Value("Value6").Text("可选项6"),
+                                    F.ListItem().Value("Value7").Text("可选择项7"),
+                                    F.ListItem().Value("Value8").Text("可选择项8")
+                                ),
+                            F.TextBox().Text("").Required(true).Label("文本框").ShowRedStar(true).ID("TextBox1")
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Top).ID("Toolbar3")
+                .Items(
+                    F.ToolbarText().ID("ToolbarText3").Text("工具条文本一"),
+                    F.ToolbarSeparator().ID("ToolbarSeparator2"),
+                    F.ToolbarText().ID("ToolbarText4").Text("工具条文本二"),
+                    F.ToolbarSeparator().ID("ToolbarSeparator1"),
+                    F.Button().Listener("click", "F.alert('你点击了工具栏按钮。');").Text("工具栏按钮").ID("Button1")
+                ),
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().OnClick(Url.Action("btnSubmit_Click"), "Form2").ID("btnSubmit").ValidateForms("Form2").Text("验证此表单并提交"),
+                    F.Button().Text("关闭窗体").Listener("click", "F.ui.Window1.hide();").ID("btnClose")
+                )
+        )
+    )
+    <br>
+
+
+}
+

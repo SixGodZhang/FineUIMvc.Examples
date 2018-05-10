@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "FormLayout/LayoutMultiLineButtons";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").BodyPadding(10).ID("Form1").LabelWidth(100).Title("表单")
+        .Items(
+            F.Label().ID("Label1").Label("标签").Text("标签的值"),
+            F.CheckBox().ID("CheckBox1").Text("复选框").Label("复选框"),
+            F.DropDownList().ID("DropDownList1").Label("下拉列表").EmptyText("请选择一项").Required(true).ShowRedStar(true).AutoSelectFirstItem(false)
+                .Items(
+                    F.ListItem().Text("可选项 1").Value("0"),
+                    F.ListItem().Text("可选项 2").Value("1")
+                ),
+            F.TextBox().ID("TextBox1").ShowRedStar(true).Label("文本框").Required(true).Text(""),
+            F.Panel().ID("Panel1").ShowBorder(false).CssStyle("margin-bottom:5px;").ShowHeader(false)
+                .Items(
+                    F.Button().CssClass("marginr").Text("按钮一"),
+                    F.Button().ID("Button3").CssClass("marginr").Text("按钮二")
+                ),
+            F.Panel().ID("Panel2").ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Button().Text("验证此表单并提交").CssClass("marginr").ValidateForms("Form1").ID("Button1").OnClick(Url.Action("btnSubmit_Click"), "Form1"),
+                    F.Button().ID("btnReset").CssClass("marginr").Text("重置表单").OnClientClick("F.ui.Form1.reset();")
+                )
+        )
+    )
+    <br />
+    <br />
+    注：第一行按钮所在的面板设置了样式：CssStyle="margin-bottom:5px;"。
+
+
+}
+

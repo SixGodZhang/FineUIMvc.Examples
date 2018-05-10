@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "GridMove/ColumnMoveLockColumn";
+    var F = Html.F();
+}
+
+@using Newtonsoft.Json.Linq;
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableColumnMove(true).AllowColumnLocking(true)
+        .Columns(
+            F.RowNumberField().ColumnID("RowNumber"),
+            F.RenderField().HeaderText("姓名").ColumnID("Name").DataField("Name").Width(100).Locked(true).EnableLock(true),
+            F.RenderField().HeaderText("性别").ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("入学年份").ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).Width(100).EnableLock(true),
+            F.RenderCheckField().HeaderText("是否在校").ColumnID("AtSchool").DataField("AtSchool").RenderAsStaticField(true).Width(100).EnableLock(true),
+            F.RenderField().HeaderText("所学专业").ColumnID("Major").DataField("Major").RendererFunction("renderMajor").Width(300).EnableLock(true),
+            F.RenderField().HeaderText("分组").ColumnID("Group").DataField("Group").RendererFunction("renderGroup").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("注册日期").ColumnID("LogTime").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100).EnableLock(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Listener("columnmove", "onGrid1ColumnMove").Listener("columnlock", "onGrid1ColumnLock").Listener("columnunlock", "onGrid1ColumnUnlock")
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面（保持列顺序和列锁定状态）").Listener("click", "onRefreshClick"))
+
+
+    @{
+        List<string> savedColumnIds = ViewBag.Grid1ColumnIDS as List<string>;
+        List<string> savedLockedColumnIds = ViewBag.Grid1LockedColumnIDS as List<string>;
+        if (savedColumnIds != null && savedColumnIds.Count > 0)
+        {
+            var grid1 = F.GetControl<Grid>("Grid1");
+
+            // 将数据库保存的值应用到表格列上
+            foreach (GridColumn column in grid1.Columns)
+            {
+                var columnId = column.ColumnID;
+
+                // 列锁定
+                if (savedLockedColumnIds.Contains(columnId))
+                {
+                    column.Locked = true;
+                }
+                else
+                {
+                    column.Locked = false;
+                }
+
+                // 列顺序
+                if (savedColumnIds.Contains(columnId))
+                {
+                    column.ColumnOrder = savedColumnIds.IndexOf(columnId);
+                }
+            }
+        }
+    }
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+
+        function saveToDB(grid) {
+            // 列顺序数组
+            var columnIds = $.map(grid.columns, function (item, index) {
+                return item.columnId;
+            });
+
+            // 锁定列数组
+            var lockedColumnIds = [];
+            $.each(grid.columns, function (index, item) {
+                if (item.locked) {
+                    lockedColumnIds.push(item.columnId);
+                }
+            });
+
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_ColumnMoveOrLock")', {
+                columnIds: F.toJSON(columnIds),
+                lockedColumnIds: F.toJSON(lockedColumnIds)
+            });
+        }
+
+
+        function onGrid1ColumnLock(event, columnId) {
+            saveToDB(this);
+        }
+
+        function onGrid1ColumnUnlock(event, columnId) {
+            saveToDB(this);
+        }
+
+        function onGrid1ColumnMove(event, targetColumnId, sourceColumnId, operation) {
+            var grid = this;
+
+            // 如果目标列和源列的锁定状态不同，则随后会触发 columnlock 或者 columnunlock 事件
+            // 因此直接返回，不要调用 saveToDB 函数，否则会重复保存
+            var targetColumn = grid.getColumn(targetColumnId);
+            var sourceColumn = grid.getColumn(sourceColumnId);
+
+            // 有可能 locked 属性是 undefined，所以这里要先通过 !! 转为布尔值
+            if (!!targetColumn.locked != !!sourceColumn.locked) {
+                return;
+            }
+
+            saveToDB(this);
+        }
+
+    </script>
+}

@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "TabStrip/IFrameDisabled";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(450).ShowBorder(true).ActiveTabIndex(0)
+        .Tabs(
+            F.Tab().ID("Tab1").Title("标签一").EnableIFrame(true).IFrameUrl(Url.Content("~/TabStrip/IFrameDisabled/Tab1")),
+            F.Tab().ID("Tab2").EnableIFrame(true).BodyPadding(10).Enabled(false).IFrameUrl(Url.Content("~/Panel/PanelGroup")).Title("标签二"),
+            F.Tab().ID("Tab3").EnableIFrame(true).BodyPadding(10).Enabled(false).IFrameUrl(Url.Content("~/Panel/Panel")).Title("标签三")
+        )
+    )
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function enableTabs() {
+            F.ui.Tab2.enable();
+            F.ui.Tab3.enable();
+        }
+
+        function disableTabs() {
+            F.ui.Tab2.disable();
+            F.ui.Tab3.disable();
+        }
+
+    </script>
+
+}

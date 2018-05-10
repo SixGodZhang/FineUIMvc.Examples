@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "GridOther/NewTab/Window";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @{
+        var defaultUserName = "三生石上";
+        var requestUserName = Request.QueryString["name"];
+        if (!String.IsNullOrEmpty(requestUserName))
+        {
+            defaultUserName = requestUserName;
+        }
+    }
+
+    @(F.Form().ID("SimpleForm1").ShowBorder(false).ShowHeader(false).AutoScroll(true).BodyPadding(10).IsViewPort(true)
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.Button().ID("btnClose").Text("关闭当前标签页").Icon(Icon.SystemClose).OnClientClick("parent.removeActiveTab();"),
+                    F.ToolbarFill().ID("ToolbarFill1"),
+                    F.ToolbarText().ID("ToolbarText1").Text("提示一"),
+                    F.ToolbarSeparator().ID("ToolbarSeparator2"),
+                    F.ToolbarText().ID("ToolbarText2").Text("提示二")
+                )
+        )
+        .Rows(
+            F.FormRow()
+                .Items(
+                    F.Label().ID("labUserName").Label("申请人").Text(defaultUserName).CssClass("highlight"),
+                    F.Label().ID("Label3").Label("电话").Text("0551-1234567")
+                ),
+            F.FormRow()
+                .Items(
+                    F.NumberBox().ID("NumberBox1").NoDecimal(true).NoNegative(true).Label("数量").Required(true).ShowRedStar(true),
+                    F.DatePicker().ID("DatePicker1").Required(true).ShowRedStar(true).SelectedDate("2008-05-09").Label("申请日期").Text("2008-05-09")
+                ),
+            F.FormRow()
+                .Items(
+                    F.TextArea().ID("TextArea2").Height(80).Label("描述").Required(true).ShowRedStar(true)
+                ),
+            F.FormRow()
+                .Items(
+                    F.HtmlEditor().ID("HtmlEditor1").Editor(Editor.UMEditor)
+                        .BasePath(Url.Content("~/res/third-party/umeditor/")).Label("详细描述").Height(200)
+                )
+        )
+    )
+
+}
+
+
+@section script {
+
+
+
+}

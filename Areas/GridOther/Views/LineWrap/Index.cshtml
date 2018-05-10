@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "GridOther/LineWrap";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        /* 限定[个人简介]列自动换行，其他列不自动换行 */
+        .f-grid-cell.f-grid-cell-Desc .f-grid-cell-inner {
+            white-space: normal;
+            word-break: break-all;
+        }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(400).Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableTextSelection(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").Width(150),
+            F.RenderField().HeaderText("个人简介").DataField("Desc").ExpandUnusedSpace(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

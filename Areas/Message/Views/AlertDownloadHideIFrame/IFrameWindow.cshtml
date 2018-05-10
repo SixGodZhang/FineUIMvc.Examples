@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Message/AlertDownloadHideIFrame/IFrameWindow";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        body {
+            padding: 0;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Button().Text("操作（先弹出提示框，点击确定后先关闭弹出窗体，然后下载文件）").ID("btnOperation").OnClick(Url.Action("btnOperation_Click")))
+
+}
+

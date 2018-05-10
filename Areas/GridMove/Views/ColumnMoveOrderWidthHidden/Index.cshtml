@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "GridMove/ColumnMoveOrderWidthHidden";
+    var F = Html.F();
+}
+
+
+@using Newtonsoft.Json.Linq;
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableColumnMove(true)
+        .Columns(
+            F.RowNumberField().ColumnID("RowNumber"),
+            F.RenderField().HeaderText("姓名").ColumnID("Name").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").ColumnID("AtSchool").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").ColumnID("Major").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").ColumnID("Group").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").ColumnID("LogTime").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Listener("columnmove", "onGrid1ColumnMove").Listener("columnresize", "onGrid1ColumnResize").Listener("columnhide", "onGrid1ColumnHide").Listener("columnshow", "onGrid1ColumnShow")
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面（保持列顺序+宽度+隐藏）").Listener("click", "onRefreshClick"))
+
+
+    @{
+        JArray savedColumns = ViewBag.Grid1ColumnIDS as JArray;
+        if (savedColumns != null && savedColumns.Count > 0)
+        {
+            var grid1 = F.GetControl<Grid>("Grid1");
+
+            // 将数据库保存的列顺序应用到表格列上
+            int order = 0;
+            foreach (JObject column in savedColumns)
+            {
+                GridColumn foundColumn = grid1.FindColumn(column.Value<string>("columnId"));
+                if (foundColumn != null)
+                {
+                    foundColumn.ColumnOrder = order;
+
+                    // hidden 属性可能不存在
+                    bool? hidden = column.Value<bool?>("hidden");
+                    if (hidden != null && hidden.Value)
+                    {
+                        foundColumn.Hidden = true;
+                    }
+
+                    // flex 属性可能不存在
+                    int? flex = column.Value<int?>("flex");
+                    if (flex != null)
+                    {
+                        foundColumn.BoxFlex = flex.Value;
+                    }
+                    else
+                    {
+                        // width 属性可能不存在
+                        int? width = column.Value<int?>("width");
+                        if (width != null)
+                        {
+                            foundColumn.Width = width.Value;
+                        }
+                    }
+
+                }
+                order++;
+            }
+
+        }
+    }
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+        function saveToDB(grid) {
+            // 列顺序数组
+            var columnIds = $.map(grid.columns, function (item, index) {
+                return {
+                    'columnId': item.columnId,
+                    'hidden': item.hidden,
+                    'width': item.width,
+                    'flex': item.flex
+                };
+            });
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_ColumnMove")', {
+                columnIds: F.toJSON(columnIds)
+            });
+        }
+
+        function onGrid1ColumnMove(event, targetColumnId, sourceColumnId, operation) {
+            saveToDB(this);
+        }
+
+        function onGrid1ColumnResize(event, columnId, newColumnWidth) {
+            saveToDB(this);
+        }
+
+        function onGrid1ColumnHide(event, columnId) {
+            saveToDB(this);
+        }
+
+        function onGrid1ColumnShow(event, columnId) {
+            saveToDB(this);
+        }
+
+    </script>
+}

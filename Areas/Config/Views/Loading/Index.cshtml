@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Config/Loading";
+    var F = Html.F();
+}
+
+@using System.Text;
+
+
+@section head {
+
+    <style type="text/css">
+        ul.loading {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            ul.loading li {
+                display: inline-block;
+                margin: 0 10px 10px 0;
+                text-align: center;
+                border-style: solid;
+                border-width: 1px;
+                padding: 10px 5px;
+                width: 150px;
+            }
+
+                ul.loading li .title {
+                    margin-top: 10px;
+                }
+    </style>
+}
+
+@section body {
+
+
+    @{
+        StringBuilder sb = new StringBuilder();
+
+        sb.Append("<ul class=\"loading\">");
+        for (int i = 1; i <= 30; i++)
+        {
+            string imageUrl = F.PageManager.Source.GetEmbedLoadingImageUrl(i);
+
+            sb.AppendFormat("<li class=\"f-widget-content\"><img src=\"{0}\"><div class=\"title\">{1}</div></li>", imageUrl, i);
+        }
+        sb.Append("</ul>");
+
+    }
+
+    @Html.Raw(sb.ToString())
+
+    <br />
+    <br />
+    注：图片来自 http://loadinfo.net/ （Generated gifs are free）。
+
+}
+

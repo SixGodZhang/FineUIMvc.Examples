@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Block/CustomBlocks";
+    ViewBag.BodyBGColor = true;
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        body.f-body {
+            overflow-x: hidden;
+        }
+
+        .blockpanel {
+            min-height: 200px;
+        }
+    </style>
+
+}
+
+@section body {
+
+
+    @(F.Panel().IsFluid(true).Layout(LayoutType.Block).BlockConfigSpace(20).BlockConfigBlockCount(20).ShowBorder(false).ShowHeader(false)
+        .Items(
+            F.Panel().CssClass("blockpanel").BlockSM(10).BlockMD(4).ShowBorder(true).ShowHeader(true).Title("4"),
+            F.Panel().CssClass("blockpanel").BlockSM(5).BlockMD(4).ShowBorder(true).ShowHeader(true).Title("4"),
+            F.Panel().CssClass("blockpanel").BlockSM(5).BlockMD(4).ShowBorder(true).ShowHeader(true).Title("4"),
+            F.Panel().CssClass("blockpanel").BlockSM(10).BlockMD(4).ShowBorder(true).ShowHeader(true).Title("4"),
+            F.Panel().CssClass("blockpanel").BlockSM(10).BlockMD(4).ShowBorder(true).ShowHeader(true).Title("4"),
+            F.Panel().CssClass("blockpanel").BlockSM(20).BlockMD(10).ShowBorder(true).ShowHeader(true).Title("10"),
+            F.Panel().CssClass("blockpanel").BlockSM(10).BlockMD(10).ShowBorder(true).ShowHeader(true).Title("10"),
+            F.Panel().CssClass("blockpanel").BlockSM(10).BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20")
+        )
+    )
+
+
+}

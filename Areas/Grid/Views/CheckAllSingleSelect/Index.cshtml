@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Grid/CheckAllSingleSelect";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).ShowHeader(true).ShowBorder(true).Title("表格（只能单选）").ID("Grid1").DataIDField("Id").DataTextField("Name").EnableMultiSelect(false)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行（客户端）").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+
+    @(F.Button().Listener("click", "F.ui.Grid1.selectRows([7]);").Text("选中第 8 行（客户端）"))
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

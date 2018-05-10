@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "GridMove/ColumnMoveGroupField";
+    var F = Html.F();
+}
+
+@using Newtonsoft.Json.Linq;
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格").DataIDField("Id").EnableColumnMove(true).EnableSameGroupColumnMove(true)
+        .Columns(
+            F.RenderField().ColumnID("Year").DataField("Year").Width(80).HeaderText("统计年份"),
+            F.GroupField().ColumnID("Anhui").HeaderText("安徽省").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.GroupField().ColumnID("Hefei").HeaderText("合肥市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().ColumnID("AHData1").Width(100).DataField("AHData1").HeaderText("数据一"),
+                            F.RenderField().ColumnID("AHData2").Width(100).DataField("AHData2").HeaderText("数据二")
+                        )
+                ),
+            F.GroupField().ColumnID("Henan").HeaderText("河南省").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.GroupField().ColumnID("Zhumadian").HeaderText("驻马店市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().ColumnID("HZData1").Width(100).DataField("HZData1").HeaderText("数据一"),
+                            F.RenderField().ColumnID("HZData2").Width(100).DataField("HZData2").HeaderText("数据二")
+                        ),
+                    F.GroupField().ColumnID("Luohe").HeaderText("漯河市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().ColumnID("HLData1").Width(100).DataField("HLData1").HeaderText("数据一"),
+                            F.RenderField().ColumnID("HLData2").Width(100).DataField("HLData2").HeaderText("数据二")
+                        )
+                ),
+            F.RenderField().ColumnID("LogTime").DataField("LogTime").BoxFlex(1).TextAlign(TextAlign.Center).FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("记录时间")
+        ).DataSource(ViewBag.Grid1DataSource).Listener("columnmove", "onGridColumnMove")
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面（保持列顺序）").Listener("click", "onRefreshClick"))
+    <br>
+    <br>
+    注：表格启用 EnableColumnMove 和 EnableSameGroupColumnMove，确保列只能在同一分组内移动（比如驻马店下面的数据一不能移动到合肥市的下面）！
+
+
+    @functions {
+
+        private void ApplyOrders(Grid grid1, JArray savedColumns)
+        {
+            int order = 0;
+            foreach (JObject column in savedColumns)
+            {
+                GridColumn foundColumn = grid1.FindColumn(column.Value<string>("columnId"));
+                if (foundColumn != null)
+                {
+                    foundColumn.ColumnOrder = order;
+                }
+
+                JArray columns = column.Value<JArray>("columns");
+                if (columns != null)
+                {
+                    ApplyOrders(grid1, columns);
+                }
+
+                order++;
+            }
+        }
+
+    }
+
+    @{
+        JArray savedColumns = ViewBag.Grid1ColumnIDS as JArray;
+        if (savedColumns != null && savedColumns.Count > 0)
+        {
+            var grid1 = F.GetControl<Grid>("Grid1");
+
+            // 将数据库保存的列顺序应用到表格列上
+            ApplyOrders(grid1, savedColumns);
+        }
+    }
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+
+    <script>
+
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+
+        function onGridColumnMove(event, targetColumnId, sourceColumnId, operation) {
+            var grid = this;
+
+            function getColumnIds(columns) {
+                return $.map(columns, function (item, index) {
+                    var itemObj = {
+                        columnId: item.columnId
+                    };
+                    if (item.columns) {
+                        itemObj['columns'] = getColumnIds(item.columns);
+                    }
+                    return itemObj;
+                });
+            }
+
+            // 列移动后的列顺序数组
+            var columnIds = getColumnIds(grid.columns);
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_ColumnMove")', {
+                columnIds: F.toJSON(columnIds)
+            });
+        }
+
+
+    </script>
+}

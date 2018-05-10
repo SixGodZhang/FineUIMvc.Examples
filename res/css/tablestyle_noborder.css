@@ -1,0 +1,19 @@
+﻿.f-tablestyle > .f-panel-bodyct > .f-panel-body {
+    border-top-width: 0;
+    border-right-width: 0;
+}
+
+.f-tablestyle .f-field-fieldlabel-cell {
+    border-left-width: 0;
+}
+
+.f-tablestyle .f-layout-column > .f-panel-bodyct > .f-panel-body > .f-field > .f-field-fieldlabel-cell {
+    border-left-width: 1px;
+}
+.f-tablestyle .f-layout-column > .f-panel-bodyct > .f-panel-body > .f-field:first-child > .f-field-fieldlabel-cell {
+    border-left-width: 0;
+}
+
+.f-tablestyle .f-tablestyle-left-border > .f-panel-bodyct > .f-panel-body > .f-field > .f-field-fieldlabel-cell {
+    border-left-width: 1px;
+}

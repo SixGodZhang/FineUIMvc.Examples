@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Form/DatePickerRange";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.DatePicker().Required(true).Label("日期").EmptyText("限制范围的日期").ID("DatePicker1").ShowRedStar(true).MinDate(DateTime.Now)
+                .MaxDate(DateTime.Now.AddDays(10)),
+            F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), new Parameter("date", "F.ui.DatePicker1.getText()"))
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult").ShowLabel(false))
+
+
+}
+

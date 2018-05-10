@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "IFrame/ParentWindowClose/IFrameWindow1";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    页面二：IFrame/ParentWindowClose/IFrameWindow1
+    <br>
+
+    @(F.Label().ID("labResult")
+        .Text(DateTime.Now.ToLongTimeString())
+    )
+    <br>
+
+    <br>
+
+    @(F.Window().ID("Window1").Height(350).EnableIFrame(true).IFrameUrl(Url.Content("~/IFrame/ParentWindowClose/IFrameWindow2")).IsModal(false).Width(650).EnableMaximize(true).EnableResize(true).Target(Target.Self).OnClose(Url.Action("IFrameWindow1_Window1_Close")).Title("页面二中的弹出对话框"))
+
+
+
+}
+

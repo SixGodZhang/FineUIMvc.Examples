@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/GridDataUrl/Controllers/PagingDatabaseDataController.cs";
+    ViewBag.Title = "GridDataUrl/ChangeDataUrlDatabasePaging";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .DataUrl(Url.Content("~/GridDataUrl/PagingDatabaseData")).AllowPaging(true).IsDatabasePaging(true).PageSize(5)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+        ).Attribute("data-source-key", "source1")
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("切换网址数据源").ID("Button1").CssClass("marginr").Listener("click", "onButton1Click"))
+
+    @(F.Button().Text("切换网址数据源（服务器端）").ID("Button2").OnClick(Url.Action("Button2_Click"),
+            new Parameter("gridSourceKey", "F.ui.Grid1.getAttr('data-source-key')"))
+    )
+
+
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onButton1Click(event) {
+            var grid1 = F.ui.Grid1;
+
+            // 重置为第一页
+            grid1.setPageIndex(0);
+
+            if (grid1.getAttr('data-source-key') === 'source1') {
+                grid1.setAttr('data-source-key', 'source2')
+                grid1.loadDataUrl('@Url.Content("~/GridDataUrl/PagingDatabaseData?data2=true")');
+            } else {
+                grid1.setAttr('data-source-key', 'source1')
+                grid1.loadDataUrl('@Url.Content("~/GridDataUrl/PagingDatabaseData")');
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "GridOther/CenterColumn";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校（居中）").DataField("AtSchool").RenderAsStaticField(true).Width(100).TextAlign(TextAlign.Center),
+            F.RenderField().HeaderText("所学专业（居中）").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true).TextAlign(TextAlign.Center),
+            F.RenderField().HeaderText("分组（内容靠右，标题靠左）").DataField("Group").RendererFunction("renderGroup").Width(250).TextAlign(TextAlign.Right).HeaderTextAlign(TextAlign.Left)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    
+}

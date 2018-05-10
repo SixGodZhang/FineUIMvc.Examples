@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Form/TwinTriggerBox";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("表单").ShowHeader(true)
+        .Items(
+            F.TwinTriggerBox().ID("TwinTriggerBox1").ShowLabel(false).OnTrigger1Click(Url.Action("TwinTriggerBox1_Trigger1Click")).OnTrigger2Click(Url.Action("TwinTriggerBox1_Trigger2Click"), new Parameter("text", "F.ui.TwinTriggerBox1.getValue()")).Trigger1Icon(TriggerIcon.Clear).ShowTrigger1(false).EmptyText("搜索用户名").Trigger2Icon(TriggerIcon.Search)
+        )
+    )
+
+}
+

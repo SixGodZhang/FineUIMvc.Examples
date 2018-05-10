@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "DropDownList/DataBindCompositeList";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉列表（绑定到复合列表）").ShowHeader(true)
+        .Items(
+            F.DropDownList().ID("DropDownList1").DataTextField("Name").DataValueField("ID").DataSource(ViewBag.DropDownList1DataSource),
+            F.Button().ID("btnSelectItem6").Text("选中[可选项6]").OnClick(Url.Action("btnSelectItem6_Click")).CssClass("marginr"),
+            F.Button().ID("btnGetSelection").Text("获取此下拉列表的选中项").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+
+
+
+}
+

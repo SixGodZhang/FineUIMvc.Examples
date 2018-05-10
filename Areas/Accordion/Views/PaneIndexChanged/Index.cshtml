@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Accordion/PaneIndexChanged";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Accordion().IsFluid(true).CssClass("blockpanel").ActivePaneIndex(1).ShowBorder(true).Height(450).Title("手风琴控件").ID("Accordion1").ShowHeader(false).OnPaneIndexChanged(Url.Action("Accordion1_PaneIndexChanged"), new Parameter("activeIndex", "F.ui.Accordion1.getActivePaneIndex()"))
+        .Panes(
+            F.AccordionPane().BodyPadding("2 5").IconUrl(Url.Content("~/res/images/16/1.png")).Title("面板一").ID("AccordionPane1")
+                .Items(
+                    F.Label().Text("面板一中的文本").ID("Label1")
+                ),
+            F.AccordionPane().BodyPadding("2 5").IconUrl(Url.Content("~/res/images/16/4.png")).Title("面板二").ID("AccordionPane2")
+                .Items(
+                    F.Label().Text("面板二中的文本").ID("Label2")
+                ),
+            F.AccordionPane().BodyPadding("2 5").IconUrl(Url.Content("~/res/images/16/7.png")).Title("面板三").ID("AccordionPane3")
+                .Items(
+                    F.Label().Text("面板三中的文本").ID("Label3")
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button1_Click"), new Parameter("activeIndex", "F.ui.Accordion1.getActivePaneIndex()")).Text("获取当前展开的面板").ID("Button1"))
+    <br>
+    <br>
+
+    @(F.Button().OnClick(Url.Action("Button2_Click"), new Parameter("activeIndex", "F.ui.Accordion1.getActivePaneIndex()")).Text("展开下一个面板").ID("Button2"))
+    <br>
+
+
+}
+

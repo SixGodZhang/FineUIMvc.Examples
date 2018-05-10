@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/IFrame/Views/PassValueScript/IFrameWindow.cshtml";
+    ViewBag.Title = "IFrame/PassValueScript/IFrameWindow";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelAlign(LabelAlign.Top).ShowBorder(false).ShowHeader(false).Title("SimpleForm").BodyPadding(10).AutoScroll(true)
+        .Items(
+            F.RadioButtonList().ID("ddlSheng").Label("请选择省份").ColumnNumber(4).Listener("change", "onDdlShengChange").DataSource(DataSourceUtil.SHENG_JSON).SelectedValue(Request.QueryString["selected"])
+        )
+    )
+
+}
+
+@section script {
+
+    <script>
+
+        function onDdlShengChange(event) {
+            // 返回当前活动Window对象（浏览器窗口对象通过F.getActiveWindow().window获取）
+            var activeWindow = F.getActiveWindow();
+            activeWindow.window.updateProvince(this.getValue());
+            activeWindow.hide();
+        }
+
+    </script>
+}

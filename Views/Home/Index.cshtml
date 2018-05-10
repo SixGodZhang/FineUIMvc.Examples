@@ -1,0 +1,592 @@
+﻿@{
+    ViewBag.Title = "自动化构建工具";
+    var F = Html.F();
+}
+
+@section head {
+
+    <link type="text/css" rel="stylesheet" href="~/res/css/index.css" />
+
+}
+
+
+@section body {
+
+    <div id="sideheader" class="f-widget-header f-mainheader">
+        <a class="logo" href="@Url.Content("~/")" title="自动化工具">自动化工具</a>
+    </div>
+
+    <div id="header" class="f-widget-header f-mainheader" style="display:none;">
+        <div class="header-left">
+            @(F.Button().ID("btnCollapseSidebar").CssClass("icononlyaction").ToolTip("折叠/展开侧边栏").IconAlign(IconAlign.Top).IconFont(IconFont._Fold).EnableDefaultState(false).EnableDefaultCorner(false).TabIndex(-1).Listener("click", "onFoldClick"))
+        </div>
+        <div class="header-right">
+            @(F.TwinTriggerBox().ID("ttbxSearch").CssClass("searchbox collapsed").ShowLabel(false).Trigger1Icon(TriggerIcon.Clear).ShowTrigger1(false).EmptyText("搜索示例").Trigger2Icon(TriggerIcon.Search).Width(24).Listener("trigger1click", "onSearchTrigger1Click").Listener("trigger2click", "onSearchTrigger2Click").Listener("blur", "onSearchBlur"))
+            @(F.Button().CssClass("icononlyaction").ID("btnApplyTrial").ToolTip("邮件联系").IconAlign(IconAlign.Top).IconFont(IconFont._Mail).EnableDefaultState(false).EnableDefaultCorner(false).TabIndex(-1).Listener("click", "F.ui.windowApplyTrial.show();"))
+            @(F.Button().CssClass("icononlyaction").ID("btnThemeSelect").ToolTip("主题仓库").IconAlign(IconAlign.Top).IconFont(IconFont._Skin).EnableDefaultState(false).EnableDefaultCorner(false).TabIndex(-1).Listener("click", "onThemeSelectClick"))
+            @(F.Button().EnableDefaultCorner(false).EnableDefaultState(false).IconAlign(IconAlign.Left).IconUrl(Url.Content("~/res/images/head.jpg")).Text("张辉").CssClass("userpicaction")
+                .Menu(F.Menu()
+                    .Items(
+                        //F.MenuCheckBox().Text("仅显示基础版示例").ID("cbxShowOnlyNew").Listener("click", "onShowOnlyNewClick").Checked(ViewBag.CookieShowOnlyBase),
+                        //F.MenuButton().Text("基础版下载").ID("btnApplyBase").OnClientClick("onBaseDownloadClick();"),
+                        //F.MenuSeparator(),
+                        F.MenuButton().Text("显示模式").ID("MenuMode").Hidden(ViewBag.CookieIsBase)
+                            .Menu(F.Menu()
+                                .Items(
+                                    F.MenuCheckBox().GroupName("MenuMode").AttributeDataTag("compact").ID("MenuModeCompact").Text("紧凑模式"),
+                                    F.MenuCheckBox().GroupName("MenuMode").AttributeDataTag("small").ID("MenuModeSmall").Text("小字体模式"),
+                                    F.MenuCheckBox().GroupName("MenuMode").Checked(true).AttributeDataTag("normal").ID("MenuModeNormal").Text("普通模式"),
+                                    F.MenuCheckBox().GroupName("MenuMode").AttributeDataTag("large").ID("MenuModeLarge").Text("大字体模式"),
+                                    F.MenuCheckBox().GroupName("MenuMode").AttributeDataTag("largeSpace").ID("MenuModeLargeSpace").Text("大间距模式")
+                                ).Listener("checkchange", "onMenuModeCheckChange")
+                            ),
+                        F.MenuButton().ID("MenuStyle").Text("菜单样式").Hidden(ViewBag.CookieIsBase)
+                            .Menu(F.Menu()
+                                .Items(
+                                    F.MenuCheckBox().GroupName("MenuStyle").Checked(true).AttributeDataTag("tree").ID("MenuStyleTree").Text("智能树菜单"),
+                                    F.MenuCheckBox().GroupName("MenuStyle").AttributeDataTag("tree_minimode").ID("MenuStyleMiniModeTree").Text("智能树菜单（默认折叠）"),
+                                    F.MenuCheckBox().GroupName("MenuStyle").AttributeDataTag("plaintree").ID("MenuStylePlainTree").Text("树菜单")
+                                ).Listener("checkchange", "onMenuStyleCheckChange")
+                            ),
+                        F.MenuButton().ID("MenuLang").Text("语言")
+                            .Menu(F.Menu()
+                                .Items(
+                                    F.MenuCheckBox().GroupName("MenuLang").Checked(true).AttributeDataTag("zh_CN").ID("MenuLangZHCN").Text("简体中文"),
+                                    F.MenuCheckBox().GroupName("MenuLang").AttributeDataTag("zh_TW").ID("MenuLangZHTW").Text("繁體中文"),
+                                    F.MenuCheckBox().GroupName("MenuLang").AttributeDataTag("en").ID("MenuLangEN").Text("English"),
+                                    F.MenuCheckBox().GroupName("MenuLang").AttributeDataTag("zh_UEY").ID("MenuLangZHUEY").Text("ئۇيغۇر تىلى")
+                                ).Listener("checkchange", "onMenuLangCheckChange")
+                            ),
+                        F.MenuButton().ID("btnLoadingSelect").Text("加载动画").Listener("click", "onLoadingSelectClick"),
+                        F.MenuSeparator(),
+                        F.MenuHyperLink().Target("_blank").NavigateUrl("http://pro.fineui.com/").Text("FineUI Pro 示例"),
+                        F.MenuHyperLink().Target("_blank").NavigateUrl("http://core.fineui.com/").Text("FineUI Core 示例"),
+                        F.MenuHyperLink().Target("_blank").NavigateUrl("http://js.fineui.com/").Text("FineUI JS 示例")
+                    )
+                )
+            )
+        </div>
+    </div>
+
+    <div id="applytrial_container" style="display:none;">
+        <div>
+            联系邮箱：739536111@qq.com
+        </div>
+        <ul class="applytrial">
+            <li>QQ：XXX</li>
+            <li>姓名：XXX</li>
+            <li>电话：XXXXXXX</li>
+            <li>邮箱：XXX</li>
+        </ul>
+    </div>
+
+
+    @(F.Panel().ShowHeader(false).ShowBorder(false).Layout(LayoutType.Region).CssClass("mainpanel").IsViewPort(true)
+        .Items(
+            F.Panel().ID("sidebarRegion").CssClass("sidebarregion bgpanel").RegionPosition(Position.Left).Width(260).Layout(LayoutType.VBox).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().ShowHeader(false).ShowBorder(false).CssClass("topregion bgpanel").ID("topPanel").ContentEl("#sideheader"),
+                    F.Panel().BoxFlex(1).Layout(LayoutType.Fit).ShowHeader(false).ShowBorder(true).CssClass("leftregion bgpanel").ID("leftPanel")
+                        .Items(
+                            F.Tree().ID("treeMenu").ShowBorder(false).ShowHeader(false).EnableSingleClickExpand(true)
+                                .Nodes((TreeNode[])ViewBag.TreeMenuNodes)
+                        )
+                ),
+            F.Panel().ID("bodyRegion").CssClass("bodyregion").RegionPosition(Position.Center).Layout(LayoutType.VBox).ShowBorder(false).ShowHeader(false)
+                .Items(
+                    F.Panel().ID("topPanel").ShowHeader(false).ShowBorder(false).CssClass("topregion").ContentEl("#header"),
+                    F.TabStrip().BoxFlex(1).ShowInkBar(true).EnableTabCloseMenu(true).ShowBorder(true).RegionPosition(Position.Center).CssClass("centerregion").ID("mainTabStrip")
+                        .Tabs(
+                            F.Tab().IFrameUrl(Url.Content("~/Commond/CopyCMD")).EnableIFrame(true).IconFont(IconFont._Home).Title("首页").ID("Tab1")
+                        )
+                        .Tools(
+                            F.Tool().ID("toolSourceCode").ToolTip("查看源代码").CssClass("tabtool viewcode").IconFont(IconFont._Code).Listener("click", "onToolSourceCodeClick"),
+                            F.Tool().ID("toolRefresh").ToolTip("刷新本页").CssClass("tabtool").IconFont(IconFont._Refresh).Listener("click", "onToolRefreshClick"),
+                            F.Tool().ID("toolNewWindow").ToolTip("在新标签页中打开").CssClass("tabtool").IconFont(IconFont._NewTab).Listener("click", "onToolNewWindowClick")
+                        )
+                )
+        )
+    )
+
+
+    @(F.Window().Hidden(true).EnableResize(true).EnableMaximize(true).EnableClose(true).Height(600).Width(1000).IsModal(true).EnableIFrame(true).Title("源代码").IconFont(IconFont._Code).ID("windowSourceCode"))
+
+    @(F.Window().Hidden(true).EnableResize(true).EnableMaximize(true).EnableClose(true).Height(600).Width(1000).IsModal(true).ClearIFrameAfterClose(false).IFrameUrl(Url.Content("~/Home/Themes")).EnableIFrame(true).Title("主题仓库").ID("windowThemeRoller"))
+
+    @(F.Window().Hidden(true).EnableResize(true).EnableMaximize(true).EnableClose(true).Height(600).Width(1000).IsModal(true).ClearIFrameAfterClose(false).IFrameUrl(Url.Content("~/Home/Loading")).EnableIFrame(true).Title("加载动画").ID("windowLoadingSelector"))
+
+    @(F.Window().ID("windowApplyTrial").Title("企业版试用").IsModal(true).Width(500).EnableClose(true).EnableMaximize(false).BodyPadding(15).IconFont(IconFont._Mail).Hidden(true).ContentEl("#applytrial_container"))
+
+    @(F.HiddenField().ID("hfExamplesCount").Text(ViewBag.ExamplesCount))
+
+
+    @{
+        string cookieMenuStyle = (string)ViewBag.CookieMenuStyle;
+        string cookieMenuMode = (string)ViewBag.CookieMenuMode;
+        string cookieLang = (string)ViewBag.CookieLang;
+        string cookieSearchText = (string)ViewBag.CookieSearchText;
+
+        // 初始化左侧菜单
+        Tree treeMenu = F.GetControl<Tree>("treeMenu");
+        if (cookieMenuStyle == "tree" || cookieMenuStyle == "tree_minimode")
+        {
+            treeMenu.HideHScrollbar = true;
+            treeMenu.HideVScrollbar = true;
+            treeMenu.ExpanderToRight = true;
+            treeMenu.HeaderStyle = true;
+            treeMenu.AllHeaderStyle = true;
+        }
+
+        // 初始化设置 - 菜单模式
+        SetCheckedMenuItem(F.GetControl<MenuButton>("MenuMode"), cookieMenuMode);
+
+        // 初始化设置 - 菜单样式
+        SetCheckedMenuItem(F.GetControl<MenuButton>("MenuStyle"), cookieMenuStyle);
+
+        // 初始化设置 - 语言
+        SetCheckedMenuItem(F.GetControl<MenuButton>("MenuLang"), cookieLang);
+
+        // 初始化搜索文本
+        var ttbxSearch = F.GetControl<TwinTriggerBox>("ttbxSearch");
+        if (!String.IsNullOrEmpty(cookieSearchText))
+        {
+            ttbxSearch.Text = cookieSearchText;
+            ttbxSearch.ShowTrigger1 = true;
+            ttbxSearch.Width = 200;
+            ttbxSearch.CssClass = "searchbox expanded";
+        }
+
+        // 初始化主区域
+        //var pm = F.PageManager;
+        //var tab1 = F.GetControl<Tab>("Tab1");
+        //if (pm.Source.CustomTheme.ToLower() == "bootstrap_pure")
+        //{
+        //    tab1.IFrameUrl = "~/Basic/MainBootstrapPure";
+        //}
+
+    }
+
+}
+
+@functions {
+    private void SetCheckedMenuItem(MenuButton menuButton, string checkedValue)
+    {
+        foreach (MenuItem item in menuButton.Menu.Items)
+        {
+            MenuCheckBox checkBox = (item as MenuCheckBox);
+            if (checkBox != null)
+            {
+                checkBox.Checked = checkBox.AttributeDataTag == checkedValue;
+            }
+        }
+    }
+}
+
+
+
+@section script {
+
+    <script>
+
+        var _menuStyle = F.cookie('MenuStyle') || 'tree';
+
+        // 基础版下载
+        function onBaseDownloadClick() {
+            window.open('http://fineui.com/bbs/forum.php?mod=viewthread&tid=21482', '_blank');
+        }
+
+        // 点击主题仓库
+        function onThemeSelectClick(event) {
+            var windowThemeRoller = F.ui.windowThemeRoller;
+            windowThemeRoller.show();
+        }
+
+        // 点击加载动画
+        function onLoadingSelectClick(event) {
+            var windowLoadingSelector = F.ui.windowLoadingSelector;
+            windowLoadingSelector.show();
+        }
+
+        // 设置长期存在的Cookie
+        function setCookie(name, value) {
+            F.cookie(name, value, {
+                expires: 100  // 单位：天
+            });
+        }
+
+        // 折叠/展开侧边栏
+        function onFoldClick(event) {
+            toggleSidebar();
+        }
+
+        // 展开侧边栏
+        function expandSidebar() {
+            toggleSidebar(false);
+        }
+
+        // 折叠侧边栏
+        function collapseSidebar() {
+            toggleSidebar(true);
+        }
+
+        // 折叠/展开侧边栏
+        function toggleSidebar(collapsed) {
+            var foldButton = F.ui.btnCollapseSidebar;
+            var sidebarRegion = F.ui.sidebarRegion;
+            var leftPanel = F.ui.leftPanel;
+            var logoEl = sidebarRegion.el.find('.logo');
+
+            var currentCollapsed = foldButton.iconFont === 'f-iconfont-unfold';
+            if (F.isUND(collapsed)) {
+                collapsed = !currentCollapsed;
+            } else {
+                if (currentCollapsed === collapsed) {
+                    return;
+                }
+            }
+
+            F.noAnimation(function () {
+                if (!collapsed) {
+                    foldButton.setIconFont('f-iconfont-fold');
+
+                    if (_menuStyle === 'tree' || _menuStyle === 'tree_minimode') {
+                        logoEl.removeClass('short').text(logoEl.attr('title'));
+                        sidebarRegion.setWidth(260);
+
+                        // 获取左侧树控件实例
+                        var leftMenuTree = leftPanel.getItem(0);
+                        leftMenuTree.miniMode = false;
+                        // 重新加载树菜单
+                        leftMenuTree.loadData();
+                    } else {
+                        sidebarRegion.expand();
+                    }
+                } else {
+                    foldButton.setIconFont('f-iconfont-unfold');
+
+                    if (_menuStyle === 'tree' || _menuStyle === 'tree_minimode') {
+                        logoEl.addClass('short').text('F');
+                        sidebarRegion.setWidth(60);
+
+                        // 获取左侧树控件实例
+                        var leftMenuTree = leftPanel.getItem(0);
+                        leftMenuTree.miniMode = true;
+                        // 重新加载树菜单
+                        leftMenuTree.loadData();
+                    } else {
+                        sidebarRegion.collapse();
+                    }
+                }
+            });
+        }
+
+
+        // 点击仅显示最新示例
+        function onShowOnlyNewClick(event) {
+            var checked = this.isChecked();
+            // 改变Cookie的值（不要删除），HomeController中会根据Cookie值是否存在来设置默认值
+            setCookie('ShowOnlyBase', checked);
+            top.window.location.reload();
+        }
+
+
+        function onSearchTrigger1Click(event) {
+            F.removeCookie('SearchText');
+            top.window.location.reload();
+        }
+
+        function onSearchTrigger2Click(event) {
+            var ttbxSearch = this;
+            if (ttbxSearch.el.hasClass('collapsed')) {
+                ttbxSearch.el.removeClass('collapsed').addClass('expanded').outerWidth(200);
+            } else {
+                var ttbxSearchValue = ttbxSearch.getValue();
+                if (ttbxSearchValue) {
+                    F.cookie('SearchText', this.getValue(), {
+                        expires: 100 // 单位：天
+                    });
+                    top.window.location.reload();
+                }
+            }
+        }
+
+        function onSearchBlur(event) {
+            var ttbxSearch = this;
+            if (!ttbxSearch.getValue()) {
+                ttbxSearch.el.removeClass('expanded').addClass('collapsed').outerWidth(24);
+            }
+        }
+
+        // 点击标题栏工具图标 - 查看源代码
+        function onToolSourceCodeClick(event) {
+            var mainTabStrip = F.ui.mainTabStrip;
+            var windowSourceCode = F.ui.windowSourceCode;
+
+
+            var activeTab = mainTabStrip.getActiveTab();
+            var iframeWnd, iframeUrl;
+            if (activeTab.iframe) {
+                iframeWnd = activeTab.getIFrameWindow();
+                iframeUrl = activeTab.getIFrameUrl();
+            }
+
+            var files = [iframeUrl];
+            var sourcefilesNode = $(iframeWnd.document).find('head meta[name=sourcefiles]');
+            if (sourcefilesNode.length) {
+                $.merge(files, sourcefilesNode.attr('content').split(';'));
+            }
+            windowSourceCode.show(F.baseUrl + 'Home/Source?files=' + encodeURIComponent(files.join(';')));
+
+        }
+
+        // 点击标题栏工具图标 - 刷新
+        function onToolRefreshClick(event) {
+            var mainTabStrip = F.ui.mainTabStrip;
+
+            var activeTab = mainTabStrip.getActiveTab();
+            if (activeTab.iframe) {
+                var iframeWnd = activeTab.getIFrameWindow();
+                iframeWnd.location.reload();
+            }
+        }
+
+        // 点击标题栏工具图标 - 在新标签页中打开
+        function onToolNewWindowClick(event) {
+            var mainTabStrip = F.ui.mainTabStrip;
+
+            var activeTab = mainTabStrip.getActiveTab();
+            if (activeTab.iframe) {
+                var iframeUrl = activeTab.getIFrameUrl();
+                iframeUrl = iframeUrl.replace(/Mobile\/\?file=/ig, '');
+                window.open(iframeUrl, '_blank');
+            }
+        }
+
+
+        // 添加示例标签页（通过href在树中查找）
+        function addExampleTabByHref(href) {
+            var leftPanel = F.ui.leftPanel;
+            var firstChild = leftPanel.getItem(0);
+
+            href = href.toLowerCase();
+
+            // 在树数据中查找href对应的节点id
+            function checkInsideTree(tree) {
+                var found = false;
+                tree.resolveNode(function (node) {
+                    var resolveHref = node.href;
+                    if (resolveHref) {
+                        resolveHref = resolveHref.toLowerCase();
+                        if (resolveHref.indexOf(href) >= 0) {
+                            // 打开树节点并选中
+                            tree.expandNodePath(node);
+                            tree.selectNode(node);
+
+                            // 保证传入的id和点击树节点生成的id相同！！！
+                            F.addMainTab(F.ui.mainTabStrip, {
+                                id: node.id,
+                                iframeUrl: node.href,
+                                title: node.text,
+                                icon: node.icon,
+                                iconFont: node.iconFont
+                            });
+
+                            found = true;
+                            return false; // break
+                        }
+                    }
+                });
+                return found;
+            }
+
+
+            if (firstChild.isType('tree')) {
+                // 左侧为树控件
+                checkInsideTree(firstChild);
+            } else {
+                // 左侧为树控件+手风琴控件
+                $.each(firstChild.items, function (index, accordionpane) {
+                    if (checkInsideTree(accordionpane.getItem(0))) {
+                        return false; // break
+                    }
+                });
+            }
+        }
+
+
+        // 添加示例标签页
+        // id： 选项卡ID
+        // iframeUrl: 选项卡IFrame地址
+        // title： 选项卡标题
+        // icon： 选项卡图标
+        // createToolbar： 创建选项卡前的回调函数（接受tabOptions参数）
+        // refreshWhenExist： 添加选项卡时，如果选项卡已经存在，是否刷新内部IFrame
+        // iconFont： 选项卡图标字体
+        function addExampleTab(tabOptions) {
+
+            if (typeof (tabOptions) === 'string') {
+                tabOptions = {
+                    id: arguments[0],
+                    iframeUrl: arguments[1],
+                    title: arguments[2],
+                    icon: arguments[3],
+                    createToolbar: arguments[4],
+                    refreshWhenExist: arguments[5],
+                    iconFont: arguments[6]
+                };
+            }
+
+            F.addMainTab(F.ui.mainTabStrip, tabOptions);
+        }
+
+
+        // 移除选中标签页
+        function removeActiveTab() {
+            var mainTabStrip = F.ui.mainTabStrip;
+
+            var activeTab = mainTabStrip.getActiveTab();
+            activeTab.hide();
+        }
+
+        // 获取当前激活选项卡的ID
+        function getActiveTabId() {
+            var mainTabStrip = F.ui.mainTabStrip;
+
+            var activeTab = mainTabStrip.getActiveTab();
+            if (activeTab) {
+                return activeTab.id;
+            }
+            return '';
+        }
+
+        // 激活选项卡，并刷新其中的内容，示例：表格控件->杂项->在新标签页中打开（关闭后刷新父选项卡）
+        function activeTabAndRefresh(tabId) {
+            var mainTabStrip = F.ui.mainTabStrip;
+            var targetTab = mainTabStrip.getTab(tabId);
+
+            if (targetTab) {
+                mainTabStrip.activeTab(targetTab);
+                targetTab.refreshIFrame();
+            }
+        }
+
+        // 激活选项卡，并刷新其中的内容，示例：表格控件->杂项->在新标签页中打开（关闭后更新父选项卡中的表格）
+        function activeTabAndUpdate(tabId, param1) {
+            var mainTabStrip = F.ui.mainTabStrip;
+            var targetTab = mainTabStrip.getTab(tabId);
+
+            if (targetTab) {
+                mainTabStrip.activeTab(targetTab);
+                targetTab.getIFrameWindow().updatePage(param1);
+            }
+        }
+
+        // 点击菜单样式
+        function onMenuStyleCheckChange(event, item, checked) {
+            var menuStyle = item.getAttr('data-tag');
+
+            setCookie('MenuStyle', menuStyle);
+            top.window.location.reload();
+        }
+
+        // 点击显示模式
+        function onMenuModeCheckChange(event, item, checked) {
+            var menuMode = item.getAttr('data-tag');
+
+            setCookie('MenuMode', menuMode);
+            top.window.location.reload();
+        }
+
+        // 点击语言
+        function onMenuLangCheckChange(event, item, checked) {
+            var lang = item.getAttr('data-tag');
+
+            setCookie('Language', lang);
+            top.window.location.reload();
+        }
+
+
+        // 通知框
+        function notify(msg) {
+            F.notify({
+                message: msg,
+                messageIcon: 'information',
+                target: '_top',
+                header: false,
+                displayMilliseconds: 3 * 1000,
+                positionX: 'center',
+                positionY: 'center'
+            });
+        }
+
+
+        // 示例数
+        function getExamplesCount() {
+            return F.ui.hfExamplesCount.getValue();
+        }
+
+        function checkSidebarStatus() {
+            var windowWidth = $(window).width();
+            if (windowWidth < 992) {
+                collapseSidebar();
+            } else if (windowWidth > 1200) {
+                expandSidebar();
+            }
+        }
+
+        F.ready(function () {
+
+            var mainTabStrip = F.ui.mainTabStrip;
+            var treeMenu = F.ui.treeMenu;
+
+            if (!treeMenu) return;
+
+            // 初始化主框架中的树(或者Accordion+Tree)和选项卡互动，以及地址栏的更新
+            // treeMenu： 主框架中的树控件实例，或者内嵌树控件的手风琴控件实例
+            // mainTabStrip： 选项卡实例
+            // updateHash: 切换Tab时，是否更新地址栏Hash值（默认值：true）
+            // refreshWhenExist： 添加选项卡时，如果选项卡已经存在，是否刷新内部IFrame（默认值：false）
+            // refreshWhenTabChange: 切换选项卡时，是否刷新内部IFrame（默认值：false）
+            // maxTabCount: 最大允许打开的选项卡数量
+            // maxTabMessage: 超过最大允许打开选项卡数量时的提示信息
+            // beforeNodeClick: 节点点击事件之前执行（返回false则不执行点击事件）
+            F.initTreeTabStrip(treeMenu, mainTabStrip, {
+                maxTabCount: 10,
+                maxTabMessage: '请先关闭一些选项卡（最多允许打开 10 个）！',
+                beforeNodeClick: function (event, nodeId) {
+                    var nodeEl = this.getNodeEl(nodeId);
+                    if (nodeEl.attr('data-tag') === 'pop-window1') {
+                        F.ui.windowThemeRoller.show();
+                        return false;
+                    }
+                }
+            });
+
+            if (F._base) {
+                _menuStyle = 'plaintree';
+            } else {
+
+                // 根据屏幕尺寸展开折叠侧边栏
+                F.windowResize(function () {
+                    checkSidebarStatus();
+                });
+
+                if (_menuStyle === 'tree_minimode') {
+                    collapseSidebar();
+                } else {
+                    checkSidebarStatus();
+                }
+
+
+                // 如果地址哈希值不存在，则添加响应式首页
+                var hashFragment = window.location.hash.substr(1);
+                if (!hashFragment || hashFragment.indexOf('/Basic/Main') >= 0) {
+                    addExampleTabByHref('@Url.Content("/Block/Dashboard")');
+                }
+            }
+
+        });
+
+    </script>
+
+}

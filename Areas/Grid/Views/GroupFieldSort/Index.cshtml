@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Grid/GroupFieldSort";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格").DataIDField("Id").AllowSorting(true).SortField(ViewBag.Grid1SortField).SortDirection(ViewBag.Grid1SortDirection)
+        .Columns(
+            F.RenderField().DataField("Year").Width(80).HeaderText("统计年份"),
+            F.GroupField().HeaderText("安徽省").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.GroupField().HeaderText("合肥市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().Width(100).DataField("AHData1").SortField("AHData1").HeaderText("数据一"),
+                            F.RenderField().Width(100).DataField("AHData2").SortField("AHData2").HeaderText("数据二")
+                        )
+                ),
+            F.GroupField().HeaderText("河南省").TextAlign(TextAlign.Center)
+                .Columns(
+                    F.GroupField().HeaderText("驻马店市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().Width(100).DataField("HZData1").SortField("HZData1").HeaderText("数据一"),
+                            F.RenderField().Width(100).DataField("HZData2").SortField("HZData2").HeaderText("数据二")
+                        ),
+                    F.GroupField().HeaderText("漯河市").TextAlign(TextAlign.Center)
+                        .Columns(
+                            F.RenderField().Width(100).DataField("HLData1").SortField("HLData1").HeaderText("数据一"),
+                            F.RenderField().Width(100).DataField("HLData2").SortField("HLData2").HeaderText("数据二")
+                        )
+                ),
+            F.RenderField().BoxFlex(1).TextAlign(TextAlign.Center).DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("记录时间")
+        ).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+    <br>
+
+
+}

@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "FormTable/TableStyleSimpleForm";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").ShowHeader(false).ShowBorder(false).EnableTableStyle(true).MessageTarget(MessageTarget.Qtip)
+        .Items(
+            F.TextBox().ID("tbxUserName").Label("用户名").Required(true).ShowRedStar(true),
+            F.TextBox().ID("tbxPassword").Label("密码").Required(true).ShowRedStar(true).TextMode(TextMode.Password)
+        )
+    )
+
+    @(F.Button().ID("btnSubmit_Click").Text("注册").OnClick(Url.Action("btnSubmit_Click_Click"), "SimpleForm1").ValidateForms("SimpleForm1").ValidateTarget(Target.Top).MarginTop(5))
+    <br>
+    <br>
+
+
+}
+

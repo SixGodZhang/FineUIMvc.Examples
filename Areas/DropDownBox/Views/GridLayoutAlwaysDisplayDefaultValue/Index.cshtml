@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/GridLayoutAlwaysDisplayDefaultValue";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("总是显示弹出面板（初始值）").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EmptyText("请从下面表格中选择").DataControlID("Grid1").PopPanelID("Panel1").AlwaysDisplayPopPanel(true).EnableMultiSelect(true).MatchFieldWidth(false).AutoShowClearIcon(true).Values("115,105").Texts("董国,吴颖颖"),
+            F.Panel().ID("Panel1").BodyPadding(10).Height(300).ShowBorder(true).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch)
+                .Items(
+                    F.Form().ID("Form5").ShowBorder(false).ShowHeader(false)
+                        .Rows(
+                            F.FormRow()
+                                .Items(
+                                    F.TwinTriggerBox().Width(300).EmptyText("在姓名中查找").ShowLabel(false).ID("ttbSearch").ShowTrigger1(false).OnTrigger1Click(Url.Action("ttbSearch_Trigger1Click"), "Panel1").OnTrigger2Click(Url.Action("Grid1_DoReBind"), "Panel1").Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search),
+                                    F.RadioButtonList().ID("rblAtSchool").Label("是否在校").OnSelectedIndexChanged(Url.Action("Grid1_DoReBind"), "Panel1")
+                                        .Items(
+                                            F.RadioItem().Text("全部").Value("-1").Selected(true),
+                                            F.RadioItem().Text("在校").Value("1"),
+                                            F.RadioItem().Text("离校").Value("0")
+                                        )
+                                )
+                        ),
+                    F.Grid().ID("Grid1").BoxFlex(1).DataIDField("Id").DataTextField("Name").EnableMultiSelect(true).KeepCurrentSelection(true).PageSize(5).ShowBorder(true).ShowHeader(false).AllowPaging(true).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_DoReBind"), "Panel1").EnableCheckBoxSelect(true)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").CssClass("marginr").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1"))
+
+    @(F.Button().ID("btnClearValue").Text("清空下拉框的值").Listener("click", "F.ui.DropDownBox1.clearValue();"))
+    <br>
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+    <br />
+    <br />
+    注：通过 Values 和 Text 属性来设置下拉框的初始值（由于初始值可能不在第一页，所以需要指定 Text 属性）。
+    <br />
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}
+
+

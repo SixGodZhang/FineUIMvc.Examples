@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "GridEditor/SelectFromWindowIFrameWindow";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().ID("Grid1").ShowBorder(false).ShowHeader(false).Title("表格").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true).EnableMultiSelect(false).IsViewPort(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名"),
+            F.RenderField().Width(80).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别"),
+            F.RenderField().Width(80).ColumnID("EntranceYear").DataField("EntranceYear").HeaderText("入学年份"),
+            F.RenderField().Width(100).ColumnID("EntranceDate").DataField("EntranceDate").HeaderText("入学日期"),
+            F.RenderCheckField().Width(80).ColumnID("AtSchool").RenderAsStaticField(true).DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").HeaderText("所学专业").ExpandUnusedSpace(true)
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Top)
+                .Items(
+                    F.Button().ID("btnClose").Text("关闭").Icon(Icon.SystemClose).Listener("click", "F.activeWindow.hide();"),
+                    F.Button().ID("btnSaveClose").Text("选择后关闭").Icon(Icon.SystemSaveClose).Listener("click", "onGrid1RowSelect")
+                )
+        ).Listener("rowdblclick", "onGrid1RowSelect")
+        .DataSource(DataSourceUtil.GetDataTable())
+        
+    )
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGrid1RowSelect(event) {
+            // 返回当前活动Window对象（浏览器窗口对象通过F.getActiveWindow().window获取）
+            var activeWindow = F.getActiveWindow();
+
+            // 选中行数据
+            var rowData = F.ui.Grid1.getSelectedRow(true);
+            var rowValue = rowData.values;
+
+            var queryRowId = F.queryString('rowid');
+            var selectedValues = {
+                'Name': rowValue['Name'],
+                'Gender': rowValue['Gender'],
+                'EntranceYear': rowValue['EntranceYear'],
+                'EntranceDate': rowValue['EntranceDate'],
+                'AtSchool': rowValue['AtSchool'],
+                'Major': rowValue['Major']
+            };
+
+            // 隐藏弹出窗体
+            activeWindow.hide();
+
+            // 调用父页面的 updateGridRow 函数
+            activeWindow.window.updateGridRow(queryRowId, selectedValues);
+        }
+
+
+    </script>
+}

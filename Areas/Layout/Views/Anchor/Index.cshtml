@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "Layout/Anchor";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel3").Title("面板一（Height=300px）").Height(300).BodyPadding(10).ShowBorder(true).ShowHeader(true)
+        .Items(
+            F.Panel().ID("Panel1").ShowBorder(true).Margin("0 0 5 0").BodyPadding(10).ShowHeader(false).Title("面板")
+                .Items(
+                    F.Label().ID("Label5").Text("Margin=0 0 5 0")
+                ),
+            F.Form().ID("Form3").ShowBorder(true).BodyPadding(10).ShowHeader(false).Title("表单")
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.Label().ID("Label2").Label("文本").Text("文本内容")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox2").Label("输入框"),
+                            F.Button().ID("Button2").Text("按钮")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel2").Height(300).ShowBorder(true).BodyPadding(10).Layout(LayoutType.Anchor).ShowHeader(true).Title("面板二（Height=300px Layout=Anchor）")
+        .Items(
+            F.Panel().ID("Panel4").AnchorValue("60% 30%").Margin("0 0 5 0").BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Items(
+                    F.Label().ID("Label3").Text("AnchorValue=60% 30% Margin=0 0 5 0")
+                ),
+            F.Form().ID("Form2").AnchorValue("100% 70%").BodyPadding(10).ShowBorder(true).ShowHeader(false)
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.Label().ID("Label1").Text("AnchorValue=100% 70%")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox1").Label("输入框"),
+                            F.Button().ID("Button7").Text("按钮")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel5").Title("面板三").BodyPadding(10).ShowBorder(true).ShowHeader(true)
+        .Items(
+            F.Form().ID("Form4").ShowBorder(false).BodyPadding(10).ShowHeader(false)
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox3").Label("用户名"),
+                            F.Button().ID("Button6").Text("搜索")
+                        )
+                ),
+            F.Panel().ID("Panel6").ShowBorder(true).ShowHeader(false)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar1")
+                        .Items(
+                            F.Button().ID("Button4").Text("按钮一"),
+                            F.Button().ID("Button5").Text("按钮二")
+                        )
+                )
+                .Items(
+                    F.Grid().Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid3").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                        )
+                        .DataSource(DataSourceUtil.GetDataTable())
+                )
+        )
+    )
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel7").BodyPadding(10).ShowBorder(true).ShowHeader(true).Height(500).Title("面板四（Height=500px Layout=Anchor）").Layout(LayoutType.Anchor)
+        .Items(
+            F.Form().ID("Form5").ShowBorder(false).BodyPadding(10).AnchorValue("100%").ShowHeader(false)
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox5").Label("用户名"),
+                            F.TextBox().ID("TextBox8").Label("所在班级")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox6").Label("所在年级"),
+                            F.Button().ID("Button11").Text("搜索")
+                        )
+                ),
+            F.Panel().ID("Panel8").ShowBorder(true).ShowHeader(false).AnchorValue("100% -100").Layout(LayoutType.Fit)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar2")
+                        .Items(
+                            F.Button().ID("Button8").Text("按钮一"),
+                            F.Button().ID("Button9").Text("按钮二")
+                        )
+                )
+                .Items(
+                    F.Grid().Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid2").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+                    .Columns(
+                        F.RowNumberField(),
+                        F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                        F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                        F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                        F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                        F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                        F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                    )
+                    .DataSource(DataSourceUtil.GetDataTable())
+                )
+        )
+    )
+    <br>
+    <br>
+    <br>
+    <strong>【推荐】</strong>使用VBox布局实现与上例相同的界面：
+    <br>
+    <hr>
+    <br>
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel9").Layout(LayoutType.VBox).BodyPadding(10).BoxConfigChildMargin(0).ShowBorder(true).ShowHeader(true).Height(450).Title("面板五（Height=500px Layout=VBox BoxConfigChildMargin=0）")
+        .Items(
+            F.Form().ID("Form6").ShowBorder(false).BodyPadding(10).ShowHeader(false)
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox4").Label("用户名"),
+                            F.TextBox().ID("TextBox7").Label("所在班级")
+                        ),
+                    F.FormRow()
+                        .Items(
+                            F.TextBox().ID("TextBox9").Label("所在年级"),
+                            F.Button().ID("Button10").Text("搜索")
+                        )
+                ),
+            F.Panel().ID("Panel10").ShowBorder(true).ShowHeader(false).BoxFlex(1).Layout(LayoutType.Fit)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar3")
+                        .Items(
+                            F.Button().ID("Button12").Text("按钮一"),
+                            F.Button().ID("Button13").Text("按钮二")
+                        )
+                )
+                .Items(
+                    F.Grid().Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+                        .Columns(
+                            F.RowNumberField(),
+                            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+                            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80)
+                        )
+                        .DataSource(DataSourceUtil.GetDataTable())
+                )
+        )
+    )
+
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

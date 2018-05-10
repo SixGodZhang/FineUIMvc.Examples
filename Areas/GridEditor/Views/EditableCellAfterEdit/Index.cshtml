@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "GridEditor/EditableCellAfterEdit";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名")
+                .Editor(
+                    F.TextBox().ID("tbxName").Required(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别")
+                .Editor(
+                    F.DropDownList().ID("ddlGender").Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("1"),
+                            F.ListItem().Text("女").Value("0")
+                        )
+                ),
+            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份")
+                .Editor(
+                    F.NumberBox().ID("nbxEntranceYear").NoDecimal(true).NoNegative(true).MinValue(2000).MaxValue(2025)
+                ),
+            F.RenderField().Width(120).ColumnID("EntranceDate").DataField("EntranceDate").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("入学日期")
+                .Editor(
+                    F.DatePicker().ID("dpEntranceDate").Required(true)
+                ),
+            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业").RendererFunction("renderMajor")
+                .Editor(
+                    F.TextBox().ID("tbxMajor").Required(true)
+                )
+        ).Listener("afteredit", "onGrid1AfterEdit").DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+
+    <br>
+    @(F.Label().ID("labResult"))
+
+    <br>
+    <br />
+    <br />
+    注：修改[是否在校]会同时改变[所学专业]单元格的可编辑状态。
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderMajor(value, params) {
+            if (!params.rowData.values.AtSchool) {
+                params.tdCls = 'f-grid-cell-uneditable';
+            }
+
+            return value;
+        }
+
+
+        function onGrid1AfterEdit(event, value, params) {
+            if (params.columnId === 'AtSchool') {
+                var majorCellEl = this.getCellEl(params.rowId, "Major");
+                if (!value) {
+                    majorCellEl.addClass('f-grid-cell-uneditable');
+                } else {
+                    majorCellEl.removeClass('f-grid-cell-uneditable');
+                }
+            }
+        }
+
+    </script>
+}

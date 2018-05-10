@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Form/FormDisabled";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").LabelWidth(100).LabelSeparator("：").BodyPadding(10).ID("Form1").Title("表单")
+        .Rows(
+            F.FormRow()
+                .Items(
+                    F.Label().ID("Label3").Label("电话").Text("0551-1234567"),
+                    F.Label().ID("Label16").Label("申请人").Text("admin")
+                ),
+            F.FormRow()
+                .Items(
+                    F.Label().ID("Label4").Label("编号").Text("200804170006"),
+                    F.TextBox().ID("TextBox2").Required(true).ShowRedStar(true).Label("电子邮箱").EmptyText("请输入常用电子邮箱").RegexPattern(RegexPattern.EMAIL).RegexMessage("请输入有效的邮箱地址")
+                ),
+            F.FormRow()
+                .Items(
+                    F.DropDownList().ID("DropDownList3").Label("审批人").EmptyText("请选择审批人").Required(true).ShowRedStar(true).AutoSelectFirstItem(false)
+                        .Items(
+                            F.ListItem().Text("老大甲").Value("0"),
+                            F.ListItem().Text("老大乙").Value("1"),
+                            F.ListItem().Text("老大丙").Value("2")
+                        ),
+                    F.NumberBox().ID("NumberBox1").Label("申请数量").EmptyText("请输入申请数量").NoNegative(true).NoDecimal(true).MaxValue(1000).Required(true).ShowRedStar(true)
+                ),
+            F.FormRow()
+                .Items(
+                    F.DatePicker().Required(true).Label("日期").EmptyText("请选择日期").ID("DatePicker1").SelectedDate("2014-07-10").ShowRedStar(true),
+                    F.TimePicker().ID("TimePicker1").ShowRedStar(true).Label("时间").Increment(30).Required(true).Text("08:30").EmptyText("请选择时间")
+                ),
+            F.FormRow()
+                .Items(
+                    F.FileUpload().ID("filePhoto").EmptyText("请选择一张照片").Label("个人头像").Required(true).ShowRedStar(true),
+                    F.CheckBox().ID("cbxAtSchool").Label("是否在读")
+                ),
+            F.FormRow()
+                .Items(
+                    F.TextArea().ID("TextArea1").Label("描述").ShowRedStar(true).Required(true)
+                ),
+            F.FormRow()
+                .Items(
+                    F.CheckBoxList().ID("CheckBoxList1").Label("复选框列表").ColumnNumber(3)
+                        .Items(
+                            F.CheckItem().Text("可选项 1").Value("value1"),
+                            F.CheckItem().Text("可选项 2").Value("value2").Selected(true),
+                            F.CheckItem().Text("可选项 3").Value("value3").Selected(true),
+                            F.CheckItem().Text("可选项 4").Value("value4").Selected(true),
+                            F.CheckItem().Text("可选项 5").Value("value5").Selected(true)
+                        )
+                ),
+            F.FormRow()
+                .Items(
+                    F.RadioButtonList().ID("RadioButtonList2").Label("单选框列表").Required(true).ColumnNumber(3)
+                        .Items(
+                            F.RadioItem().Text("可选项 1").Value("value1"),
+                            F.RadioItem().Text("可选项 2").Value("value2"),
+                            F.RadioItem().Text("可选项 3").Value("value3"),
+                            F.RadioItem().Text("可选项 4").Value("value4"),
+                            F.RadioItem().Text("可选项 5").Value("value5")
+                        )
+                )
+        )
+    )
+    <br>
+    @(F.Button().ID("Button1").ValidateForms("Form1").Text("验证并提交表单").OnClick(Url.Action("Button1_Click"), "Form1"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnDisableAll").Text("全部禁用").CssClass("marginr").Listener("click", "onDisableAllClick"))
+
+    @(F.Button().ID("btnEnableAll").Text("全部启用").CssClass("marginr").Listener("click", "onEnableAllClick"))
+
+
+    <br>
+    <br>
+
+    @(F.Button().ID("btnMarkInvalid").Text("设置无效标识").CssClass("marginr").Listener("click", "onMarkInvalidClick"))
+
+    @(F.Button().ID("btnClearInvalid").Text("取消无效标识").CssClass("marginr").Listener("click", "onClearInvalidClick"))
+
+
+    <br>
+    <br>
+
+    @(F.Button().ID("btnDisablePanel").Text("禁用表单面板").CssClass("marginr").Listener("click", "F.ui.Form1.disable();"))
+
+    @(F.Button().ID("btnEnablePanel").Text("启用表单面板").CssClass("marginr").Listener("click", "F.ui.Form1.enable();"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnReadOnly").Text("全部只读").CssClass("marginr").Listener("click", "onReadOnlyClick"))
+
+    @(F.Button().ID("btnCancelReadOnly").Text("取消只读").CssClass("marginr").Listener("click", "onCancelReadOnlyClick"))
+
+    @(F.Button().ID("Button2").Text("添加只读样式（类似禁用样式）").CssClass("marginr").Listener("click", "addReadonlyStyle"))
+
+    @(F.Button().ID("Button3").Text("删除只读样式").CssClass("marginr").Listener("click", "removeReadonlyStyle"))
+
+
+
+    <textarea id="readonlycss_holder" style="display: none;">
+        .f-readonly {
+        opacity: .5;
+        filter: alpha(opacity=50);
+        }
+    </textarea>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+
+        function onDisableAllClick(event) {
+            $.each(F.ui.Form1.getFormFields(), function (index, field) {
+                field.disable();
+            });
+        }
+
+        function onEnableAllClick(event) {
+            $.each(F.ui.Form1.getFormFields(), function (index, field) {
+                field.enable();
+            });
+        }
+
+
+        function onReadOnlyClick(event) {
+            $.each(F.ui.Form1.getFormFields(), function (index, field) {
+                field.setReadonly(true);
+            });
+        }
+
+        function onCancelReadOnlyClick(event) {
+            $.each(F.ui.Form1.getFormFields(), function (index, field) {
+                field.setReadonly(false);
+            });
+        }
+
+
+        // 无效标识，排除 Label 控件
+        function onMarkInvalidClick(event) {
+            $.each(F.ui.Form1.getFormFields(), function (index, field) {
+                if (!field.isType('label')) {
+                    field.markInvalid('这个字段出错了！');
+                }
+            });
+        }
+
+        // 无效标识，排除 Label 控件
+        function onClearInvalidClick(event) {
+            $.each(F.ui.Form1.getFormFields(), function (index, field) {
+                if (!field.isType('label')) {
+                    field.clearInvalid();
+                }
+            });
+        }
+
+        function addReadonlyStyle(event) {
+            F.addCSS('readonlycss', $('#readonlycss_holder').val());
+        }
+
+        function removeReadonlyStyle(event) {
+            $('#readonlycss').remove();
+        }
+
+    </script>
+}

@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "GridEditor/EditableRow";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .row-entranceyear-lte-2002 .f-grid-cell-inner {
+            opacity: .5;
+            filter: alpha(opacity=50);
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().Width(100).ColumnID("Name").DataField("Name").HeaderText("姓名")
+                .Editor(
+                    F.TextBox().ID("tbxName").Required(true)
+                ),
+            F.RenderField().Width(100).ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").HeaderText("性别")
+                .Editor(
+                    F.DropDownList().ID("ddlGender").Required(true)
+                        .Items(
+                            F.ListItem().Text("男").Value("1"),
+                            F.ListItem().Text("女").Value("0")
+                        )
+                ),
+            F.RenderField().Width(100).ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).HeaderText("入学年份")
+                .Editor(
+                    F.NumberBox().ID("nbxEntranceYear").NoDecimal(true).NoNegative(true).MinValue(2000).MaxValue(2025)
+                ),
+            F.RenderField().Width(120).ColumnID("EntranceDate").DataField("EntranceDate").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").HeaderText("入学日期")
+                .Editor(
+                    F.DatePicker().ID("dpEntranceDate").Required(true)
+                ),
+            F.RenderCheckField().Width(100).ColumnID("AtSchool").DataField("AtSchool").HeaderText("是否在校"),
+            F.RenderField().ColumnID("Major").DataField("Major").ExpandUnusedSpace(true).HeaderText("所学专业")
+                .Editor(
+                    F.TextBox().ID("tbxMajor").Required(true)
+                )
+        ).RowDataBoundFunction("grid1RowDataBound").Listener("beforeedit", "onGrid1BeforeEdit").DataSource(ViewBag.Grid1DataSource)
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+
+    <br>
+    @(F.Label().ID("labResult"))
+
+    <br>
+    注：本例子禁止[入学年份小于等于2002]行的单元格编辑。
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        // 在 RowDataBound 中改变行CSS类
+        function grid1RowDataBound(rowData) {
+            var entranceYear = rowData.values['EntranceYear'];
+
+            if (entranceYear <= 2002) {
+                rowData.cls = "row-entranceyear-lte-2002";
+            }
+        }
+
+
+        function onGrid1BeforeEdit(event, value, params) {
+            // 取消单元格编辑
+            if (params.tr.hasClass('row-entranceyear-lte-2002')) {
+                return false;
+            }
+        }
+
+    </script>
+}

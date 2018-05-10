@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Window/Percent";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    <div id="content1">
+        <p>
+            <a href="http://tech.163.com/special/jobsdead/" style="font-size: 18px" target="_blank"><b>乔布斯</b></a>
+        </p>
+        <p>
+            乔布斯于1955年2月24日出生，苹果创始人之一。今年8月苹果超越埃克森美孚成为全球最大市值企业，截止上季度持有现金达到762亿美金，甚至超过了美国政府国库存款。
+        </p>
+    </div>
+
+    @(F.Button().Text("显示窗体").ID("btnShowInClient").Listener("click", "F.ui.Window1.show();"))
+    <br>
+    <br>
+
+    @(F.Button().Text("隐藏窗体").ID("btnHideInClient").Listener("click", "F.ui.Window1.hide();"))
+
+
+    @(F.Window().BodyPadding(10).AutoScroll(true).IsModal(false).PercentHeight("50%").PercentWidth("50%").Title("窗体（PercentWidth=50% PercentHeight=50%）").Icon(Icon.TagBlue).ID("Window1").ContentEl("#content1"))
+    <br>
+
+
+}
+

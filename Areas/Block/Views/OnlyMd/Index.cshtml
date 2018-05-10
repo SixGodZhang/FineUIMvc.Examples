@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Block/OnlyMd";
+    ViewBag.BodyBGColor = true;
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        body.f-body {
+            overflow-x: hidden;
+        }
+
+        .blockpanel {
+            min-height: 200px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).Layout(LayoutType.Block).BlockConfigSpace(20).ShowBorder(false).ShowHeader(false)
+        .Items(
+            F.Panel().CssClass("blockpanel").BlockMD(3).ShowBorder(true).ShowHeader(true).Title("1"),
+            F.Panel().CssClass("blockpanel").BlockMD(3).ShowBorder(true).ShowHeader(true).Title("2"),
+            F.Panel().CssClass("blockpanel").BlockMD(3).ShowBorder(true).ShowHeader(true).Title("3"),
+            F.Panel().CssClass("blockpanel").BlockMD(3).ShowBorder(true).ShowHeader(true).Title("4"),
+            F.Panel().CssClass("blockpanel").BlockMD(9).ShowBorder(true).ShowHeader(true).Title("5"),
+            F.Panel().CssClass("blockpanel").BlockMD(3).ShowBorder(true).ShowHeader(true).Title("6"),
+            F.Panel().CssClass("blockpanel").BlockMD(6).ShowBorder(true).ShowHeader(true).Title("7"),
+            F.Panel().CssClass("blockpanel").BlockMD(6).ShowBorder(true).ShowHeader(true).Title("8")
+        )
+    )
+
+
+}

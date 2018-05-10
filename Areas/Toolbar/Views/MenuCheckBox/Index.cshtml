@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Toolbar/MenuCheckBox";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").Height(300).BodyPadding(10).ShowBorder(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().Text("系统语言").ID("btnLangMenu")
+                        .Menu(F.Menu()
+                            .Items(
+                                F.MenuCheckBox().Checked(true).OnCheckedChanged(Url.Action("MenuLang_CheckedChanged"), new Parameter("checkedValue", "getMenuCheckBoxChecked('lang')")).GroupName("MenuLang").ID("MenuLangEnglish").Text("English"),
+                                F.MenuCheckBox().OnCheckedChanged(Url.Action("MenuLang_CheckedChanged"), new Parameter("checkedValue", "getMenuCheckBoxChecked('lang')")).GroupName("MenuLang").ID("MenuLangZHCN").Text("简体中文"),
+                                F.MenuCheckBox().OnCheckedChanged(Url.Action("MenuLang_CheckedChanged"), new Parameter("checkedValue", "getMenuCheckBoxChecked('lang')")).GroupName("MenuLang").ID("MenuLangZHTW").Text("繁體中文")
+                            )
+                        ),
+                    F.Button().Text("喜欢的站点").ID("btnSiteMenu")
+                        .Menu(F.Menu()
+                            .Items(
+                                F.MenuCheckBox().Checked(true).OnCheckedChanged(Url.Action("MenuSite_CheckedChanged"), new Parameter("checkedValue", "getMenuCheckBoxChecked('site')")).ID("MenuSiteBaidu").Text("baidu.com"),
+                                F.MenuCheckBox().OnCheckedChanged(Url.Action("MenuSite_CheckedChanged"), new Parameter("checkedValue", "getMenuCheckBoxChecked('site')")).Checked(true).ID("MenuSiteGoogle").Text("google.com"),
+                                F.MenuCheckBox().OnCheckedChanged(Url.Action("MenuSite_CheckedChanged"), new Parameter("checkedValue", "getMenuCheckBoxChecked('site')")).ID("MenuSiteMicrosoft").Text("microsoft.com")
+                            )
+                        )
+                )
+        )
+        .Items(
+            F.Label().ID("labLangResult"),
+            F.Label().ID("labSiteResult")
+        )
+    )
+
+}
+
+
+@section script {
+
+    <script>
+
+        function getMenuCheckBoxChecked(type) {
+            var result = [];
+            var btnContainer = type === 'lang' ? F.ui.btnLangMenu : F.ui.btnSiteMenu;
+            $.each(btnContainer.menu.items, function (index, item) {
+                if (item.isChecked()) {
+                    result.push(item.getText());
+                }
+            });
+
+            return result.join(', ');
+        }
+
+
+        F.ready(function () {
+            F.ui.labLangResult.setText('你选择的语言：' + getMenuCheckBoxChecked('lang'));
+            F.ui.labSiteResult.setText('你选择的站点：' + getMenuCheckBoxChecked('site'));
+        });
+
+    </script>
+}

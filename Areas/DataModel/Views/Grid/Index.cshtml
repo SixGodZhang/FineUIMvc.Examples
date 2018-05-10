@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.SourceFiles = "~/Areas/DataModel/Models/Student.cs;~/Areas/DataModel/Models/StudentHelper.cs";
+    ViewBag.Title = "DataModel/Grid";
+    var F = Html.F();
+}
+
+@model IEnumerable<FineUIMvc.Examples.Areas.DataModel.Models.Student>
+
+@section body {
+
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField(),
+            F.RenderFieldFor(m => m.Name),
+            F.RenderFieldFor(m => m.Gender).RendererFunction("renderGender").Width(80),
+            F.RenderFieldFor(m => m.EntranceYear),
+            F.RenderCheckFieldFor(m => m.AtSchool).RenderAsStaticField(true),
+            F.RenderFieldFor(m => m.Major).RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderFieldFor(m => m.Group).RendererFunction("renderGroup").Width(80),
+            F.RenderFieldFor(m => m.EntranceDate)
+        ).DataSource(Model)
+    )
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

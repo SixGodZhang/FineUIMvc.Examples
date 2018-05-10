@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<menu>
+  <menuItem text="中国科学技术大学" navigateurl="http://www.ustc.edu.cn/">
+    <menuItem text="化学与材料科学学院" navigateurl="http://scms.ustc.edu.cn/" />
+    <menuItem text="管理学院" navigateurl="http://business.ustc.edu.cn/zh_CN/" >
+      <menuItem text="工商管理系" navigateurl="http://is.ustc.edu.cn/" />
+      <menuItem text="统计与金融系"  navigateurl="http://stat.ustc.edu.cn/" />
+    </menuItem>
+  </menuItem>
+</menu>

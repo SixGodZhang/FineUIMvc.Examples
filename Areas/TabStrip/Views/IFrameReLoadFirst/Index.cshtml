@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "TabStrip/IFrameReLoadFirst";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(450).ShowBorder(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().ID("Tab1").EnableIFrame(true).BodyPadding(10).IFrameUrl(Url.Content("~/TabStrip/IFrameReLoadFirst/EmptyPage")).Title("标签一（每次切换到此选项卡都重新加载IFrame）"),
+            F.Tab().ID("Tab2").EnableIFrame(true).BodyPadding(10).IFrameUrl(Url.Content("~/TabStrip/IFrameReLoadFirst/EmptyPage")).Title("标签二"),
+            F.Tab().ID("Tab3").EnableIFrame(true).BodyPadding(10).IFrameUrl(Url.Content("~/TabStrip/IFrameReLoadFirst/EmptyPage")).Title("标签三")
+        ).Listener("tabchange", "onTabChange")
+    )
+    <br>
+    <br>
+    注：只有第一个选项卡在每次激活时都重新加载其中的IFrame。
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onTabChange(event, tab) {
+            // 如果激活的是第一个选项卡，则重新加载其中的IFrame
+            if (tab.id === 'Tab1') {
+                tab.refreshIFrame();
+            }
+        }
+
+
+    </script>
+}

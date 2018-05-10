@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Message/Alert";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Form().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").Title("创建对话框").LabelWidth(150).BodyPadding(10)
+        .Items(
+            F.GroupPanel().ID("GroupPanel2").Layout(LayoutType.Anchor).Title("常用属性")
+                .Items(
+                    F.TextBox().ID("tbxMessage").Required(true).ShowRedStar(true).Label("消息提示").Text("你好 FineUI！"),
+                    F.TextBox().ID("tbxTitle").Label("对话框标题").Text(""),
+                    F.CheckBox().ID("cbxEnableClose").Checked(true).Label("是否可关闭"),
+                    F.RadioButtonList().ID("rblMessageBoxIcon").Label("消息图标").ColumnNumber(3)
+                        .Items(
+                            F.RadioItem().Value("None").Text("无图标").Selected(true),
+                            F.RadioItem().Value("Information").Text("消息"),
+                            F.RadioItem().Value("Warning").Text("警告"),
+                            F.RadioItem().Value("Question").Text("问题"),
+                            F.RadioItem().Value("Error").Text("错误"),
+                            F.RadioItem().Value("Success").Text("成功")
+                        )
+                ),
+            F.GroupPanel().ID("GroupPanel1").Layout(LayoutType.Anchor).Title("其它属性")
+                .Items(
+                    F.TextBox().ID("tbxID").Label("对话框ID"),
+                    F.NumberBox().ID("nbWidth").NoDecimal(true).NoNegative(true).Label("对话框宽度").MinValue(200).MaxValue(900),
+                    F.NumberBox().ID("nbMinWidth").NoDecimal(true).NoNegative(true).Label("对话框最小宽度"),
+                    F.NumberBox().ID("nbMaxWidth").NoDecimal(true).NoNegative(true).Label("对话框最大宽度"),
+                    F.RadioButtonList().ID("rblTarget").Label("弹出位置").ColumnNumber(3)
+                        .Items(
+                            F.RadioItem().Value("Self").Text("当前页面").Selected(true),
+                            F.RadioItem().Value("Parent").Text("父页面"),
+                            F.RadioItem().Value("Top").Text("顶层页面")
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().Text("点击弹出对话框").ID("btnSubmit").ValidateForms("SimpleForm1").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+                )
+        )
+    )
+
+
+}
+

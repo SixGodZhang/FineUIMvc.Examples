@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "GridMove/RowMoveBetween2Grid";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Window().ID("Window1").Title("选择用户窗体").IsModal(false).EnableClose(false).IconFont(IconFont._Group).Width(500).Height(350).Layout(LayoutType.HBox).BodyPadding(10)
+        .Items(
+            F.GroupPanel().BoxFlex(1).Title("数据源").Layout(LayoutType.Fit).BodyPadding(0)
+                .Items(
+                    F.Grid().ID("Grid1").ShowBorder(false).ShowHeader(false).DataIDField("Id").DataTextField("Name").ShowGridHeader(false).EnableRowLines(false).EnableAlternateRowColor(false)
+                        .Columns(
+                            F.RenderField().ColumnID("Name").DataField("Name").HeaderText("姓名").BoxFlex(1)
+                        )
+                        .DataSource(DataSourceUtil.GetDataTable())
+                ),
+            F.Panel().ShowBorder(false).ShowHeader(false).Width(60).Layout(LayoutType.VBox).BoxConfigPosition(BoxLayoutPosition.Center).BodyPadding(10)
+                .Items(
+                    F.Button().ID("Button3").IconFont(IconFont._DoubleRight).MarginBottom(5).Listener("click", "onMoveRightAllClick"),
+                    F.Button().ID("Button1").IconFont(IconFont._Right).MarginBottom(5).Listener("click", "onMoveRightClick"),
+                    F.Button().ID("Button2").IconFont(IconFont._Left).MarginBottom(5).Listener("click", "onMoveLeftClick"),
+                    F.Button().ID("Button4").IconFont(IconFont._DoubleLeft).MarginBottom(5).Listener("click", "onMoveLeftAllClick")
+                ),
+            F.GroupPanel().ID("GroupPanel1").BoxFlex(1).Title("已选择").Layout(LayoutType.Fit).BodyPadding(0)
+                .Items(
+                    F.Grid().ID("Grid2").BoxFlex(1).ShowBorder(false).ShowHeader(false).DataIDField("Id").DataTextField("Name").ShowGridHeader(false).EnableRowLines(false).EnableAlternateRowColor(false)
+                        .Columns(
+                            F.RenderField().ColumnID("Name").DataField("Name").HeaderText("姓名").BoxFlex(1)
+                        )
+                )
+        )
+        .Toolbars(
+            F.Toolbar().ID("Toolbar1").ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("btnCheckSelected").Text("选择了那些用户（自定义回发）").Type(ButtonType.Submit).Listener("click", "onCheckSelectedClick")
+                )
+        )
+    )
+
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+        // 向右移动
+        function moveRight(rowIds) {
+            if (!rowIds.length) {
+                return;
+            }
+
+            var gridLeft = F.ui.Grid1;
+            var gridRight = F.ui.Grid2;
+
+            // 添加到右侧
+            var rowDatas = [];
+            $.each(rowIds, function (index, item) {
+                rowDatas.push(gridLeft.getRowData(item));
+            });
+            gridRight.addNewRecords(rowDatas, true);
+
+            // 从左侧删除
+            gridLeft.deleteRows(rowIds, true);
+        }
+
+        function onMoveRightAllClick(event) {
+            var gridLeft = F.ui.Grid1;
+
+            var rowIds = $.map(gridLeft.data, function (item, index) {
+                return item.id;
+            });
+
+            // 全部行
+            moveRight(rowIds);
+        }
+
+        function onMoveRightClick(event) {
+            var gridLeft = F.ui.Grid1;
+
+            // 选择的行
+            moveRight(gridLeft.getSelectedRows());
+        }
+
+        // 向左移动
+        function moveLeft(rowIds) {
+            if (!rowIds.length) {
+                return;
+            }
+
+            var gridLeft = F.ui.Grid1;
+            var gridRight = F.ui.Grid2;
+
+            // 添加到左侧
+            var rowDatas = [];
+            $.each(rowIds, function (index, item) {
+                rowDatas.push(gridRight.getRowData(item));
+            });
+            gridLeft.addNewRecords(rowDatas, true);
+
+            // 从右侧删除
+            gridRight.deleteRows(rowIds, true);
+        }
+
+        function onMoveLeftClick(event) {
+            var gridRight = F.ui.Grid2;
+
+            // 选择的行
+            moveLeft(gridRight.getSelectedRows());
+        }
+
+        function onMoveLeftAllClick(event) {
+            var gridRight = F.ui.Grid2;
+
+            var rowIds = $.map(gridRight.data, function (item, index) {
+                return item.id;
+            });
+
+            // 全部行
+            moveLeft(rowIds);
+        }
+
+        function onCheckSelectedClick(event) {
+            var gridRight = F.ui.Grid2;
+
+            // 姓名列表
+            var columnNames = $.map(gridRight.data, function (item, index) {
+                return {
+                    id: item.id,
+                    name: item.values['Name']
+                };
+            });
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("btnCheckSelected_Click")', {
+                columnNames: F.toJSON(columnNames)
+            });
+
+        }
+
+
+    </script>
+}

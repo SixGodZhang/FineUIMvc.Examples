@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.SourceFiles = "~/res/js/notify_group.js";
+    ViewBag.Title = "Message/NotifyGroupNewestTop";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().Text("弹出通知对话框（多次点击）").ID("btnOperation1").Listener("click", "onOperation1Click"))
+    <br>
+    <br>
+
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/notify_group.js"></script>
+    <script type="text/javascript">
+
+        var _orderNumber = 0;
+
+        function onOperation1Click(event) {
+            // 创建一个消息对话框实例
+            var displayTime = 2000 + Math.random() * 10000;
+
+            var allMessageIcons = ['information', 'warning', 'question', 'error', 'success'];
+            showNotifyGroup({
+                message: '这是第 <strong>' + _orderNumber + '</strong> 条提示信息，显示' + Math.floor(displayTime / 1000) + '秒',
+                messageIcon: allMessageIcons[_orderNumber % allMessageIcons.length],
+                header: false,
+                displayMilliseconds: displayTime
+            }, true);
+
+            _orderNumber++;
+        }
+
+    </script>
+}

@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "GridEditor/Dynamic";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格（单击编辑）").DataIDField("Id").DataTextField("Name").AllowCellEditing(true).ClicksToEdit(1).Columns(ViewBag.Grid1Columns).Listener("afteredit", "onGrid1AfterEdit").RowDataBoundFunction("onGrid1RowDataBound").DataSource(ViewBag.Grid1DataSource))
+    <br>
+
+    @(F.Button().ID("btnSubmit").Text("保存数据").OnClick(Url.Action("btnSubmit_Click"), "Grid1"))
+    <br>
+    <br>
+
+    @(F.Label().ID("labResult").EncodeText(false))
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>所有列都是在后台动态创建的。</li>
+        <li>修改第一列的值，会同时更新后面几列的值。</li>
+    </ul>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        @Html.Raw(ViewBag.StartupScript)
+
+        function updateTotalCell(grid, rowId) {
+            var me = grid, total = 0;
+            for (var i = _MINYEAR; i <= _MAXYEAR; i++) {
+                total += me.getCellValue(rowId, 'Year_' + i);
+            }
+
+            me.updateCellValue(rowId, 'TotalFee', total);
+        }
+
+        function onGrid1AfterEdit(event, value, params) {
+            var me = this, rowId = params.rowId;
+            if (params.columnId === 'Year_' + _MINYEAR) {
+                for (var i = _MINYEAR + 1; i <= _MAXYEAR; i++) {
+                    me.updateCellValue(rowId, 'Year_' + i, value);
+                }
+            }
+
+            updateTotalCell(me, rowId);
+        }
+
+
+        function onGrid1RowDataBound(rowData) {
+            var year2014 = 0, year2015 = 0, year2016 = 0, year2017 = 0;
+
+            var sourceYearData = rowData.values.YearData;
+            if (sourceYearData) {
+                var yearData = F.parseJSON(sourceYearData);
+                year2014 = yearData['2014'] || 0;
+                year2015 = yearData['2015'] || 0;
+                year2016 = yearData['2016'] || 0;
+                year2017 = yearData['2017'] || 0;
+            }
+            
+            rowData.values['Year_2014'] = year2014;
+            rowData.values['Year_2015'] = year2015;
+            rowData.values['Year_2016'] = year2016;
+            rowData.values['Year_2017'] = year2017;
+            rowData.values['TotalFee'] = year2014 + year2015 + year2016 + year2017;
+        }
+
+    </script>
+}

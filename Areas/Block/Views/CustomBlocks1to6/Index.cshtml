@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "Block/CustomBlocks1to6";
+    ViewBag.BodyBGColor = true;
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        body.f-body {
+            overflow-x: hidden;
+        }
+
+        .blockpanel {
+            min-height: 200px;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().IsFluid(true).Layout(LayoutType.Block).BlockConfigSpace(20).BlockConfigBlockCount(120).ShowBorder(false).ShowHeader(false)
+        .Items(
+            F.Panel().CssClass("blockpanel").BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20"),
+            F.Panel().CssClass("blockpanel").BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20"),
+            F.Panel().CssClass("blockpanel").BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20"),
+            F.Panel().CssClass("blockpanel").BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20"),
+            F.Panel().CssClass("blockpanel").BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20"),
+            F.Panel().CssClass("blockpanel").BlockMD(20).ShowBorder(true).ShowHeader(true).Title("20"),
+            F.Panel().CssClass("blockpanel").BlockMD(24).ShowBorder(true).ShowHeader(true).Title("24"),
+            F.Panel().CssClass("blockpanel").BlockMD(24).ShowBorder(true).ShowHeader(true).Title("24"),
+            F.Panel().CssClass("blockpanel").BlockMD(24).ShowBorder(true).ShowHeader(true).Title("24"),
+            F.Panel().CssClass("blockpanel").BlockMD(24).ShowBorder(true).ShowHeader(true).Title("24"),
+            F.Panel().CssClass("blockpanel").BlockMD(24).ShowBorder(true).ShowHeader(true).Title("24"),
+            F.Panel().CssClass("blockpanel").BlockMD(30).ShowBorder(true).ShowHeader(true).Title("30"),
+            F.Panel().CssClass("blockpanel").BlockMD(30).ShowBorder(true).ShowHeader(true).Title("30"),
+            F.Panel().CssClass("blockpanel").BlockMD(30).ShowBorder(true).ShowHeader(true).Title("30"),
+            F.Panel().CssClass("blockpanel").BlockMD(30).ShowBorder(true).ShowHeader(true).Title("30"),
+            F.Panel().CssClass("blockpanel").BlockMD(40).ShowBorder(true).ShowHeader(true).Title("40"),
+            F.Panel().CssClass("blockpanel").BlockMD(40).ShowBorder(true).ShowHeader(true).Title("40"),
+            F.Panel().CssClass("blockpanel").BlockMD(40).ShowBorder(true).ShowHeader(true).Title("40"),
+            F.Panel().CssClass("blockpanel").BlockMD(60).ShowBorder(true).ShowHeader(true).Title("60"),
+            F.Panel().CssClass("blockpanel").BlockMD(60).ShowBorder(true).ShowHeader(true).Title("60"),
+            F.Panel().CssClass("blockpanel").BlockMD(120).ShowBorder(true).ShowHeader(true).Title("120")
+        )
+    )
+
+
+
+}

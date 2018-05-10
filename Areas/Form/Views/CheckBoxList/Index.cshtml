@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Form/CheckBoxList";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelWidth(160).BodyPadding(10).ShowBorder(true).ShowHeader(true).Title("简单表单")
+        .Items(
+            F.CheckBoxList().ID("CheckBoxList1").Label("列表一")
+                .Items(
+                    F.CheckItem().Text("可选项 1").Value("value1"),
+                    F.CheckItem().Text("可选项 2").Value("value2").Selected(true),
+                    F.CheckItem().Text("可选项 3").Value("value3").Selected(true)
+                ),
+            F.Button().ID("btnServerSetSelectedValue").CssClass("marginr").Text("选中上面列表中的第一项和第三项").OnClick(Url.Action("btnServerSetSelectedValue_Click")),
+            F.Button().ID("btnServerGetSelectedValue").CssClass("marginr").Text("获取上面列表的选中项").OnClick(Url.Action("btnServerGetSelectedValue_Click"), new Parameter("selected", "getCheckBoxList1Selected()")),
+            F.Button().ID("btnClientGetSelectedValue").Text("获取上面列表的选中项（JavaScript 脚本）").OnClientClick("alertSelectedValue();"),
+            F.Label(),
+            F.CheckBoxList().ID("CheckBoxList2").Label("列表二（一列）").ColumnNumber(1).DataTextField("Name").DataValueField("Id").DataSource(ViewBag.CheckBoxList2DataSource).SelectedValueArray(ViewBag.CheckBoxList2SelectedValueArray),
+            F.Label(),
+            F.CheckBoxList().ID("CheckBoxList3").OnSelectedIndexChanged(Url.Action("CheckBoxList3_SelectedIndexChanged"), new Parameter("selected", "this.getValue()")).Label("列表三（选中项改变事件）").ColumnNumber(3).ShowRedStar(true).Required(true)
+                .Items(
+                    F.CheckItem().Text("可选项 1（很长很长很长很长很长很长的可选项）").Value("value1"),
+                    F.CheckItem().Text("可选项 2").Value("value2"),
+                    F.CheckItem().Text("可选项 3").Value("value3"),
+                    F.CheckItem().Text("可选项 4").Value("value4"),
+                    F.CheckItem().Text("可选项 5").Value("value5"),
+                    F.CheckItem().Text("可选项 6").Value("value6"),
+                    F.CheckItem().Text("可选项 7").Value("value7"),
+                    F.CheckItem().Text("可选项 8").Value("value8")
+                ),
+            F.Label(),
+            F.CheckBoxList().ID("rblVertical").Label("列表四（竖排）").ColumnNumber(3).ColumnVertical(true).ShowRedStar(true).Required(true)
+                .Items(
+                    F.CheckItem().Text("可选项 1").Value("value1"),
+                    F.CheckItem().Text("可选项 2").Value("value2"),
+                    F.CheckItem().Text("可选项 3").Value("value3"),
+                    F.CheckItem().Text("可选项 4").Value("value4"),
+                    F.CheckItem().Text("可选项 5").Value("value5"),
+                    F.CheckItem().Text("可选项 6").Value("value6"),
+                    F.CheckItem().Text("可选项 7").Value("value7"),
+                    F.CheckItem().Text("可选项 8").Value("value8")
+                )
+        )
+        .Toolbars(
+            F.Toolbar().Position(ToolbarPosition.Bottom).ToolbarAlign(ToolbarAlign.Right)
+                .Items(
+                    F.Button().ID("btnSubmit").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("btnSubmit_Click"), "SimpleForm1")
+                )
+        )
+    )
+
+
+}
+
+
+@section script {
+    <script type="text/javascript">
+
+        function alertSelectedValue() {
+            var list1 = F.ui.CheckBoxList1;
+
+            var selectedValues = list1.getValue();
+            if (selectedValues.length) {
+                top.F.alert("列表一选中项的值：" + selectedValues.join(','));
+            } else {
+                top.F.alert("列表一没有选中项！");
+            }
+        }
+
+
+        function getCheckBoxList1Selected() {
+            var list = F.ui.CheckBoxList1;
+
+            var result = [];
+            $.each(list.items, function (index, item) {
+                if (item.isChecked()) {
+                    result.push({
+                        'label': item.getInputLabel(),
+                        'value': item.getInputValue()
+                    });
+                }
+            });
+
+            return F.toJSON(result);
+        }
+
+    </script>
+}

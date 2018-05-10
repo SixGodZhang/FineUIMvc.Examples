@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Form/DatePickerDateSelect";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单（OnTextChanged）")
+        .Items(
+            F.DatePicker().Required(true).OnTextChanged(Url.Action("DatePicker1_TextChanged"), "DatePicker1").Label("开始日期").EmptyText("请选择开始日期").ID("DatePicker1").ShowRedStar(true),
+            F.DatePicker().ID("DatePicker2").Required(true).Readonly(false).CompareControl("DatePicker1").DateFormatString("yyyy-MM-dd").CompareOperator(Operator.GreaterThan).CompareMessage("结束日期应该大于开始日期").Label("结束日期").ShowRedStar(true),
+            F.Button().ID("Button1").ValidateForms("SimpleForm1").Text("提交表单").OnClick(Url.Action("Button1_Click"), "SimpleForm1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult1").ShowLabel(false))
+    <br>
+
+    @(F.SimpleForm().ID("SimpleForm2").BodyPadding(10).Width(550).Title("简单表单（OnDateSelect）")
+        .Items(
+            F.DatePicker().Required(true).OnDateSelect(Url.Action("DatePicker3_DateSelect"), "DatePicker3").Label("开始日期").EmptyText("请选择开始日期").ID("DatePicker3").ShowRedStar(true),
+            F.DatePicker().ID("DatePicker4").Required(true).Readonly(false).CompareControl("DatePicker3").DateFormatString("yyyy-MM-dd").CompareOperator(Operator.GreaterThan).CompareMessage("结束日期应该大于开始日期").Label("结束日期").ShowRedStar(true),
+            F.Button().ID("Button2").ValidateForms("SimpleForm2").Text("提交表单").OnClick(Url.Action("Button2_Click"), "SimpleForm2")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult2").ShowLabel(false))
+
+
+}
+

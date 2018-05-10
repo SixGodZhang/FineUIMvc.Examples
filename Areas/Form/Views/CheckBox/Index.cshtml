@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Form/CheckBox";
+    var F = Html.F();
+}
+
+
+@section body {
+    
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("简单表单")
+        .Items(
+            F.CheckBox().ID("CheckBox1").ShowLabel(false).Text("复选框").Checked(true),
+            F.Button().ID("btnSelectCheckBox").CssClass("marginr").Text("选择/反选复选框").OnClick(Url.Action("btnSelectCheckBox_Click"), new Parameter("isChecked", "F.ui.CheckBox1.isChecked()")),
+            F.Button().ID("btnChangeCheckStatus").CssClass("marginr").Text("选择/反选复选框（客户端脚本）").OnClientClick("onChangeCheckStatusClick();"),
+            F.Button().ID("btnChangeText").Text("改变复选框文本").CssClass("marginr").OnClick(Url.Action("btnChangeText_Click")),
+            F.Label().ID("Label1"),
+            F.CheckBox().ID("CheckBox2").ShowLabel(false).Text("复选框（OnCheckedChanged）").OnCheckedChanged(Url.Action("CheckBox2_CheckedChanged"), new Parameter("isChecked", "F.ui.CheckBox2.isChecked()")).Checked(true),
+            F.Label().ID("labResult").ShowLabel(false)
+        )
+    )
+
+
+}
+
+
+@section script {
+    <script>
+
+        function onChangeCheckStatusClick() {
+            var checkbox = F.ui.CheckBox1;
+            checkbox.setValue(!checkbox.getValue());
+        }
+
+    </script>
+}

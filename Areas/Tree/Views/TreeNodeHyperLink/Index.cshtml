@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeNodeHyperLink";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("RegionPanel1").Layout(LayoutType.Region).ShowHeader(true).Title("将树节点渲染为超链接（点击节点空白处也能打开链接）").ShowBorder(false).IsViewPort(true)
+        .Items(
+            F.Tree().ID("Tree1").RegionSplit(false).RegionPosition(Position.Left).Width(200).CssClass("lefttree").ShowHeader(false).ShowBorder(true).EnableNodeHyperLink(true)
+                .Nodes(
+                    F.TreeNode().Text("基本用法").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("你好 FineUI").Target("treemainframe").NavigateUrl("~/Basic/Hello"),
+                            F.TreeNode().Text("登陆页面").Target("treemainframe").NavigateUrl("~/Basic/Login")
+                        ),
+                    F.TreeNode().Text("表单控件").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("简单按钮").Target("treemainframe").NavigateUrl("~/Button/Button"),
+                            F.TreeNode().Text("文本输入框").Target("treemainframe").NavigateUrl("~/Form/TextBox")
+                        )
+                ),
+            F.Panel().ID("Region3").ShowHeader(false).EnableIFrame(true).ShowBorder(false).IFrameName("treemainframe").RegionPosition(Position.Center)
+        )
+    )
+
+
+}
+

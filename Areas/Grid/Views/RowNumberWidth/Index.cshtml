@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Grid/RowNumberWidth";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).ShowHeader(true).ShowBorder(true).Title("表格（数据库分页，切换分页时序号连续）").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(10).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_PageIndexChanged"), "Grid1")
+        .Columns(
+            F.RowNumberField().Width(60).EnablePagingNumber(true),
+            F.RenderField().HeaderText("ID").DataField("Id").Width(150),
+            F.RenderField().HeaderText("时间").DataField("EntranceTime").ExpandUnusedSpace(true).FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd HH:mm:ss")
+        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

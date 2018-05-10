@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Grid/HeaderHide";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(200).Title("表格").ShowHeader(false).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").ShowGridHeader(false).EnableRowLines(false).EnableAlternateRowColor(false)
+        .Columns(
+            F.RenderField().HeaderText("姓名").DataField("Name").ExpandUnusedSpace(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    注：本表格隐藏了表头、行分隔线、间隔行背景色。
+
+    <br>
+    <br>
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

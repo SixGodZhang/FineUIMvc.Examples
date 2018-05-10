@@ -1,0 +1,183 @@
+﻿@{
+    ViewBag.Title = "GridInput/Cart";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .totalpanel {
+            border-top-width: 0 !important;
+        }
+    </style>
+
+}
+
+@section body {
+
+    <div id="container1">
+        <div style="text-align: right; padding: 10px;">
+            <div style="margin-bottom: 10px;">
+                <input id="TOTAL_NUMBER" name="TOTAL_NUMBER" type="hidden">
+                <span id="totalNumber" style="color: red;"></span>
+                件商品
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input id="TOTAL_PRICE" name="TOTAL_PRICE" type="hidden">
+                总计：<span id="totalPrice" style="color: red; font-size: 1.5em; font-weight: bold;"></span>
+            </div>
+            <div>
+                @(F.Button().Text("去结算").Enabled(false).Size(ButtonSize.Large).ID("btnGotoPay").OnClick(Url.Action("btnGotoPay_Click"), new Parameter("inputs", "getUserInputs()")))
+            </div>
+        </div>
+    </div>
+
+    @(F.Panel().ID("Panel2").ShowBorder(false).Layout(LayoutType.VBox).BodyPadding(10).ShowHeader(false).IsViewPort(true)
+        .Items(
+            F.Grid().ID("Grid1").ShowBorder(true).BoxFlex(1).ShowHeader(true).Title("购物车").EnableCheckBoxSelect(true).DataIDField("Id").DataTextField("Name").EnableTextSelection(true).KeepCurrentSelection(true)
+                .Columns(
+                    F.RowNumberField(),
+                    F.RenderField().Width(120).DataField("Code").HeaderText("商品代码"),
+                    F.RenderField().DataField("Name").ExpandUnusedSpace(true).HeaderText("商品名称"),
+                    F.RenderField().Width(120).DataField("Price").HeaderText("商品单价").EnableColumnHide(false).FieldType(FieldType.Float).RendererFunction("renderPrice"),
+                    F.RenderField().Width(120).DataField("Number").HeaderText("数量").EnableColumnHide(false).FieldType(FieldType.Int).RendererFunction("renderNumber"),
+                    F.RenderField().Width(120).HeaderText("小计").EnableColumnHide(false).RendererFunction("renderXiaoji")
+                ).Listener("selectionchange", "onGridSelectionchange").DataSource(ViewBag.Grid1DataSource).SelectedRowIndexArray(ViewBag.Grid1SelectedRowIndexArray),
+            F.Panel().CssClass("totalpanel").ShowBorder(true).ShowHeader(false).ContentEl("#container1")
+        )
+    )
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderPrice(value, params) {
+            return '¥' + value.toFixed(2);
+        }
+
+        function renderNumber(value, params) {
+            return F.formatString('<input value="{0}" class="price" type="hidden">', params.rowData.values.Price) +
+                F.formatString('<input value="{0}" class="number" style="width:98%;" type="text">', value);
+        }
+
+        function renderXiaoji(value, params) {
+            var values = params.rowData.values;
+            var total = (values.Price * values.Number).toFixed(2);
+            return F.formatString('<span class="xiaoji">¥{0}</span>', total);
+        }
+
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getSelectedRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                result.push([rowData.id, rowData.text, rowData.values.Price, getRowNumber(rowEl)]);
+            });
+
+            return F.toJSON(result);
+        }
+
+        var numberSelector = 'input.number';
+        var priceSelector = 'input.price';
+        var xiaojiSelector = 'span.xiaoji';
+
+        function getRowNumber(row) {
+            var num = parseInt(row.find(numberSelector).val(), 10);
+            if (isNaN(num)) {
+                num = 0;
+            }
+            return num;
+        }
+        function getRowPrice(rowEl) {
+            return parseFloat(rowEl.find(priceSelector).val()) || 0;
+        }
+
+        function updateTotal() {
+            var grid = F.ui.Grid1;
+            var selectedRows = grid.getSelectedRows();
+
+            var total = 0;
+            $.each(selectedRows, function (index, rowId) {
+                //var row = grid.bodyEl.find('.f-grid-row').eq(rowIndex);
+                var rowEl = grid.getRowEl(rowId);
+                total += getRowNumber(rowEl) * getRowPrice(rowEl);
+            });
+
+            $('#totalNumber').text(selectedRows.length);
+            $('#totalPrice').text("¥" + total.toFixed(2));
+
+            $('#TOTAL_NUMBER').val(selectedRows.length);
+            $('#TOTAL_PRICE').val(total.toFixed(2));
+
+            var gotoPayBtn = F.ui.btnGotoPay;
+            if (total === 0) {
+                gotoPayBtn.disable();
+            } else {
+                gotoPayBtn.enable();
+            }
+        }
+
+        // 选中行改变时更新合计
+        function onGridSelectionchange(event) {
+            updateTotal();
+        }
+
+        // 过滤数字输入框中的无效字符
+        function filterNumberInput(inputNode) {
+            // 仅保留数字、点号和负号
+            //var filterRegex = /[^0-9\.\-]/g;
+            // 仅保留数字
+            var filterRegex = /[^0-9]/g;
+
+            var originalValue = inputNode.val();
+            var filteredValue = originalValue.replace(filterRegex, '');
+            if (originalValue !== filteredValue) {
+                inputNode.val(filteredValue);
+            }
+        }
+
+        function registerNumberChangeEvents() {
+            var grid = F.ui.Grid1;
+
+            // 数量改变事件
+            // http://stackoverflow.com/questions/17384218/jquery-input-event
+            grid.el.find(numberSelector).on('input propertychange', function (event) {
+                var cnode = $(this);
+
+                filterNumberInput(cnode);
+
+                var rowEl = cnode.closest('.f-grid-row');
+                var number = getRowNumber(rowEl);
+                var price = getRowPrice(rowEl);
+                var resultNode = rowEl.find(xiaojiSelector);
+
+                resultNode.text("¥" + (number * price).toFixed(2));
+
+                updateTotal();
+
+            }).on('click', function (event) {
+                $(this).select();
+                // 点击行内文本框时不会改变行的选中状态
+                event.stopPropagation();
+            });
+        }
+
+
+        // 页面第一次加载完成后调用的函数
+        F.ready(function () {
+            registerNumberChangeEvents();
+            updateTotal();
+        });
+
+    </script>
+}

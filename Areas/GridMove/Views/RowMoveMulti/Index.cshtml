@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "GridMove/RowMoveMulti";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").ID("Grid1").ShowBorder(true).ShowHeader(true).Title("表格").EnableMultiSelect(true).DataIDField("Id").DataTextField("Name")
+        .Columns(
+            F.RowNumberField().ColumnID("RowNumber"),
+            F.RenderField().HeaderText("姓名").ColumnID("Name").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").ColumnID("Gender").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").ColumnID("EntranceYear").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").ColumnID("AtSchool").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").ColumnID("Major").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").ColumnID("Group").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").ColumnID("LogTime").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        ).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnMoveUp").Text("选中行上移（可多选）").CssClass("marginr").Listener("click", "onMoveUpClick"))
+
+    @(F.Button().ID("btnMoveDown").Text("选中行下移（可多选）").CssClass("marginr").Listener("click", "onMoveDownClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnSaveToDB").Text("保存数据").Listener("click", "onSaveToDBClick"))
+
+    @(F.Button().ID("btnRefresh").Text("刷新本页面（请先点击保存按钮）").Listener("click", "onRefreshClick"))
+
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onRefreshClick(event) {
+            window.location.reload();
+        }
+
+
+        function onMoveUpClick(event) {
+            var grid = F.ui.Grid1;
+
+            // 向上移动
+            grid.moveRowsUp(grid.getSelectedRows());
+        }
+
+        function onMoveDownClick(event) {
+            var grid = F.ui.Grid1;
+
+            // 向下移动
+            grid.moveRowsDown(grid.getSelectedRows());
+        }
+
+        function onSaveToDBClick(event) {
+            var grid = F.ui.Grid1;
+
+            // 列顺序数组
+            var rowIds = $.map(grid.data, function (item, index) {
+                return item.id;
+            });
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_RowMove")', {
+                rowIds: F.toJSON(rowIds)
+            });
+        }
+
+    </script>
+}

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Button/ButtonCustom";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .bgbtn {
+            background-image: url(@Url.Content("~/res/images/login.png")) !important;
+            width: 320px;
+            height: 50px;
+            border-width: 0 !important;
+            background-color: transparent !important;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Button().ID("Button1").Text("普通按钮").Size(ButtonSize.Large).OnClick(Url.Action("Button1_Click")))
+    <br>
+    <br>
+
+
+    @(F.Button().ID("Button2").Text("").CssClass("bgbtn").OnClick(Url.Action("Button2_Click")))
+
+}

@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeIcon";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件")
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").Expanded(true).NodeID("Zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").Icon(Icon.TagBlue).NodeID("Suiping"),
+                                    F.TreeNode().Text("西平县").Icon(Icon.TagBlue).NodeID("Xiping")
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("Luohe").IconUrl(Url.Content("~/res/icon/tag_orange.png"))
+                        ),
+                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("Anhui")
+                        .Nodes(
+                            F.TreeNode().Expanded(true).Text("合肥市").NodeID("Hefei")
+                                .Nodes(
+                                    F.TreeNode().Text("中国科学技术大学（链接）").NavigateUrl("http://www.ustc.edu.cn/").Target("_blank").ToolTip("点击跳转到科大主页").NodeID("ustc")
+                                ),
+                            F.TreeNode().Text("黄山市").NodeID("Huangshan")
+                        )
+                )
+        )
+    )
+    <br>
+
+    @(F.Button().ID("btnGetSelectedNode").OnClick(Url.Action("btnGetSelectedNode_Click"), new Parameter("selectedNode", "getSelectedNode()")).CssClass("marginr").Text("获取选中的节点"))
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+
+
+@section script {
+
+    <script>
+        function getSelectedNode() {
+            var result;
+
+            var selectedNode = F.ui.Tree1.getSelectedNode(true);
+            if (selectedNode) {
+                result = {
+                    id: selectedNode.id,
+                    text: selectedNode.text
+                };
+            }
+
+            return F.toJSON(result);
+        }
+    </script>
+
+
+}

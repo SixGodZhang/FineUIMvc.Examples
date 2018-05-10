@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Panel/BgImage";
+    var F = Html.F();
+}
+
+
+@section head {
+    <style>
+        .mybgpanel > .f-panel-bodyct > .f-panel-body {
+            background-position: right bottom;
+            background-repeat: no-repeat;
+        }
+
+        .mybgpanel.bg1 > .f-panel-bodyct > .f-panel-body {
+            background-color: #B1EEEF;
+            background-image: url(@Url.Content("~/res/images/bg/1.jpg"));
+        }
+
+        .mybgpanel.bg2 > .f-panel-bodyct > .f-panel-body {
+            background-color: #D9CAB5;
+            background-image: url(@Url.Content("~/res/images/bg/2.jpg"));
+        }
+
+        .mybgpanel.bg3 > .f-panel-bodyct > .f-panel-body {
+            background-color: #FEF3D5;
+            background-image: url(@Url.Content("~/res/images/bg/3.jpg"));
+        }
+
+        .mybgpanel.bg4 > .f-panel-bodyct > .f-panel-body {
+            background-color: #E4ECA1;
+            background-image: url(@Url.Content("~/res/images/bg/4.jpg"));
+        }
+
+        .mybgpanel.bg5 > .f-panel-bodyct > .f-panel-body {
+            background-color: #7FC1C0;
+            background-image: url(@Url.Content("~/res/images/bg/5.jpg"));
+        }
+
+        .mybgpanel.bg6 > .f-panel-bodyct > .f-panel-body {
+            background-color: #9BD1DB;
+            background-image: url(@Url.Content("~/res/images/bg/6.jpg"));
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().ShowHeader(false).Layout(LayoutType.Column).BodyPadding(10).ShowBorder(false).AutoScroll(true).CssClass("mybgpanel bg1").ID("Panel1").IsViewPort(true)
+        .Items(
+            F.Panel().MarginRight(5).ShowHeader(false).ShowBorder(false).ColumnWidth("50%").ID("Panel24")
+                .Items(
+                    F.Panel().MarginBottom(5).ShowHeader(false).ShowBorder(true).BodyPadding(10).ID("Panel25").Content("本页面背景图片每 5 秒更换一次！<br><br><br><br><br><br>"),
+                    F.Panel().MarginBottom(5).ShowHeader(false).ShowBorder(true).BodyPadding(10).ID("Panel26").Content("我的面板<br><br><br><br><br><br>")
+                ),
+            F.Panel().ShowHeader(false).ShowBorder(false).ColumnWidth("50%").ID("Panel28")
+                .Items(
+                    F.Panel().MarginBottom(5).ShowHeader(false).ShowBorder(true).BodyPadding(10).ID("Panel29").Content("我的面板<br><br><br><br><br><br>"),
+                    F.Panel().MarginBottom(5).ShowHeader(false).ShowBorder(true).BodyPadding(10).ID("Panel30").Content("我的面板<br><br><br><br><br><br>")
+                )
+        )
+    )
+    <br>
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        F.ready(function () {
+
+            var panel1El = F.ui.Panel1.el;
+
+            window.setInterval(function () {
+                var bgClsExec = /\bbg(\d+)\b/ig.exec(panel1El.attr('class'));
+                if (bgClsExec && bgClsExec.length === 2) {
+                    var bgNumber = parseInt(bgClsExec[1], 10);
+
+                    panel1El.removeClass('bg' + bgNumber);
+
+                    bgNumber++;
+                    if (bgNumber > 6) {
+                        bgNumber = 1;
+                    }
+                    panel1El.addClass('bg' + bgNumber);
+                }
+            }, 5000);
+
+        });
+
+    </script>
+}

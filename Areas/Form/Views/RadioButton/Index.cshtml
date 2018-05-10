@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Form/RadioButton";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").LabelWidth(150).Title("简单表单").BodyPadding(10).ShowBorder(true).ShowHeader(true)
+        .Items(
+            F.RadioButton().ID("rbtnSingleRadio").Label("单选框").Text("可选项"),
+            F.Button().ID("btnSelectSingleRadio").CssClass("marginr").Text("选择/反选单选框").OnClick(Url.Action("btnSelectSingleRadio_Click"), new Parameter("isChecked", "F.ui.rbtnSingleRadio.getValue()")),
+            F.Button().ID("btnChangeCheckStatus").CssClass("marginr").Text("选择/反选单选框（客户端脚本）").Listener("click", "onChangeCheckStatusClick"),
+            F.Label(),
+            F.RadioButton().ID("rbtnFirst").Label("单选框（分组）").Checked(true).GroupName("MyRadioGroup1").Text("可选项 1"),
+            F.RadioButton().ID("rbtnSecond").GroupName("MyRadioGroup1").ShowEmptyLabel(true).Text("可选项 2"),
+            F.RadioButton().ID("rbtnThird").GroupName("MyRadioGroup1").ShowEmptyLabel(true).Text("可选项 3"),
+            F.Button().ID("btnSelectSecondRadio").Text("选中分组单选框中的下一个").OnClick(Url.Action("btnSelectSecondRadio_Click"), new Parameter("checkedRadio", "$('[name=MyRadioGroup1]:checked').val()")),
+            F.Label(),
+            F.RadioButton().ID("rbtnFirstAuto").Label("单选框（选中改变事件）").Checked(true).GroupName("MyRadioGroup2").Text("可选项 1").OnCheckedChanged(Url.Action("rbtnAuto_CheckedChanged"), new Parameter("checkedRadio", "this.getInputLabel()")),
+            F.RadioButton().ID("rbtnSecondAuto").GroupName("MyRadioGroup2").ShowEmptyLabel(true).Text("可选项 2").OnCheckedChanged(Url.Action("rbtnAuto_CheckedChanged"), new Parameter("checkedRadio", "this.getInputLabel()")),
+            F.RadioButton().ID("rbtnThirdAuto").GroupName("MyRadioGroup2").ShowEmptyLabel(true).Text("可选项 3").OnCheckedChanged(Url.Action("rbtnAuto_CheckedChanged"), new Parameter("checkedRadio", "this.getInputLabel()"))
+        )
+    )
+
+
+}
+
+@section script {
+
+    <script>
+
+        function onChangeCheckStatusClick() {
+            var radio = F.ui.rbtnSingleRadio;
+            radio.setValue(!radio.getValue());
+        }
+
+
+    </script>
+
+}

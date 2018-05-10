@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Other/ServerErrorSimple";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @{
+        F.PageManager.SimpleError(true);
+    }
+
+    @(F.Button().ID("Button5").OnClick(Url.Action("Button5_Click")).Text("服务器异常（500）"))
+    <br>
+    <br>
+    注：本示例仅作演示，实际应用中请在Web.config中增加SimpleError配置项，以便在整个项目中保持统一。
+
+
+
+}
+

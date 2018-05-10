@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/RadioButtonList";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉单选框列表").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").DataControlID("RadioButtonList1").Value("js").EnableMultiSelect(false)
+                .PopPanel(
+                    F.SimpleForm().ID("SimpleForm2").BodyPadding(10).AutoScroll(true).ShowBorder(true).ShowHeader(false).Hidden(true)
+                        .Items(
+                            F.Label().ID("Label1").Text("请选择一种编程语言："),
+                            F.RadioButtonList().ID("RadioButtonList1").ColumnNumber(1)
+                                .Items(
+                                    F.RadioItem().Text("C#").Value("csharp"),
+                                    F.RadioItem().Text("JavaScript").Value("js"),
+                                    F.RadioItem().Text("JAVA").Value("java"),
+                                    F.RadioItem().Text("Ruby").Value("ruby")
+                                )
+                        )
+                ),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+
+}
+

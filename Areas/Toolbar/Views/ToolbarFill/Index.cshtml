@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Toolbar/ToolbarFill";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    <div id="content1">
+        <p>
+            <a href="http://tech.163.com/special/jobsdead/" style="font-size: 18px" target="_blank"><b>乔布斯</b></a>
+        </p>
+        <p>
+            乔布斯于1955年2月24日出生，苹果创始人之一。今年8月苹果超越埃克森美孚成为全球最大市值企业，截止上季度持有现金达到762亿美金，甚至超过了美国政府国库存款。
+        </p>
+        <p>
+            遗憾的是，苹果的取得巨大成功还是无法给乔布斯一个健康的身体，乔布斯2003年被发现患有胰脏癌，随后又查出肝癌，危在旦夕的乔布斯在经历了8年的抗癌斗争、3次病休、若干次手术后，于2011年8月25日正式宣布从CEO位置辞职。2011年10月6日，乔布斯在苹果发布iPhone 4S后的第二天与世长辞。
+        </p>
+    </div>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").BodyPadding(10).ShowBorder(true).ID("Panel1")
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().Text("按钮一").ID("Button1"),
+                    F.ToolbarFill().ID("ToolbarFill1"),
+                    F.Button().Text("按钮二").ID("Button2")
+                ),
+            F.Toolbar()
+                .Items(
+                    F.Button().Text("按钮三").ID("Button3"),
+                    F.ToolbarFill().ID("ToolbarFill2"),
+                    F.Button().Text("按钮四").ID("Button4"),
+                    F.ToolbarFill().ID("ToolbarFill3"),
+                    F.Button().Text("按钮五").ID("Button5")
+                ),
+            F.Toolbar().ID("Toolbar1")
+                .Items(
+                    F.TextBox().Width(100).EmptyText("文本输入框").ID("TextBox2"),
+                    F.ToolbarFill().ID("ToolbarFill4"),
+                    F.Button().Text("按钮七").ID("Button13"),
+                    F.ToolbarFill().ID("ToolbarFill5"),
+                    F.TextBox().Width(200).EmptyText("文本输入框").ID("TextBox1")
+                )
+        ).ContentEl("#content1")
+    )
+    <br>
+
+    @(F.Button().ID("btnHideFill1").Text("显示隐藏[按钮一]和后面的ToolbarFill").OnClick(Url.Action("btnHideFill1_Click"), new Parameter("hidden", "F.ui.Button1.isHidden()")))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnHideFill2").Text("显示隐藏[按钮七]后面的ToolbarFill").OnClick(Url.Action("btnHideFill2_Click"), new Parameter("hidden", "F.ui.ToolbarFill5.isHidden()")))
+
+
+
+}
+

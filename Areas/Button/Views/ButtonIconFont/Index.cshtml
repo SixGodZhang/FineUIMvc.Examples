@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Button/ButtonIcon";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Button().ID("btnIcon1").Text("图标在左侧").IconFont(IconFont._Home).CssClass("marginr"))
+
+    @(F.Button().ID("btnIcon2").Text("图标在右侧").IconFont(IconFont._Car).IconAlign(IconAlign.Right).CssClass("marginr"))
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnIcon3").Text("图标在上面").IconFont(IconFont._Camera).IconAlign(IconAlign.Top).CssClass("marginr"))
+
+    @(F.Button().ID("btnIcon4").Text("图标在下面").IconFont(IconFont._Phone).IconAlign(IconAlign.Bottom).CssClass("marginr"))
+
+
+    <br />
+    <br />
+
+    @(F.Button().ID("btnCustomIconFont").Text("点击修改图标（在三个图标之前切换）").IconFont(IconFont._VolumeUp).OnClick(Url.Action("btnCustomIconFont_Click"), new Parameter("iconFont", "this.iconFont")))
+
+    <br />
+    <br />
+    只有图片的按钮：
+    <br />
+    <br />
+    @(F.Button().IconFont(IconFont._Android).CssClass("marginr"))
+    @(F.Button().IconFont(IconFont._Apple).CssClass("marginr"))
+    @(F.Button().IconFont(IconFont._Car).CssClass("marginr"))
+    @(F.Button().IconFont(IconFont._Card).CssClass("marginr"))
+
+    <br />
+    <br />
+    大按钮：
+    <br />
+    <br />
+
+    @(F.Button().IconFont(IconFont._Home).Size(ButtonSize.Large).Text("图标在左侧").CssClass("marginr"))
+    @(F.Button().IconFont(IconFont._Car).Size(ButtonSize.Large).Text("图标在右侧").IconAlign(IconAlign.Right).CssClass("marginr"))
+
+    <br />
+    <br />
+
+    @(F.Button().IconFont(IconFont._Camera).Size(ButtonSize.Large).Text("图标在上面").IconAlign(IconAlign.Top).CssClass("marginr"))
+    @(F.Button().IconFont(IconFont._Phone).Size(ButtonSize.Large).Text("图标在下面").IconAlign(IconAlign.Bottom).CssClass("marginr"))
+
+
+
+}
+
+
+
+
+

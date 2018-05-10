@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Grid/RowSelectClient";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableCheckBoxSelect(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        ).Listener("rowselect", "onGrid1RowSelect").Listener("rowdeselect", "onGrid1RowDeselect").Listener("selectionchange", "onGrid1SelectionChange")
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br />
+    事件列表（<a onclick="javascript:$('#result').html('');" href="javascript:;">clear</a>）：
+    <ul id="result"></ul>
+    <br />
+    注：
+    <ul>
+        <li>通过键盘SHIFT，表头复选框多选时，会触发多次 rowselect 事件。</li>
+    </ul>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function onGrid1RowSelect(event, rowId) {
+            var date = new Date();
+            $('#result').append(F.formatString('<li>[{0}:{1}] rowselect：{2}</li>',
+                date.getMinutes(),
+                date.getSeconds(),
+                rowId));
+        }
+
+        function onGrid1RowDeselect(event, rowId) {
+            var date = new Date();
+            $('#result').append(F.formatString('<li>[{0}:{1}] rowdeselect：{2}</li>',
+                date.getMinutes(),
+                date.getSeconds(),
+                rowId));
+        }
+
+        function onGrid1SelectionChange(event) {
+            var date = new Date();
+            $('#result').append(F.formatString('<li>[{0}:{1}] selectionchange</li>',
+                date.getMinutes(),
+                date.getSeconds()));
+        }
+
+    </script>
+}

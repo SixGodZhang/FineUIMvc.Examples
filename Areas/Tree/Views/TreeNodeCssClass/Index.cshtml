@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Tree/TreeNodeCssClass";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .important .f-tree-cell-text {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+
+
+}
+
+@section body {
+
+    @(F.Tree().IsFluid(true).CssClass("blockpanel").ID("Tree1").ShowHeader(true).Title("树控件").SelectedNodeID("zhumadian")
+        .Nodes(
+            F.TreeNode().Text("中国").Expanded(true)
+                .Nodes(
+                    F.TreeNode().Text("河南省").CssClass("important").Expanded(true)
+                        .Nodes(
+                            F.TreeNode().Text("驻马店市").NodeID("zhumadian")
+                                .Nodes(
+                                    F.TreeNode().Text("遂平县").Leaf(false).NodeID("suiping")
+                                        .Nodes(
+                                            F.TreeNode().Text("槐树乡").Leaf(false).NodeID("huaishu")
+                                                .Nodes(
+                                                    F.TreeNode().Text("陈庄村").NodeID("chenzhuang")
+                                                )
+                                        )
+                                ),
+                            F.TreeNode().Text("漯河市").NodeID("luohe")
+                        ),
+                    F.TreeNode().Text("安徽省").CssClass("important").Expanded(true).NodeID("anhui")
+                        .Nodes(
+                            F.TreeNode().Text("合肥市").Expanded(true).NodeID("hefei")
+                                .Nodes(
+                                    F.TreeNode().Text("金色池塘小区").NodeID("golden"),
+                                    F.TreeNode().Text("中国科学技术大学").NodeID("ustc")
+                                )
+                        )
+                )
+        )
+    )
+    <br />
+    <br />
+    注：本示例高亮显示[河南省]和[安徽省]两个节点。
+
+
+}
+

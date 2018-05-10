@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Window/Window";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    <div id="content1">
+        <p>
+            <a href="http://tech.163.com/special/jobsdead/" style="font-size: 18px" target="_blank"><b>乔布斯</b></a>
+        </p>
+        <p>
+            乔布斯于1955年2月24日出生，苹果创始人之一。今年8月苹果超越埃克森美孚成为全球最大市值企业，截止上季度持有现金达到762亿美金，甚至超过了美国政府国库存款。
+        </p>
+        <p>
+            遗憾的是，苹果的取得巨大成功还是无法给乔布斯一个健康的身体，乔布斯2003年被发现患有胰脏癌，随后又查出肝癌，危在旦夕的乔布斯在经历了8年的抗癌斗争、3次病休、若干次手术后，于2011年8月25日正式宣布从CEO位置辞职。2011年10月6日，乔布斯在苹果发布iPhone 4S后的第二天与世长辞。
+        </p>
+    </div>
+
+
+    @(F.Button().OnClick(Url.Action("btnShowInServer_Click")).Text("显示窗体（服务端代码）").CssClass("marginr").ID("btnShowInServer"))
+
+    @(F.Button().OnClick(Url.Action("btnHideInServer_Click")).Text("隐藏窗体（服务端代码）").ID("btnHideInServer"))
+    <br>
+    <br>
+
+    @(F.Button().Text("显示窗体（客户端代码）").CssClass("marginr").ID("btnShowInClient").Listener("click", "F.ui.Window1.show();"))
+
+    @(F.Button().Text("隐藏窗体（客户端代码）").CssClass("marginr").ID("btnHideInClient").Listener("click", "F.ui.Window1.hide();"))
+
+    @(F.Button().Text("隐藏窗体，回发弹出窗体").ID("btnHideInClient2").Listener("click", "F.ui.Window1.hidePostBack();"))
+    <br>
+    <br>
+
+    @(F.Window().BodyPadding(10).AutoScroll(true).OnClose(Url.Action("Window1_Close")).CloseAction(CloseAction.HidePostBack).IsModal(false).EnableResize(true).EnableMaximize(true).Title("窗体").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window1").ContentEl("#content1").Listener("resize", "onWindowResize"))
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>
+            CloseAction 的默认值为 Hide，关闭窗体时不会触发 OnClose 事件；
+        </li>
+        <li>
+            本示例设置了 CloseAction=HidePostBack，点击窗体关闭按钮或者按下ESC键时，会触发 OnClose 事件。
+        </li>
+    </ul>
+    
+
+}
+
+
+@section script {
+
+    <script>
+
+        // Window窗体大小改变的客户端事件
+        function onWindowResize(event) {
+            var el = this.el;
+            F.notify("窗体大小改变，宽度：" + el.width() + " 高度：" + el.height());
+        }
+
+
+    </script>
+
+}

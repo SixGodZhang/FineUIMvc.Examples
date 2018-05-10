@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.SourceFiles = "/Grid/IFrameWindow";
+    ViewBag.Title = "IFrame/GridIFrame";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("Panel7").BodyPadding("10").Title("表格").ShowBorder(false).ShowHeader(false).Layout(LayoutType.VBox).BoxConfigAlign(BoxLayoutAlign.Stretch).IsViewPort(true)
+        .Items(
+            F.Form().ID("Form5").ShowBorder(false).ShowHeader(false)
+                .Rows(
+                    F.FormRow()
+                        .Items(
+                            F.TwinTriggerBox().EmptyText("输入要搜索的关键词").ShowLabel(false).ID("ttbSearch").ShowTrigger1(false).Listener("trigger1click", "onTrigger1Click").Listener("trigger2click", "onTrigger2Click").Trigger1Icon(TriggerIcon.Clear).Trigger2Icon(TriggerIcon.Search),
+                            F.DropDownList().ID("DropDownList1").ShowLabel(false).Listener("change", "onDropDownList1Change")
+                                .Items(
+                                    F.ListItem().Text("过滤条件一").Value("filter1"),
+                                    F.ListItem().Text("过滤条件二").Value("filter2"),
+                                    F.ListItem().Text("过滤条件三").Value("filter3")
+                                )
+                        )
+                ),
+            F.Grid().Width(850).Title("表格").ShowHeader(false).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").BoxFlex(1).EnableCheckBoxSelect(true).AllowPaging(true).PageSize(5)
+                .Toolbars(
+                    F.Toolbar().ID("Toolbar2")
+                        .Items(
+                            F.Button().ID("btnPopupWindow").Icon(Icon.Delete).Text("删除选中项"),
+                            F.ToolbarFill(),
+                            F.Button().ID("btnConfirmButton").Icon(Icon.Add).Text("新增用户")
+                        )
+                )
+                .Columns(
+                    F.RowNumberField(),
+                    F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+                    F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+                    F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+                    F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+                    F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+                    F.RenderField().HeaderText("").Width(80).EnableHeaderMenu(false).RendererFunction("renderActionField")
+                )
+                .DataSource(DataSourceUtil.GetDataTable()).Attribute("data-source-key", "table1")
+
+        )
+    )
+
+    @(F.Window().ID("Window1").Title("弹出窗体").EnableIFrame(true).EnableMaximize(true).Target(Target.Top).EnableResize(true).Listener("close", "onWindow1Close").IsModal(true).Width(850).Height(550).Hidden(true))
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function doCustomPostBack(type, params) {
+            var grid1 = F.ui.Grid1;
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("MyCustomPostBack")', {
+                type: type,
+                gridSourceKey: grid1.getAttr('data-source-key'),
+                gridFields: grid1.fields,
+                typeParams: params
+            });
+        }
+
+
+        function onTrigger1Click(event) {
+            doCustomPostBack('trigger1');
+        }
+
+        function onTrigger2Click(event) {
+            var triggerValue = this.getValue();
+            if (!triggerValue) {
+                F.alert('请输入搜索关键词！');
+                return;
+            }
+
+            doCustomPostBack('trigger2', {
+                triggerValue: triggerValue
+            });
+        }
+
+        function onDropDownList1Change(event) {
+            doCustomPostBack('dropdownlist', {
+                ddlValue: this.getValue()
+            });
+        }
+
+        function onWindow1Close(event) {
+            doCustomPostBack('windowclose');
+        }
+
+
+
+
+        function renderActionField(value, params) {
+            return '<a href="javascript:;" class="editfield"><img class="f-grid-cell-icon" src="@Url.Content("~/res/icon/pencil.png")"></a>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" class="deletefield"><img class="f-grid-cell-icon" src="@Url.Content("~/res/icon/delete.png")"></a>';
+        }
+
+        // 打开窗体
+        function openWindow(rowData) {
+
+            // Grid/IFrameWindow?id=104&name=刘国
+            var iframeWindowUrl = '@Url.Content("~/Grid/IFrameWindow")';
+            var iframeUrl = iframeWindowUrl + '?id=' + rowData.id + '&name=' + encodeURIComponent(rowData.text);
+
+            // 显示窗体
+            F.ui.Window1.show(iframeUrl, '详细信息 - ' + rowData.text);
+        }
+
+        F.ready(function () {
+
+            var grid = F.ui.Grid1;
+
+            // 点击表格行中的编辑按钮
+            grid.el.on('click', 'a.editfield', function (event) {
+                var rowEl = $(this).closest('.f-grid-row');
+                var rowData = grid.getRowData(rowEl);
+
+                openWindow(rowData);
+            });
+
+            // 点击表格行中的删除按钮
+            grid.el.on('click', 'a.deletefield', function (event) {
+                F.alert('尚未实现！');
+            });
+
+        });
+
+
+    </script>
+}

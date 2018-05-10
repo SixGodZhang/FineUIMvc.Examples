@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "GridMerge/ColumnsCheckBoxField";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableColumnLines(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("ID").DataField("ID").Width(80),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组B").DataField("GroupB").RendererFunction("renderGroup").Width(80),
+            F.RenderCheckField().ColumnID("CheckBoxField1").Width(80).RenderAsStaticField(false).HeaderText("是否激活")
+        ).Listener("dataload", "onGridDataLoad")
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    注：同一分组的复选框只能选中一个。
+    <br>
+    <br>
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+        function onGridDataLoad(event) {
+            this.mergeColumns(['GroupB']);
+        }
+
+        F.ready(function () {
+
+            var grid = F.ui.Grid1;
+            var checkboxSelector = '.f-grid-cell-CheckBoxField1 .f-grid-checkbox';
+
+            // 注册复选框的点击事件
+            grid.el.on('click', checkboxSelector, function (event) {
+                var targetEl = $(this), checked = targetEl.hasClass('f-checked');
+
+                // 如果取消复选框选中，则不做处理
+                if (checked) {
+                    var rowEl = targetEl.closest('.f-grid-row');
+                    var rowData = grid.getRowData(rowEl);
+
+                    // 参考行的 GroupB 的值
+                    var rowGroupB = rowData.values['GroupB'];
+
+                    // 下一个要检查的行元素
+                    var nextRowEl;
+
+                    // 取消选中行中的复选框，返回 false 表明本行和参考行不属于同一个分组
+                    function uncheckRow() {
+                        var nextRowData = grid.getRowData(nextRowEl);
+                        var nextRowGroupB = nextRowData.values['GroupB'];
+
+                        if (nextRowGroupB == rowGroupB) {
+                            nextRowEl.find(checkboxSelector).removeClass('f-checked');
+                            return true;
+                        } else {
+                            // 不属于同一个分组
+                            return false;
+                        }
+                    }
+
+
+                    // 向上查找相同 GroupB 的行，并取消选中复选框
+                    nextRowEl = rowEl;
+                    while ((nextRowEl = nextRowEl.prev()).length) {
+                        if (!uncheckRow()) {
+                            break;
+                        }
+                    }
+
+                    // 向下查找相同 GroupB 的行，并取消选中复选框
+                    nextRowEl = rowEl;
+                    while ((nextRowEl = nextRowEl.next()).length) {
+                        if (!uncheckRow()) {
+                            break;
+                        }
+                    }
+
+                }
+
+            });
+        });
+
+    </script>
+
+
+}

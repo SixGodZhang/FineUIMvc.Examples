@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "TabStrip/CloseMenu";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.TabStrip().IsFluid(true).CssClass("blockpanel").ID("TabStrip1").Height(450).EnableTabCloseMenu(true).ShowBorder(true).ActiveTabIndex(1)
+        .Tabs(
+            F.Tab().ID("Tab1").Title("标签一").EnableClose(false).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label5").Text("标签一中的文本")
+                ),
+            F.Tab().ID("Tab2").Title("标签二").BodyPadding(10).EnableClose(true)
+                .Items(
+                    F.Label().ID("Label4").Text("标签二中的文本")
+                ),
+            F.Tab().ID("Tab3").Title("标签三").Hidden(true).BodyPadding(10).EnableClose(true)
+                .Items(
+                    F.Label().ID("Label3").Text("标签三中的文本")
+                ),
+            F.Tab().ID("Tab4").Title("标签四").BodyPadding(10).EnableClose(true)
+                .Items(
+                    F.Label().ID("Label2").Text("标签四中的文本")
+                ),
+            F.Tab().ID("Tab5").EnableClose(true).Title("标签五").BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label1").Text("标签五中的文本")
+                )
+        )
+    )
+    <br>
+    <br>
+
+    @(F.Button().ID("btnShowInClient").Text("显示标签三（客户端代码）").CssClass("marginr").Listener("click", "onShowInClientClick"))
+
+    @(F.Button().ID("btnHideInClient").Text("隐藏标签三（客户端代码）").Listener("click", "onHideInClientClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnShowInServer").Text("显示标签三（服务端代码）").CssClass("marginr").OnClick(Url.Action("btnShowInServer_Click")))
+
+    @(F.Button().ID("btnHideInServer").Text("隐藏标签三（服务端代码）").OnClick(Url.Action("btnHideInServer_Click")))
+    <br>
+    <br>
+    <br>
+    注：在选项卡上点击鼠标右键，会看到自定义菜单项。
+    <br>
+
+
+}
+
+
+
+@section script {
+
+    <script>
+
+        function onShowInClientClick(event) {
+            F.ui.Tab3.show();
+        }
+
+        function onHideInClientClick(event) {
+            F.ui.Tab3.hide();
+        }
+
+
+        F.ready(function () {
+
+            var newItem = new F.MenuItem({
+                text: '用户自定义菜单项',
+                handler: function () {
+                    // menu: this.parent
+                    // tab: this.parent.target
+                    var tab = this.parent.target;
+                    if (tab.isType('tab')) {
+                        F.notify({
+                            message: '点击了选项卡 [' + tab.getTitle() + '] 的自定义菜单项',
+                            header: false,
+                            displayMilliseconds: 3000,
+                            positionX: 'center',
+                            positionY: 'top'
+                        });
+                    }
+                }
+            })
+
+            var closeMenu = F.ui.TabStrip1.getCloseMenu();
+
+            // 将自定义菜单项插入开始位置
+            //closeMenu.insert(0, [newItem, new F.MenuSeparator()]);
+
+            // 将自定义菜单项插入结束位置
+            closeMenu.add([new F.MenuSeparator(), newItem]);
+
+        });
+    </script>
+
+}

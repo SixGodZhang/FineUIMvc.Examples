@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Toolbar/MenuHideOnClick";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .my-menutext,
+        .my-menutext .f-menu-item-text {
+            cursor: default;
+        }
+    </style>
+
+}
+
+
+@section body {
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").Title("面板").Height(300).BodyPadding(10).ShowBorder(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.ToolbarText().Text("内联菜单"),
+                    F.ToolbarSeparator(),
+                    F.Button().Text("中国科学技术大学")
+                        .Menu(F.Menu()
+                            .Items(
+                                F.MenuHyperLink().Text("化学与材料科学学院").NavigateUrl("http://scms.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink1"),
+                                F.MenuText().Text("管理学院").CssClass("my-menutext").HideOnClick(false).ID("MenuText1")
+                                    .Menu(F.Menu()
+                                        .Items(
+                                            F.MenuHyperLink().Text("工商管理系").NavigateUrl("http://is.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink3"),
+                                            F.MenuHyperLink().Text("统计与金融系").NavigateUrl("http://stat.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink4")
+                                        )
+                                    ),
+                                F.MenuText().Text("物理学院").CssClass("my-menutext").HideOnClick(true).ID("MenuText2")
+                                    .Menu(F.Menu()
+                                        .Items(
+                                            F.MenuHyperLink().Text("物理系").NavigateUrl("http://phys.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink2"),
+                                            F.MenuHyperLink().Text("天文学系").NavigateUrl("http://astro.ustc.edu.cn/").Target("_blank").ID("MenuHyperLink5")
+                                        )
+                                    )
+                            )
+                        )
+                )
+        )
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>菜单项[管理学院]设置了HideOnClick=false，所以点击不会隐藏整个菜单；</li>
+        <li>菜单项[物理学院]设置了HideOnClick=true，所以点击会隐藏整个菜单；</li>
+    </ul>
+
+
+
+}
+

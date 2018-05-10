@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Other/FieldLabelStyle";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .red .f-field-fieldlabel {
+            color: Red;
+            font-weight: bold;
+        }
+
+        .blue .f-field-fieldlabel {
+            color: Blue;
+            font-weight: normal;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).LabelAlign(LabelAlign.Right).Title("简单表单")
+        .Items(
+            F.TextBox().Label("用户名").EmptyText("输入用户名").Text("张三").ID("tbxUserName").CssClass("red"),
+            F.TextBox().Label("密码").TextMode(TextMode.Password).ID("tbxPassword").CssClass("red")
+        )
+        .Toolbars(
+            F.Toolbar().ToolbarAlign(ToolbarAlign.Right).Position(ToolbarPosition.Bottom)
+                .Items(
+                    F.Button().ID("btnSwitchClass").Text("改变 Label 的样式").OnClick(Url.Action("btnSwitchClass_Click"),
+                            new Parameter("hasClassRed", "F.ui.tbxUserName.el.hasClass('red')"))
+                )
+        )
+    )
+    <br>
+
+
+
+}
+

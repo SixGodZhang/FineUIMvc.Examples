@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "IFrame/IFrameIFrame/IFrameWindow2";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Panel().ID("formPanel").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Fit).IsViewPort(true)
+        .Toolbars(
+            F.Toolbar()
+                .Items(
+                    F.Button().ID("btnClose").Text("回发弹出窗体").Listener("click", "F.activeWindow.hidePostBack();"),
+                    F.Button().ID("btnCloseServer").Text("回发弹出窗体（后台注册脚本）").OnClick(Url.Action("btnCloseServer_Click"))
+                )
+        )
+        .Items(
+            F.SimpleForm().ID("SimpleForm1").ShowBorder(false).ShowHeader(false).AutoScroll(true).BodyPadding(10)
+                .Items(
+                    F.Label().ID("Label2").Label("文本").Text("三生石上").CssClass("highlight"),
+                    F.NumberBox().ID("NumberBox1").Label("数字输入框").Required(true).ShowRedStar(true),
+                    F.CheckBox().ID("CheckBox1").Label("复选框"),
+                    F.TextBox().ID("TextBox1").Label("文本输入框").ShowRedStar(true).Required(true),
+                    F.DatePicker().ID("DatePicker1").Text("2008-05-09").Label("日期选择器").Text("2008-05-09")
+                )
+        )
+    )
+
+
+}
+

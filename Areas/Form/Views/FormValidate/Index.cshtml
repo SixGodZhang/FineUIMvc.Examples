@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Form/FormValidate";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).Title("用户注册表单")
+        .Items(
+            F.TextBox().ID("tbxUserName").Label("用户名").Required(true).NextFocusControl("tbxPassword").ShowRedStar(true).Text("admin"),
+            F.TextBox().ID("tbxPassword").Label("密码").Required(true).ShowRedStar(true).NextFocusControl("btnRegister").TextMode(TextMode.Password),
+            F.Button().ID("btnRegister").Text("注册").OnClick(Url.Action("btnRegister_Click"),
+                    new Parameter("userName", "F.ui.tbxUserName.getValue()"),
+                    new Parameter("password", "F.ui.tbxPassword.getValue()")).ValidateForms("SimpleForm1").ValidateTarget(Target.Top)
+        )
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li>
+            提交表单时验证[用户名]不能为 admin，否则标记为无效
+        </li>
+    </ul>
+
+
+}
+

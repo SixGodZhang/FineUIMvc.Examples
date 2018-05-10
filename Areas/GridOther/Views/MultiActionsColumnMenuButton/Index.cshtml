@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "GridOther/MultiActionsColumnMenuButton";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .f-grid-cell-Actions .action {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").EnableTextSelection(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().ColumnID("Actions").Width(150).RendererFunction("renderActions")
+        )
+        .DataSource(DataSourceUtil.GetDataTable()).Listener("dataload", "onGridDataLoad")
+    )
+    <br>
+    <br>
+
+    @(F.Window().ID("Window1").Title("审批").EnableIFrame(true).EnableMaximize(true).EnableResize(true).Target(Target.Top).OnClose(Url.Action("Window1_Close")).IsModal(true).Width(850).Height(450).Hidden(true))
+
+    @(F.Button().Text("选中了哪些行").ID("Button1").Listener("click", "notifySelectedRows('Grid1');"))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderActions(value, params) {
+            return '<a class="action editit" href="javascript:;">' +
+                        '<img class="f-grid-imagefield" src="' + F.baseUrl + 'res/icon/pencil.png">' +
+                    '</a>' +
+                    '&nbsp;&nbsp;' +
+                    '<a class="action deleteit" href="javascript:;">' +
+                        '<img class="f-grid-imagefield" src="' + F.baseUrl + 'res/icon/delete.png">' +
+                    '</a>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;' +
+                    '<div class="action btncontainer"></div>';
+        }
+
+
+        function getRowDataViaMenuItem(menuItem) {
+            // menu: menuItem.parent
+            // button: menuItem.parent.target
+            var button = menuItem.parent.target;
+            var rowEl = button.el.parents('.f-grid-row');
+            return F.ui.Grid1.getRowData(rowEl);
+        }
+
+        function doCustomEditPostBack(menuItem, actionName) {
+            var rowData = getRowDataViaMenuItem(menuItem);
+            // 触发后台事件
+            F.doPostBack('@Url.Action("Grid1_CustomEdit")', {
+                actionName: actionName,
+                rowIndex: rowData.index,
+                rowId: rowData.id,
+                rowText: rowData.text
+            });
+        }
+
+        // 公共菜单
+        var menu1;
+        function getMenu1() {
+            if (!menu1) {
+                menu1 = F.ui({
+                    type: 'menu', id: 'menu1',
+                    items: [{
+                        type: 'menuitem', text: '操作一', icon: F.baseUrl + 'res/icon/tag_green.png',
+                        handler: function () {
+                            doCustomEditPostBack(this, 'Action1');
+                        }
+                    }, {
+                        type: 'menuitem', text: '操作二', icon: F.baseUrl + 'res/icon/tag_blue.png',
+                        handler: function () {
+                            doCustomEditPostBack(this, 'Action2');
+                        }
+                    }, {
+                        type: 'menuitem', text: '操作三', icon: F.baseUrl + 'res/icon/tag_red.png',
+                        handler: function () {
+                            doCustomEditPostBack(this, 'Action3');
+                        }
+                    }]
+                });
+            }
+            return menu1;
+        }
+
+        // 表格数据加载完毕
+        function onGridDataLoad() {
+            var grid = this;
+
+            grid.bodyEl.find('.f-grid-cell-Actions .btncontainer').each(function () {
+                var btncontainer = $(this);
+                F.ui({
+                    type: 'button',
+                    renderTo: btncontainer,
+                    text: 'More',
+                    menu: getMenu1()
+                });
+            });
+
+            // 动态创建的按钮会导致表格内内容错位，需要重新布局
+            grid.doLayout();
+        }
+
+        F.ready(function () {
+
+            var grid = F.ui.Grid1;
+            var wnd = F.ui.Window1;
+
+            grid.el.on('click', '.f-grid-cell-Actions .action.editit', function (event) {
+                var targetEl = $(this);
+                var rowEl = targetEl.closest('.f-grid-row');
+                var rowData = grid.getRowData(rowEl);
+                var rowId = rowData.id;
+                var rowText = rowData.text;
+
+                // grid_iframe_window.aspx?id=104&name=刘国
+                var iframeUrl = F.baseUrl + 'Grid/IFrameWindow?id=' + rowId + '&name=' + encodeURIComponent(rowText);
+                // 显示窗体
+                wnd.show(iframeUrl, '审批 - ' + rowText);
+            });
+
+
+            grid.el.on('click', '.f-grid-cell-Actions .action.deleteit', function (event) {
+                var targetEl = $(this);
+                var rowEl = targetEl.closest('.f-grid-row');
+                var rowData = grid.getRowData(rowEl);
+
+                F.confirm({
+                    message: '删除选中行？',
+                    messageIcon: 'warning',
+                    target: '_top',
+                    ok: function () {
+                        // 触发后台事件
+                        F.doPostBack('@Url.Action("Grid1_CustomDelete")', {
+                            rowIndex: rowData.index,
+                            rowId: rowData.id,
+                            rowText: rowData.text
+                        });
+                    }
+                });
+
+            });
+
+
+        });
+
+    </script>
+}

@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "GridInput/SelectRowUpDown";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").ArrowKeySelection(false)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(100)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    注：
+    <ul>
+        <li><strong>本示例自定义UP/DOWN按键事件，所以禁用表格的ArrowKeySelection属性</strong></li>
+        <li>使用 Enter、Tab 或者 Down 键选中下一行</li>
+        <li>使用 Up 键选中上一行</li>
+        <li>遍历文本框时同时选中所在的行</li>
+        <li>点击输入框会选中文本</li>
+    </ul>
+
+    @(F.Button().Text("获取用户输入的分组值").ID("Button1").OnClick(Url.Action("Button1_Click"), new Parameter("inputs", "getUserInputs()")))
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        function renderGroup(value, params) {
+            return F.formatString('<input class="myinput" value="{0}" style="width:80px;" type="text">', value);
+        }
+
+        var inputselector = 'input.myinput';
+
+        function getUserInputs() {
+            var result = [];
+
+            var grid1 = F.ui.Grid1;
+            grid1.getRowEls().each(function () {
+                var rowEl = $(this);
+                var rowData = grid1.getRowData(rowEl);
+
+                result.push([rowData.id, rowData.text, rowEl.find(inputselector).val()]);
+            });
+
+            return F.toJSON(result);
+        }
+
+        function registerEnterEvent() {
+            var grid = F.ui.Grid1;
+
+            grid.el.on('keydown', inputselector, function (event) {
+                var cnode = $(this), rowEl = cnode.closest('.f-grid-row');
+
+                // 如果是 ENTER键 或者 TAB键 或者 向下箭头
+                if (event.keyCode === F.KEY.ENTER || event.keyCode === F.KEY.TAB || event.keyCode === F.KEY.DOWN) {
+                    var nextRow = rowEl.next();
+                    if (nextRow.length) {
+                        // 选中文本框中的文本
+                        nextRow.find(inputselector).select();
+                        // 选中下一行
+                        grid.selectRow(nextRow);
+                    }
+
+                    // 阻止默认行为
+                    event.preventDefault();
+                } else if (event.keyCode === F.KEY.UP) {
+                    // 当前选中的行数组
+                    var prevRow = rowEl.prev();
+                    if (prevRow.length) {
+                        // 选中文本框中的文本
+                        prevRow.find(inputselector).select();
+                        // 选中上一行
+                        grid.selectRow(prevRow);
+                    }
+
+                    // 阻止默认行为
+                    event.preventDefault();
+                }
+            });
+
+            grid.el.on('click', inputselector, function (event) {
+                $(this).select();
+            });
+        }
+
+        F.ready(function () {
+            registerEnterEvent();
+        });
+
+
+    </script>
+}

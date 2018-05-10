@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "GridPaging/DatabaseQuickPaging";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").EnableCheckBoxSelect(true).Height(350).ShowHeader(true).ShowBorder(true).Title("表格").ID("Grid1").DataIDField("Id").DataTextField("Name").AllowPaging(true).PageSize(5).IsDatabasePaging(true).OnPageIndexChanged(Url.Action("Grid1_PageIndexChanged"), "Grid1").QuickPaging(true).MouseWheelSelection(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100)
+        ).RecordCount(ViewBag.Grid1RecordCount).DataSource(ViewBag.Grid1DataSource)
+
+    )
+    <br>
+
+    @(F.Button().Text("选中了哪些行").CssClass("marginr").Listener("click", "notifySelectedRows('Grid1');"))
+    <br />
+    <br />
+    <ul>
+        <li>
+            本示例启用了QuickPaging，可以通过上下按键和鼠标滚轮（需设置MouseWheelSelection="true"）快速切换分页，分页后自动选中第一项或者最后一项。
+            <ul>
+                <li>先选中一行，然后通过上下按键和鼠标滚轮来切换选中行。</li>
+                <li>选中最后一行，向下按键或者向下滚动鼠标滚轮，会自动切换到下一页，并选中第一行。</li>
+                <li>选中第一行，向上按键或者向上滚动鼠标滚轮，会自动切换到上一页，并选中最后一行。</li>
+            </ul>
+        </li>
+    </ul>
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

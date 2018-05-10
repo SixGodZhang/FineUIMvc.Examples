@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "DropDownList/CustomItemDataDisplayFields";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .item-text {
+            
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .item-desc {
+            font-size: 0.9em;
+            word-break: break-all;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("自定义列表项（DataDisplayFields）").ShowHeader(true)
+        .Items(
+            F.DropDownList().ID("DropDownList1").DataTextField("Name").DataValueField("Id").DataDisplayFields("Name", "Desc").DataDisplayFormatString("<div class=\"item-text\">{0}</div><div class=\"item-desc\">{1}</div>")
+                .DataSource(DataSourceUtil.GetDataTable()),
+            F.Button().ID("btnGetSelection").Text("获取此下拉列表的选中项").OnClick(Url.Action("btnGetSelection_Click"), "DropDownList1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+    <br>
+
+
+}

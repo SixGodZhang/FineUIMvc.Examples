@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "DropDownBox/TreeMultiSelectLazyLoadDefaultValue";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.SimpleForm().IsFluid(true).CssClass("blockpanel").ID("SimpleForm1").BodyPadding(10).ShowBorder(true).Title("下拉树（多选，延迟加载）").ShowHeader(true)
+        .Items(
+            F.DropDownBox().ID("DropDownBox1").EnableMultiSelect(true).Values("henan,anhui,xiping").Texts("河南省,安徽省,西平县")
+                .PopPanel(
+                    F.Tree().ID("Tree1").ShowHeader(false).AutoLeafIdentification(false).OnNodeLazyLoad(Url.Action("Tree1_NodeLazyLoad"), new Parameter("nodeId", "arguments[1]")).EnableMultiSelect(true).KeepCurrentSelection(true).Hidden(true)
+                        .Nodes(
+                            F.TreeNode().Text("中国").Expanded(true).NodeID("china")
+                                .Nodes(
+                                    F.TreeNode().Text("河南省").Expanded(true).NodeID("henan")
+                                        .Nodes(
+                                            F.TreeNode().Text("驻马店市（延迟加载）").NodeID("zhumadian"),
+                                            F.TreeNode().Text("漯河").NodeID("luohe").Leaf(true)
+                                        ),
+                                    F.TreeNode().Text("安徽省").Expanded(true).NodeID("anhui")
+                                        .Nodes(
+                                            F.TreeNode().Text("合肥市").Expanded(true).NodeID("hefei")
+                                                .Nodes(
+                                                    F.TreeNode().Text("蜀山区").Expanded(false).NodeID("shushanqu")
+                                                        .Nodes(
+                                                            F.TreeNode().Text("金色池塘小区").NodeID("golden").Leaf(true),
+                                                            F.TreeNode().Text("梦圆小区").NodeID("mengyuan").Leaf(true),
+                                                            F.TreeNode().Text("桂花园小区").NodeID("guihuayuan").Leaf(true)
+                                                        ),
+                                                    F.TreeNode().Text("包河区").Expanded(true).NodeID("baohequ")
+                                                        .Nodes(
+                                                            F.TreeNode().Text("中国科学技术大学").NodeID("ustc").Leaf(true)
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                ),
+            F.Button().ID("btnGetSelection").Text("获取下拉框的选中值").OnClick(Url.Action("btnGetSelection_Click"), "DropDownBox1")
+        )
+    )
+    <br>
+
+    @(F.Label().ID("labResult"))
+
+    <br />
+    注：通过 Values 和 Text 属性来设置下拉框的初始值（由于页面初始化时树控件数据并没有全部载入，所以需要指定 Text 属性）。
+
+}
+
+
+

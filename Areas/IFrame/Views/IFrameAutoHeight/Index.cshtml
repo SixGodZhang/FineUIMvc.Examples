@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "IFrame/IFrameAutoHeight";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().ID("Button1").CssClass("marginr")
+        .AttributeDataTag(Url.Content("~/Button/Button")).Text("按钮页面").Listener("click", "onButtonClick")
+    )
+
+    @(F.Button().ID("Button2").CssClass("marginr")
+        .AttributeDataTag(Url.Content("~/Button/ButtonGroup")).Text("分组按钮页面").Listener("click", "onButtonClick")
+    )
+
+    @(F.Button().ID("Button6").CssClass("marginr")
+        .AttributeDataTag(Url.Content("~/Button/ButtonGroupVertical")).Text("垂直分组按钮页面").Listener("click", "onButtonClick")
+    )
+    <br>
+    <br>
+
+    @(F.Panel().IsFluid(true).CssClass("blockpanel").ID("Panel1").ShowBorder(true).EnableIFrame(true).IFrameUrl(Url.Content("~/Button/Button")).ShowHeader(true).Title("面板一（面板高度随IFrame的高度自适应）").Listener("iframeload", "onIFrameLoad"))
+    <br>
+    <br>
+    注：本示例不适合加载外部页面！
+    <br>
+    由于存在<a href="https://en.wikipedia.org/wiki/Same_origin_policy">跨域限制（Same-origin policy）</a>，在IFrame中加载外部页面时，无法访问到IFrame页面的document属性！
+
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function onButtonClick() {
+            var me = this;
+
+            var panel1 = F.ui.Panel1;
+
+            // 重置面板一的高度
+            panel1.setHeight('auto');
+
+            // 设置面板一的IFrameUrl
+            panel1.setIFrameUrl(me.getAttr('data-tag'));
+        }
+
+
+        function onIFrameLoad() {
+            var me = this;
+
+            // 面板一的标题栏高度
+            var panelHeaderHeight = me.el.outerHeight() - me.bodyEl.outerHeight();
+
+            // IFrame页面的实际高度
+            var iframeDoc = $(me.getIFrameWindow().document);
+            var iframePageHeight = iframeDoc.height();
+
+            // 如果页面控件高度自适应（IsViewPort=true）
+            if (iframeDoc.find('body.f-viewport').length) {
+                var panelBodyEl = iframeDoc.find('.f-panel-viewport .f-panel-body');
+                iframePageHeight += panelBodyEl[0].scrollHeight - panelBodyEl.outerHeight();
+            }
+
+            // 设置面板一的新高度
+            me.setHeight(iframePageHeight + panelHeaderHeight);
+        }
+
+    </script>
+
+}

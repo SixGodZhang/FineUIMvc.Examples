@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Message/AlertDownload";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Button().Text("操作（先弹出提示框，点击确定后下载文件）").ID("btnOperation").OnClick(Url.Action("btnOperation_Click")))
+
+
+}
+
+
+@section script {
+
+    <script>
+
+        function confirmOKCallback() {
+            window.location.href = '@Url.Action("DownloadTextFile")';
+        }
+
+        function confirmCancelCallback() {
+            // 触发后台事件
+            F.doPostBack('@Url.Action("ConfirmCancel")');
+        }
+
+    </script>
+
+}

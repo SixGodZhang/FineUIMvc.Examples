@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Other/EventOnOff";
+    var F = Html.F();
+}
+
+@section body {
+
+    @(F.Button().ID("btnTest").Text("测试按钮").Size(ButtonSize.Large).Listener("click", "onTestClick"))
+    <br>
+    <br>
+    <hr>
+
+    @(F.Button().ID("btnCustomEvent").Text("注册点击事件（1）").Listener("click", "onCustomEventClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnSpecialEvent").Text("注册特殊点击事件").Listener("click", "onSpecialEventClick"))
+
+    @(F.Button().ID("btnDeleteSpecialEvent").Text("删除特殊点击事件").Enabled(false).Listener("click", "onDeleteSpecialEventClick"))
+    <br>
+    <br>
+
+    @(F.Button().ID("btnDeleteAll").Text("删除全部点击事件").Listener("click", "onDeleteAllClick"))
+    <br>
+    <br>
+    触发的事件列表（<a href="javascript:;" onclick="$('#result').html('');">clear</a>）：
+    <ul id="result"></ul>
+    <br>
+    <br>
+
+}
+
+
+@section script {
+
+    <script>
+        var customEventNumber = 1;
+        var theSpecialEventCallback = function (event) {
+            $('#result').append('<li>特殊点击事件</li>');
+        };
+
+        function onTestClick() {
+            $('#result').append('<li>点击事件（default）</li>');
+        }
+
+        function onCustomEventClick() {
+            (function (number) {
+                F.ui.btnTest.on('click', function () {
+                    $('#result').append('<li>点击事件（' + number + '）</li>');
+                });
+            })(customEventNumber);
+
+            customEventNumber++;
+            F.ui.btnCustomEvent.setText('注册点击事件（' + customEventNumber + '）');
+        }
+
+        function onSpecialEventClick() {
+            F.ui.btnTest.on('click', theSpecialEventCallback);
+            F.ui.btnSpecialEvent.disable();
+            F.ui.btnDeleteSpecialEvent.enable();
+        }
+
+        function onDeleteSpecialEventClick() {
+            F.ui.btnTest.off('click', theSpecialEventCallback);
+            F.ui.btnSpecialEvent.enable();
+            F.ui.btnDeleteSpecialEvent.disable();
+        }
+
+        function onDeleteAllClick() {
+            F.ui.btnTest.off('click');
+            F.ui.btnSpecialEvent.enable();
+            F.ui.btnDeleteSpecialEvent.disable();
+        }
+    </script>
+
+}

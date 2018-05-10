@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "GridLockColumn/RowExpander";
+    var F = Html.F();
+}
+
+
+@section body {
+
+    @(F.Grid().IsFluid(true).CssClass("blockpanel").Height(350).Title("表格").ShowHeader(true).ShowBorder(true).ID("Grid1").DataIDField("Id").DataTextField("Name").AllowColumnLocking(true)
+        .Columns(
+            F.RowNumberField(),
+            F.RenderField().HeaderText("姓名").DataField("Name").Width(100).EnableLock(true).Locked(true),
+            F.RenderField().HeaderText("性别").DataField("Gender").FieldType(FieldType.Int).RendererFunction("renderGender").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("入学年份").DataField("EntranceYear").FieldType(FieldType.Int).Width(100).EnableLock(true),
+            F.RenderCheckField().HeaderText("是否在校").DataField("AtSchool").RenderAsStaticField(true).Width(100).EnableLock(true),
+            F.RenderField().HeaderText("所学专业").DataField("Major").RendererFunction("renderMajor").ExpandUnusedSpace(true).EnableLock(true),
+            F.RenderField().HeaderText("分组").DataField("Group").RendererFunction("renderGroup").Width(80).EnableLock(true),
+            F.RenderField().HeaderText("注册日期").DataField("LogTime").FieldType(FieldType.Date).Renderer(Renderer.Date).RendererArgument("yyyy-MM-dd").Width(100).EnableLock(true),
+            F.RenderField().DataField("Desc").RenderAsRowExpander(true).RendererFunction("renderExpander").EnableLock(true).Locked(true)
+        )
+        .DataSource(DataSourceUtil.GetDataTable())
+    )
+    <br>
+    <br>
+    @(F.Button().ID("btnExpandRowExpanders").CssClass("marginr").Text("展开全部的行扩展列").Listener("click", "F.ui.Grid1.expandRowExpanders();"))
+
+    @(F.Button().ID("btnCollapseRowExpanders").Text("折叠全部的行扩展列").Listener("click", "F.ui.Grid1.collapseRowExpanders();"))
+
+
+}
+
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+}

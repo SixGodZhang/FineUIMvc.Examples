@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "Window/Multi";
+    var F = Html.F();
+}
+
+
+@section body {
+
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    @(F.DropDownList().ID("DropDownList1")
+                        .Items(
+                            F.ListItem().Value("1").Text("窗体一"),
+                            F.ListItem().Value("2").Text("窗体二"),
+                            F.ListItem().Value("3").Text("窗体三")
+                        )
+                    )
+                </td>
+                <td>
+                    @(F.Button().Listener("click", "onShowWindowClick").Text("显示窗体").ID("btnShowWindow"))
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <br>
+    <br>
+
+    @(F.Window().Hidden(true).BodyPadding(10).AutoScroll(true).IsModal(false).EnableResize(true).EnableMaximize(true).Title("窗体一").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window1")
+        .Items(
+            F.Form().Title("表单 1").ShowHeader(false).ShowBorder(false).LabelWidth(100).ID("Form2").BodyPadding(10)
+                .Rows(
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.Label().Text("标签的值").Label("标签").ID("Label1"),
+                            F.CheckBox().Label("复选框").Text("复选框").ID("CheckBox1")
+                        ),
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.DropDownList().AutoSelectFirstItem(false).ShowRedStar(true).Required(true).Label("下拉列表").ID("DropDownList2")
+                                .Items(
+                                    F.ListItem().Value("Value1").Text("可选项1"),
+                                    F.ListItem().EnableSelect(false).Value("Value2").Text("可选项2（不可选择）"),
+                                    F.ListItem().EnableSelect(false).Value("Value3").Text("可选项3（不可选择）"),
+                                    F.ListItem().Value("Value4").Text("可选项4"),
+                                    F.ListItem().Value("Value5").Text("可选项5"),
+                                    F.ListItem().Value("Value6").Text("可选项6"),
+                                    F.ListItem().Value("Value7").Text("可选择项7"),
+                                    F.ListItem().Value("Value8").Text("可选择项8")
+                                ),
+                            F.TextBox().Text("").Required(true).Label("文本框").ShowRedStar(true).ID("TextBox1")
+                        )
+                )
+        )
+    )
+
+    @(F.Window().Hidden(true).BodyPadding(10).AutoScroll(true).IsModal(false).EnableResize(true).EnableMaximize(true).Title("窗体二").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window2")
+        .Items(
+            F.Form().Title("表单 2").ShowHeader(false).ShowBorder(false).LabelWidth(100).ID("Form3").BodyPadding(10)
+                .Rows(
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.Label().Text("标签的值").Label("标签").ID("Label2"),
+                            F.CheckBox().Label("复选框").Text("复选框").ID("CheckBox2")
+                        ),
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.DropDownList().AutoSelectFirstItem(false).ShowRedStar(true).Required(true).Label("下拉列表").ID("DropDownList3")
+                                .Items(
+                                    F.ListItem().Value("Value1").Text("可选项1"),
+                                    F.ListItem().EnableSelect(false).Value("Value2").Text("可选项2（不可选择）"),
+                                    F.ListItem().EnableSelect(false).Value("Value3").Text("可选项3（不可选择）"),
+                                    F.ListItem().Value("Value4").Text("可选项4"),
+                                    F.ListItem().Value("Value5").Text("可选项5"),
+                                    F.ListItem().Value("Value6").Text("可选项6"),
+                                    F.ListItem().Value("Value7").Text("可选择项7"),
+                                    F.ListItem().Value("Value8").Text("可选择项8")
+                                ),
+                            F.TextBox().Text("").Required(true).Label("文本框").ShowRedStar(true).ID("TextBox2")
+                        )
+                )
+        )
+    )
+
+    @(F.Window().BodyPadding(10).AutoScroll(true).IsModal(false).EnableResize(true).EnableMaximize(true).Title("窗体三").Icon(Icon.TagBlue).Height(300).Width(650).ID("Window3")
+        .Items(
+            F.Form().Title("表单 3").ShowHeader(false).ShowBorder(false).LabelWidth(100).ID("Form4").BodyPadding(10)
+                .Rows(
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.Label().Text("标签的值").Label("标签").ID("Label3"),
+                            F.CheckBox().Label("复选框").Text("复选框").ID("CheckBox3")
+                        ),
+                    F.FormRow().ColumnWidths("50% 50%")
+                        .Items(
+                            F.DropDownList().AutoSelectFirstItem(false).ShowRedStar(true).Required(true).Label("下拉列表").ID("DropDownList4")
+                                .Items(
+                                    F.ListItem().Value("Value1").Text("可选项1"),
+                                    F.ListItem().EnableSelect(false).Value("Value2").Text("可选项2（不可选择）"),
+                                    F.ListItem().EnableSelect(false).Value("Value3").Text("可选项3（不可选择）"),
+                                    F.ListItem().Value("Value4").Text("可选项4"),
+                                    F.ListItem().Value("Value5").Text("可选项5"),
+                                    F.ListItem().Value("Value6").Text("可选项6"),
+                                    F.ListItem().Value("Value7").Text("可选择项7"),
+                                    F.ListItem().Value("Value8").Text("可选择项8")
+                                ),
+                            F.TextBox().Text("").Required(true).Label("文本框").ShowRedStar(true).ID("TextBox3")
+                        )
+                )
+        )
+    )
+    <br>
+
+
+}
+
+
+
+@section script {
+
+    <script>
+
+        function onShowWindowClick(event) {
+            var ddlValue = F.ui.DropDownList1.getValue();
+            // 显示相应的窗体
+            F.ui['Window' + ddlValue].show();
+        }
+
+    </script>
+
+}

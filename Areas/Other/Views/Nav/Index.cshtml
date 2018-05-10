@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Other/Nav";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .mytable {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+            .mytable td {
+                padding: 10px;
+                text-align: center;
+                position: relative;
+            }
+
+            .mytable .f-btn {
+                width: 100px;
+            }
+
+            .mytable .f-btn-icon {
+                width: 50px !important;
+                height: 50px !important;
+                padding: 5px !important;
+                margin: 0 !important;
+            }
+
+            .mytable .myicon {
+                width: 40px;
+                font-size: 30px;
+                opacity: .5;
+                filter: alpha(opacity=50);
+                text-align: center;
+            }
+
+            .mytable .td-icon-down {
+                height: 60px;
+            }
+
+                .mytable .td-icon-down .myicon {
+                    position: absolute;
+                    left: 50%;
+                    margin-left: -20px;
+                    top: 40px;
+                }
+    </style>
+
+}
+
+@section body {
+
+
+    <table class="mytable">
+        <tbody>
+            <tr>
+                <td>
+                    @(F.Button().ID("Button1").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/Basic/Login") + "');").IconAlign(IconAlign.Top).Icon(Icon.User).Text("登陆页面"))
+                </td>
+                <td>
+                    <i class="f-icon f-icon-long-arrow-right myicon"></i>
+                </td>
+                <td>
+                    @(F.Button().ID("Button5").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/Form/FormCompare") + "');").IconAlign(IconAlign.Top).Icon(Icon.ApplicationForm).Text("表单验证"))
+                </td>
+                <td>
+                    <i class="f-icon f-icon-long-arrow-right myicon"></i>
+                </td>
+                <td>
+                    @(F.Button().ID("Button6").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/Grid/RowExpander") + "');").IconAlign(IconAlign.Top).Icon(Icon.Table).Text("行扩展列"))
+                </td>
+                <td>
+                    <i class="f-icon f-icon-long-arrow-right myicon"></i>
+                </td>
+                <td>
+                    @(F.Button().ID("Button7").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/GridDataUrl/LargeData1000") + "');").IconAlign(IconAlign.Top).Icon(Icon.TableLightning).Text("大数据表格"))
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6"></td>
+                <td class="td-icon-down">
+                    <i class="f-icon f-icon-long-arrow-down myicon"></i>
+                </td>
+            </tr>
+            <tr>
+                <td rowspan="2">
+                    @(F.Button().ID("Button11").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/Layout/Region") + "');").IconAlign(IconAlign.Top).Icon(Icon.LayoutContent).Text("区域布局"))
+                </td>
+                <td rowspan="2">
+                    <i class="f-icon f-icon-long-arrow-left myicon"></i>
+                </td>
+                <td>
+                    @(F.Button().ID("Button9").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/Panel/Group") + "');").IconAlign(IconAlign.Top).Icon(Icon.Group).Text("分组面板"))
+                </td>
+                <td rowspan="2">
+                    <i class="f-icon f-icon-long-arrow-left myicon"></i>
+                </td>
+                <td rowspan="2">
+                    @(F.Button().ID("Button10").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/TabStrip/TabStrip") + "');").IconAlign(IconAlign.Top).Icon(Icon.Tab).Text("选项卡控件"))
+                </td>
+                <td rowspan="2">
+                    <i class="f-icon f-icon-long-arrow-left myicon"></i>
+                </td>
+                <td rowspan="2">
+                    @(F.Button().ID("Button8").OnClientClick("top.addExampleTabByHref('"+ Url.Content("~/Tree/TreeSmart") + "');").IconAlign(IconAlign.Top).Icon(Icon.ApplicationSideTree).Text("智能树控件"))
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @(F.Button().ID("Button12").OnClientClick("top.addExampleTabByHref('" + Url.Content("~/Window/Window") + "');").IconAlign(IconAlign.Top).Icon(Icon.Application).Text("窗体控件"))
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    注：本示例新增的选项卡和手工点击右侧菜单新增的选项卡是同一个！
+
+
+
+}
+

@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Message/NotifyAddTab";
+    var F = Html.F();
+}
+
+
+@section head {
+
+    <style>
+        .addtabcontainer {
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Button().Text("弹出通知对话框").ID("btnOperation1").OnClick(Url.Action("btnOperation1_Click")))
+    <br>
+    <br>
+
+
+
+}
+
+
+@section script {
+
+    <script type="text/javascript">
+
+        function openExampleHello(notifyId) {
+            parent.addExampleTab({
+                iframeUrl: '@Url.Content("~/Basic/Hello")',
+                title: '你好 FineUIMvc',
+                icon: '@Url.Content("~/res/images/filetype/vs_aspx.png")',
+                refreshWhenExist: true
+            });
+
+            // 关闭通知对话框
+            F(notifyId).hide();
+        }
+
+    </script>
+}
