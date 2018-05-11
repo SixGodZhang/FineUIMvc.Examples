@@ -425,6 +425,7 @@
     <Compile Include="Areas\Button\Controllers\LinkButtonController.cs" />
     <Compile Include="Areas\Commond\CommondAreaRegistration.cs" />
     <Compile Include="Areas\Commond\Controllers\CopyCMDController.cs" />
+    <Compile Include="Areas\Commond\Controllers\SWRArt2GameController.cs" />
     <Compile Include="Areas\Config\ConfigAreaRegistration.cs" />
     <Compile Include="Areas\Config\Controllers\IconFontsFAController.cs" />
     <Compile Include="Areas\Config\Controllers\IconFontsController.cs" />
@@ -976,6 +977,25 @@
     <Compile Include="Areas\Message\Controllers\NotifyController.cs" />
     <Compile Include="Areas\Message\Controllers\PromptController.cs" />
     <Compile Include="Areas\Message\MessageAreaRegistration.cs" />
+    <Compile Include="Areas\Other\Controllers\AddTabController.cs" />
+    <Compile Include="Areas\Other\Controllers\AjaxLoadingController.cs" />
+    <Compile Include="Areas\Other\Controllers\AuthenticationTimeoutAsyncController.cs" />
+    <Compile Include="Areas\Other\Controllers\AuthenticationTimeoutController.cs" />
+    <Compile Include="Areas\Other\Controllers\ClientValidateController.cs" />
+    <Compile Include="Areas\Other\Controllers\CssStyleController.cs" />
+    <Compile Include="Areas\Other\Controllers\CustomPostbackController.cs" />
+    <Compile Include="Areas\Other\Controllers\EventOnOffController.cs" />
+    <Compile Include="Areas\Other\Controllers\FieldLabelStyleController.cs" />
+    <Compile Include="Areas\Other\Controllers\FormAjaxCompleteController.cs" />
+    <Compile Include="Areas\Other\Controllers\JSErrorController.cs" />
+    <Compile Include="Areas\Other\Controllers\KeydownController.cs" />
+    <Compile Include="Areas\Other\Controllers\LoginCenterController.cs" />
+    <Compile Include="Areas\Other\Controllers\NavController.cs" />
+    <Compile Include="Areas\Other\Controllers\ServerErrorController.cs" />
+    <Compile Include="Areas\Other\Controllers\ServerErrorCustomController.cs" />
+    <Compile Include="Areas\Other\Controllers\ServerErrorSimpleController.cs" />
+    <Compile Include="Areas\Other\Controllers\ShowLoadingController.cs" />
+    <Compile Include="Areas\Other\OtherAreaRegistration.cs" />
     <Compile Include="Areas\Panel\Controllers\BgImageController.cs" />
     <Compile Include="Areas\Panel\Controllers\CollapseController.cs" />
     <Compile Include="Areas\Panel\Controllers\DisabledController.cs" />
@@ -1843,6 +1863,27 @@
     <Content Include="Areas\Commond\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Commond\Views\CopyCMD\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Areas\Commond\Views\SWRArt2Game\Index.cshtml" />
+    <Content Include="Areas\Other\Views\AddTab\Index.cshtml" />
+    <Content Include="Areas\Other\Views\AjaxLoading\Index.cshtml" />
+    <Content Include="Areas\Other\Views\AuthenticationTimeoutAsync\Index.cshtml" />
+    <Content Include="Areas\Other\Views\AuthenticationTimeout\Index.cshtml" />
+    <Content Include="Areas\Other\Views\ClientValidate\Index.cshtml" />
+    <Content Include="Areas\Other\Views\CssStyle\Index.cshtml" />
+    <Content Include="Areas\Other\Views\CustomPostback\Index.cshtml" />
+    <Content Include="Areas\Other\Views\EventOnOff\Index.cshtml" />
+    <Content Include="Areas\Other\Views\FieldLabelStyle\Index.cshtml" />
+    <Content Include="Areas\Other\Views\FormAjaxComplete\Index.cshtml" />
+    <Content Include="Areas\Other\Views\JSError\Index.cshtml" />
+    <Content Include="Areas\Other\Views\Keydown\Index.cshtml" />
+    <Content Include="Areas\Other\Views\LoginCenter\Index.cshtml" />
+    <Content Include="Areas\Other\Views\Nav\Index.cshtml" />
+    <Content Include="Areas\Other\Views\ServerErrorCustom\Index.cshtml" />
+    <Content Include="Areas\Other\Views\ServerErrorSimple\Index.cshtml" />
+    <Content Include="Areas\Other\Views\ServerError\Index.cshtml" />
+    <Content Include="Areas\Other\Views\ShowLoading\Index.cshtml" />
+    <Content Include="Areas\Other\Views\web.config" />
+    <Content Include="Areas\Other\Views\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1901,6 +1942,8 @@
     <Folder Include="Areas\Layout\Views\Shared\" />
     <Folder Include="Areas\Message\Models\" />
     <Folder Include="Areas\Message\Views\Shared\" />
+    <Folder Include="Areas\Other\Models\" />
+    <Folder Include="Areas\Other\Views\Shared\" />
     <Folder Include="Areas\Panel\Models\" />
     <Folder Include="Areas\Panel\Views\Shared\" />
     <Folder Include="Areas\TabStrip\Models\" />
@@ -1913,6 +1956,7 @@
     <Folder Include="Areas\Tree\Views\Shared\" />
     <Folder Include="Areas\Window\Models\" />
     <Folder Include="Areas\Window\Views\Shared\" />
+    <Folder Include="CommonComponents\BatCommand\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>

@@ -4,6 +4,9 @@
     <TreeNode Text="Android渠道">
       <TreeNode Text="复制文件" NavigateUrl="~/Commond/CopyCMD" />
     </TreeNode>
+    <TreeNode Text="顺网(swjoy)">
+      <TreeNode Text="常用命令" NavigateUrl="~/Commond/SWRArt2Game" />
+    </TreeNode>
   </TreeNode>
   <TreeNode Text="基本用法" IconFont="_Home">
     <TreeNode Text="配置信息">

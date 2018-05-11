@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Copy命令";
+    var F = Html.F();
+}
+
+@section head {
+
+    <style>
+        .f-grid-row-summary .f-grid-cell-inner {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+
+}
+
+@section body {
+
+    @(F.Panel().ID("Panel1").ShowBorder(false).ShowHeader(false).Layout(LayoutType.Region).IsViewPort(true)
+                                                                                    .Items(
+                                                                                        F.Panel().ID("panelLeftRegion").RegionPosition(Position.Left).RegionSplit(true).Width(250).Title("命令列表").TitleToolTip("命令列表").ShowBorder(true).ShowHeader(true).BodyPadding(10).IconFont(IconFont._PullLeft)
+                                                                                            .Items(
+
+                                                                                             F.Form().ID("Form1").ShowBorder(false).ShowHeader(false)
+                                                                                                .Rows(
+                                                                                                    F.FormRow()
+                                                                                                        .Items(
+                                                                                                            //OnClientClick("MyCustomBtnBack()")
+                                                                                                            F.Button().ID("btnCopyCommand").Text("资源:Art->Game").OnClientClick("MyCustomBtnBack()")
+                                                                                                        )
+                                                                                                )
+                                                                                            ),
+                                                                                        F.Panel().ID("panelCenterRegion").RegionPosition(Position.Center).Title("中间面板").ShowBorder(true).ShowHeader(true).BodyPadding(10).IconFont(IconFont._RoundPlus)
+                                                                                            .Items(
+                                                                                                 F.Grid().IsFluid(true).CssClass("blockpanel").Title("日志记录").ShowHeader(true).ShowBorder(true).ID("LogGrid").DataIDField("Id").DataTextField("Value").Height(700)
+                                                                                                 .Columns(
+                                                                                                     F.RowNumberField().HeaderText("行数").TextAlign(TextAlign.Center).Width(100),
+                                                                                                     F.RenderField().HeaderText("Log详细").DataField("Value").TextAlign(TextAlign.Center).ExpandUnusedSpace(true)
+                                                                                         )
+                                                                                         .DataSource("").Attribute("data-source-key", "table1")
+                                                                                    )
+                                                                            )
+    )
+
+}
+
+@section script {
+
+    <script src="~/res/js/grid.js"></script>
+
+    <script>
+
+        var timer1;
+
+        function OnCheckTaskStateFixedTime()
+        {
+            if (timer1 != null)
+            {
+                alert("任务正在执行中，请等待!");
+                return;
+            }
+            timer1 = self.setInterval('OnStateCheck(false)', 5000);
+        }
+
+        function SayHello()
+        {
+            
+            alert('Hello');
+        }
+
+       // self.setInterval("OnStateCheck(true)", 5000);
+
+        function OnStateCheck(state)
+        {
+            if (!state) {
+                F.doPostBack('@Url.Action("CheckTaskState")');
+            } else {
+                window.clearInterval(timer1);
+                timer1 = null;
+                alert('执行OK');
+            }
+        }
+
+        function doCustomPostBack(type, params) {
+            var grid1 = F.ui.LogGrid;
+
+            // 触发后台事件
+            F.doPostBack('@Url.Action("OnClickSWRArt2GameBtn")', {
+                type: type,
+                gridSourceKey: grid1.getAttr('data-source-key'),
+                gridFields: grid1.fields,
+                typeParams: params
+            });
+        }
+
+        function MyCustomBtnBack() {
+            //OnCheckTaskStateFixedTime();
+            doCustomPostBack('button1');
+        }
+    </script>
+
+}
+
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+

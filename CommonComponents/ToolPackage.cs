@@ -4,19 +4,61 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace SimpleTool.Common
 {
     public class ToolPackage
     {
+
+        public static void ReadError(object data)
+        {
+            Process temp = (Process)data;
+            if (temp == null)
+            {
+                return;
+            }
+
+            string outputStr = string.Empty;
+            while ((outputStr = temp.StandardError.ReadLine()) != null)
+            {
+                resultMsg.Result = false;
+                returnMsg.Append(outputStr + '_');
+            }
+        }
+
+        public static void ReadOutput(object data)
+        {
+            Process temp = (Process)data;
+            if (temp == null)
+            {
+                return;
+            }
+
+            string outputStr = string.Empty;
+            while ((outputStr = temp.StandardOutput.ReadLine()) != null)
+            {
+                if (outputStr.Contains("success"))
+                {
+                    resultMsg.Result = true;
+                }
+                returnMsg.Append(outputStr + '_');
+            }
+        }
+
+        private static CMDMSG resultMsg = new CMDMSG();
+        private static StringBuilder returnMsg = new StringBuilder();
+
         public static CMDMSG BatTool(string batPath)
         {
-            string outPutString = string.Empty;
-            string errMsg = string.Empty;
-            StringBuilder returnMsg = new StringBuilder();
+            resultMsg = new CMDMSG();
+            returnMsg.Clear();
 
-            CMDMSG resultMsg = new CMDMSG();
+            Thread t1 = new Thread(new ParameterizedThreadStart(ReadOutput));
+            t1.IsBackground = true;
+            Thread t2 = new Thread(new ParameterizedThreadStart(ReadError));
+            t1.IsBackground = true;
 
             using (Process pro = new Process())
             {
@@ -29,32 +71,14 @@ namespace SimpleTool.Common
                 pro.StartInfo.UseShellExecute = false;
 
                 pro.Start();
+                t1.Start(pro);
+                t2.Start(pro);
                 pro.WaitForExit();
-
-                resultMsg.Result = false;
-
-                //逐行读取标准输出
-                while ((outPutString = pro.StandardOutput.ReadLine())!=null)
-                {
-                    if (outPutString.Contains(GlobalConstant.CMD_EXCUTE_SUCCESS))
-                    {
-                        resultMsg.Result = true;
-                    }
-
-                    returnMsg.Append(outPutString + '_');
-                }
-
                 resultMsg.Msg = returnMsg.ToString();
-
-                if (!resultMsg.Result)
-                {
-                    resultMsg.Msg = string.Empty;
-                    resultMsg.Msg = pro.StandardError.ReadToEnd();
-                }
             }
             return resultMsg;
         }
 
-        
+
     }
 }
